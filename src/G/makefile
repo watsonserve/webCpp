@@ -14,8 +14,8 @@ CFLAGS = -O3 -c -fPIC -I $(INC)
 AFLAGS = crsv
 
 
-$(LIB)/G.a : $(LIB)/libGutil.a $(LIB)/libGnet.a
-	$(AR) $(AFLAGS) $@ $^
+$(LIB)/G.so : $(LIB)/libGutil.a $(LIB)/libGnet.a
+	$(CXX) -shared -fPIC -o $@ $^
 
 #net
 $(LIB)/libGnet.a : $(OBJ)/Gnet.o

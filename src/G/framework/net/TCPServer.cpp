@@ -2,14 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
-//#include "G/Exception.hpp"
 extern "C" {
     #include "G/net/Gnet.h"
-    #include "G/Gaio.h"
 }
 #include "G/IOHandle.hpp"
 #include "G/net/TCPServer.hpp"
-#include "G/Exception.hpp"
 
 /*
 #include "openssl/rsa.h"

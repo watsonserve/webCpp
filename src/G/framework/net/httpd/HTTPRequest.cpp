@@ -25,7 +25,7 @@ int HTTPRequest::init(StreamIO *fh, HTTPRequest *request)
         split(foo, str, ": ");    /* 获取第一行 'GET URI HTTP/1.1' */
         request->set(foo[0], foo[1]);
     }
-    tmpFlag ^= tmpFlag;  /* 0 path, 1 args, 2 hash */
+    tmpFlag = 0;  /* 0 path, 1 args, 2 hash */
     for(unsigned int i=0; i<tmp.length(); i++)
     {
         if( '?' == tmp[i] || '#' == tmp[i] )
