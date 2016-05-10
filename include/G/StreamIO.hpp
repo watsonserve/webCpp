@@ -44,7 +44,6 @@ namespace G {
 
         virtual void write(const char *, ssize_t, OutBack callback);
         virtual void write(std::string &, OutBack callback);
-        virtual void sendfile(std::string &, OutBack callback);
     };
 
 }

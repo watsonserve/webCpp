@@ -27,7 +27,7 @@ LD = ld
 CFLAGS = -c -O3 -Wall
 ARFLAGS = crsv
 
-$(BIN)/test : $(OBJ)/httpd.o $(OBJ)/HTTPSession.o $(LIB)/G/libGhttpd.a $(LIB)/G/libGserver.a $(LIB)/G/libGnet.a $(LIB)/G/libGutil.a
+$(BIN)/test : $(OBJ)/httpd.o $(OBJ)/HTTPSession.o $(LIB)/G/libGhttpd.a $(LIB)/G/libGserver.a $(LIB)/G/libGio.a $(LIB)/G/libGobject.a $(LIB)/G/libGnet.a $(LIB)/G/libGutil.a
 	$(CXX) $(LDFLAGS) $^ -o $@ -ldl -lpthread -lc -lrt
 
 $(OBJ)/httpd.o : $(SRC)/main.cpp
