@@ -26,6 +26,8 @@
       |  |
       |  └─HTTPSession
       |
-      └─Middleware
+      └─MiddleWare
 ### 使用方法
 参看main.cpp
+
+[more...](https://www.watsonserve.com/webCpp)
