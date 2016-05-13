@@ -96,6 +96,11 @@ StreamIO* StreamIO::init(StreamIO *ioHandle, G::IOEvents *ioEvents, void* mem, s
     return ioHandle;
 }
 
+void StreamIO::cleanCache()
+{
+    cache.clear();
+}
+
 std::string StreamIO::gets()
 {
     ssize_t off;

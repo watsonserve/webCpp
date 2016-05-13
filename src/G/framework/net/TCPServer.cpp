@@ -83,6 +83,7 @@ int TCPServer::service(IOEvents *dispatcher, int max)
         {
             
             ioHandles[clientFd].setFd(clientFd, NET_SOCKET);
+            ioHandles[clientFd].cleanCache();
             ioHandles[clientFd].listen();
         }
     }
