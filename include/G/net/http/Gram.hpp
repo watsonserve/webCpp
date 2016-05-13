@@ -7,7 +7,7 @@
 
 namespace G {
 
-    class HTTPGram
+    class HTTPGram : Object
     {
     protected:
         std::map<std::string, std::string> data;

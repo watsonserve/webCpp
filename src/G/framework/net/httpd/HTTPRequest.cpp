@@ -14,6 +14,11 @@ int HTTPRequest::init(StreamIO *fh, HTTPRequest *request)
     request->setSock(fh);
     tmp = fh->gets();
     split(foo, tmp, " ");
+    if(foo.size() != 3)
+    {
+        puts(tmp.c_str());
+        exit(1);
+    }
     request->set("method", foo[0]);
     request->set("protocol", foo[2]);
     tmp = foo[1];

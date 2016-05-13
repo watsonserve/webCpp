@@ -40,6 +40,7 @@ namespace G {
 
         virtual void recvd();
         virtual void sent();
+        virtual void cleanCache();
         virtual std::string gets();
 
         virtual void write(const char *, ssize_t, OutBack callback);

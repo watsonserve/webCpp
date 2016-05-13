@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/types.h>
+#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+    #include <sys/event.h>
+#endif
 extern "C" {
     #include "G/net/Gnet.h"
 }
@@ -42,7 +46,61 @@ int TCPServer::setKey(const char *keyFile)
     return 0;
 }
 
-
+#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+int TCPServer::service(IOEvents *dispatcher, int max)
+{
+    int kq, nEvent, i;
+    SOCKET sockfd, clientFd;
+    struct sockaddr addr;
+    socklen_t len;
+    struct kevent kev, *eventlist;
+    
+    sockfd = TCPsetup(port);    // 创建socket
+    if( -1 == sockfd ) {
+        perror("Can't create socket");
+        return -1;
+    }
+    kq = kqueue();  // 准备注册内核事件
+    if(-1 == kq) {
+        perror("Can't create kqueue");
+        return -1;
+    }
+    eventlist = (struct kevent *)malloc(sizeof(struct kevent) * max);  // 可用事件列表
+    if(NULL == eventlist) {
+        perror("Can't create kqueue");
+        return -1;
+    }
+    EV_SET(&kev, sockfd, EVFILT_READ, 0, 0, 0, NULL);  // 注册socket
+    while (1) {
+        nEvent = kevent(kq, NULL, 0, eventlist, max, NULL);  // 获取可用事件
+        for(i=0; i<nEvent; i++)
+        {
+            if (eventlist[i].flags & EV_ERROR)  // 出错
+            {
+                close((int)(eventlist[i].ident));
+                continue;
+            }
+            if(eventlist[i].ident == sockfd)  // 新的客户到了
+            {
+                clientFd = accept(sockfd, &addr, &len);
+                if( -1 == clientFd) {
+                    perror("Can't create kqueue");
+                    return -1;
+                }
+                EV_SET(&kev, clientFd, EVFILT_READ, EV_DISABLE, 0, 0, NULL);
+                continue;
+            }
+            // a client
+            // 上独占锁
+            // 入队
+            // 解锁
+            // 触发POSIX信号量
+        }
+        
+    }
+    return 0;
+}
+#elif defined (__linux__) || defined(__linux)
 int TCPServer::service(IOEvents *dispatcher, int max)
 {
     int i;
@@ -83,11 +141,39 @@ int TCPServer::service(IOEvents *dispatcher, int max)
         {
             
             ioHandles[clientFd].setFd(clientFd, NET_SOCKET);
+            ioHandles[clientFd].cleanCache();
             ioHandles[clientFd].listen();
         }
     }
     return 0;
 }
+#else
+int TCPServer::service(IOEvents *dispatcher, int max)
+{
+    int pfd, i;
+    SOCKET sockfd, clientFd;
+    struct sockaddr addr;
+    socklen_t len;
+    StreamIO *ioHandles;
+    char *mem;
+    struct pollfd *fds;
+    nfds_t nfds;
+    
+    sockfd = TCPsetup(port);    // 创建socket
+    if( -1 == sockfd ) {
+        perror("Can't create socket");
+        return -1;
+    }
+    fds = (struct pollfd *)malloc(max);
+    if(NULL == fds)
+    {
+        perror("Can't create socket");
+        return -1;
+    }
+    pfd = poll(fds, nfds, 0);
+    return 0;
+}
+#endif
 
 int TCPServer::serviceSafe(IOEvents *dispatcher, int max)
 {
