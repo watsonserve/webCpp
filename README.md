@@ -3,7 +3,16 @@
 ### 整体设计
 * 整体思路效仿node的express框架
 * 不使用xml配置文件，所有配置依靠编程实现
-* 使用aio线程模式，实现异步和高并发
+
+### 不同平台下的实现
+```
+{
+  "linux": "aio",
+  "BSD系": "kqueue + POSIX信号量",
+  "UNIX系": "poll + POSIX信号量",
+  "windows": "不支持"
+}
+```
 
 ### 主要类结构
     Object: 所有类的最终父类
