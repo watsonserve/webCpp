@@ -3,7 +3,9 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
-#include <sys/event.h>
+#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+    #include <sys/event.h>
+#endif
 extern "C" {
     #include "G/net/Gnet.h"
 }
