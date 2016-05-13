@@ -39,4 +39,5 @@
 ### 使用方法
 参看main.cpp
 
+[wiki](https://github.com/watsonserve/webCpp/wiki)
 [more...](https://www.watsonserve.com/webCpp)
