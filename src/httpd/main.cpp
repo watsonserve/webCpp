@@ -52,7 +52,7 @@ int except(HTTPRequest *req, HTTPResponse *res)
 {
     res->setCode(500);
     res->setContent("a exception");
-    res->send();
+    res->end();
     return 1;
 }
 

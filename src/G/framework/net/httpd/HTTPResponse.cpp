@@ -57,13 +57,15 @@ void HTTPResponse::setCode(int code)
     std::string s;
 
     turn[3] = 0;
-    turn[2] = code % 10;
-    turn[1] = code / 10 % 10;
-    turn[0] = code / 100 % 10;
+    turn[2] = '0' + (code % 10);
+    turn[1] = '0' + (code / 10 % 10);
+    turn[0] = '0' + (code / 100 % 10);
     s = turn;
-	this->set("code", s);
+    this->set("code", s);
+    printf("code: %s, ", turn);
 	s = searchStat(code);
 	this->set("stat", s);
+    printf("stat: %s\n", data["stat"].c_str());
 	return;
 }
 
