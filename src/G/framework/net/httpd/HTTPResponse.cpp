@@ -98,11 +98,9 @@ void HTTPResponse::setCode(int code)
     turn[0] = '0' + (code / 100 % 10);
     s = turn;
     this->set("code", s);
-    printf("code: %s, ", turn);
-	s = searchStat(code);
-	this->set("stat", s);
-    printf("stat: %s\n", data["stat"].c_str());
-	return;
+    s = searchStat(code);
+    this->set("stat", s);
+    return;
 }
 
 void HTTPResponse::setContent(std::string &content)
