@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <thread>
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
     #include <sys/event.h>
 #endif
@@ -46,9 +47,24 @@ int TCPServer::setKey(const char *keyFile)
     return 0;
 }
 
+#if defined (__linux__) || defined(__linux)
+int TCPServer::initPool(int thr, int simu, int idleTime)
+{
+    struct aioinit aioInit;
+    
+    aioInit.aio_threads = thr;   // Maximum number of threads
+    aioInit.aio_num = simu;       // Number of expected simultaneous requests
+    aioInit.aio_idle_time = idleTime;  // Number of seconds before idle thread terminates (since glibc 2.2)
+    aio_init(&aioInit);
+    
+    return 0;
+}
+#endif
+
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
 int TCPServer::service(IOEvents *dispatcher, int max)
 {
+    /*
     int kq, nEvent, i;
     SOCKET sockfd, clientFd;
     struct sockaddr addr;
@@ -92,12 +108,14 @@ int TCPServer::service(IOEvents *dispatcher, int max)
             }
             // a client
             // 上独占锁
+            
             // 入队
             // 解锁
             // 触发POSIX信号量
         }
         
     }
+    */
     return 0;
 }
 #elif defined (__linux__) || defined(__linux)
@@ -109,7 +127,6 @@ int TCPServer::service(IOEvents *dispatcher, int max)
     socklen_t len;
     StreamIO *ioHandles;
     char *mem;
-
     sockfd = TCPsetup(port);    // 创建socket
     if( -1 == sockfd ) {
         perror("Can't create socket");

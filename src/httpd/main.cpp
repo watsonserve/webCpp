@@ -63,15 +63,6 @@ int main(int argc, char *argv[])
     RedisSession session;
     TCPServer srv;
     const int max = 512;
-#if defined (__linux__) || defined(__linux)
-    struct aioinit aioInit;
-    
-    aioInit.aio_threads = 20;   // Maximum number of threads
-    aioInit.aio_num = 64;       // Number of expected simultaneous requests
-    aioInit.aio_idle_time = 1;  // Number of seconds before idle thread terminates (since glibc 2.2)
-    aio_init(&aioInit);
-    puts("on linux use aio 20 threads and simultaneous 64 idle 1");
-#endif
     HTTPResponse::initDict();
     dispatcher.init(max);
     dispatcher.use(parser);
@@ -81,6 +72,7 @@ int main(int argc, char *argv[])
     dispatcher.use(routes);
     dispatcher.use(except);
 
+    srv.initPool(20, 64, 1);
     srv.setPort(8800);
     srv.setCert("");
     srv.setKey("");

@@ -12,6 +12,7 @@ namespace G {
     public:
         TCPServer();
         virtual ~TCPServer();
+        virtual int initPool(int, int, int);
         int service(G::IOEvents *, int max, int sslFlag);
         virtual int setCert(const char *);
         virtual int setKey(const char *);
