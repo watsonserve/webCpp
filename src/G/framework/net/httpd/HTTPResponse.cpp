@@ -65,10 +65,6 @@ std::string& HTTPResponse::searchStat(int code)
 
 HTTPResponse::HTTPResponse()
 {
-    this->set("proto", "HTTP/1.1");
-    this->set("code", "200");
-    this->set("stat", "OK");
-	return;
 }
 
 HTTPResponse::~HTTPResponse()
@@ -76,9 +72,12 @@ HTTPResponse::~HTTPResponse()
 	  return;
 }
 
-void HTTPResponse::setSock(Output *fh)
+void HTTPResponse::init(HTTPResponse *that, Output *fh)
 {
-    this->fh = fh;
+    that->set("proto", "HTTP/1.1");
+    that->set("code", "200");
+    that->set("stat", "OK");
+    that->fh = fh;
     return;
 }
 

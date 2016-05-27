@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "G/GUtil.hpp"
 #include "G/net/http/Request.hpp"
 
 using namespace std;
 using namespace G;
 
-int HTTPRequest::init(StreamIO *fh, HTTPRequest *request)
+int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
 {
     int tmpFlag;
     string tmp, str, data, firstRow;

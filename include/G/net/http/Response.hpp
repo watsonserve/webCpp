@@ -17,9 +17,9 @@ namespace G {
         virtual std::string getHeaders();
     public:
         static void initDict();
+        static void init(HTTPResponse *that, Output *fh);
         HTTPResponse();
         virtual ~HTTPResponse();
-        virtual void setSock(Output *fh);
         virtual Output* getSock();
         virtual void setCode(int code);
         virtual void setContent(std::string &content);

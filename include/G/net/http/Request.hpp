@@ -14,7 +14,7 @@ namespace G {
         HTTPGram _GET;
         HTTPGram _POST;
 
-        static int init(StreamIO *fh, HTTPRequest *request);
+        static int init(HTTPRequest *request, StreamIO *fh);
         HTTPRequest();
         virtual ~HTTPRequest();
         virtual void setSock(IOHandle *fh);

@@ -50,8 +50,8 @@ void HTTPDispatcher::onData(StreamIO *fh)
     ret = fh->getFd();
     request = requests + ret;
     response = responses + ret;
-    response->setSock((Output*)fh);
-    HTTPRequest::init(fh, request);
+    HTTPResponse::init(response, (Output*)fh);
+    HTTPRequest::init(request, fh);
     for (std::list<MiddleHandle>::iterator it = this->process.begin(); it != this->process.end(); ++it)
     {
         try {
