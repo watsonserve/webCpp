@@ -12,7 +12,6 @@ extern "C" {
     #include <stdlib.h>
     #include <unistd.h>
     #include <errno.h>
-    #include <aio.h>
     #include <fcntl.h>
     #include <sys/socket.h>
 }
@@ -32,7 +31,7 @@ void StreamIO::sent()
 void StreamIO::recvd()
 {
     ssize_t len;
-    len = aio_return(&rd_acb);
+    len = Aio::aioReturn(&rd_acb);
     if(1 > len)
     {
         shutdown(rd_acb.aio_fildes, SHUT_RD);
@@ -53,9 +52,9 @@ void StreamIO::recvd()
     if(0 == closed)
     {
         puts("aio read next");
-        aio_read(&rd_acb); // 下一次读取
+        Aio::aioRead(&rd_acb); // 下一次读取
     }
-    // 此三者顺序不可变动，如果先调用aio_read会导致多线程同时读写cache
+    // 此三者顺序不可变动，如果先调用Aio::aioRead会导致多线程同时读写cache
     return;
 }
 
@@ -81,8 +80,8 @@ int StreamIO::getFd()
 
 void StreamIO::close()
 {
-    if(EINPROGRESS == aio_error(&rd_acb))
-        aio_cancel(rd_acb.aio_fildes, &rd_acb);
+    if(EINPROGRESS == Aio::aioError(&rd_acb))
+        Aio::aioCancel(rd_acb.aio_fildes, &rd_acb);
     ::close(rd_acb.aio_fildes);
     closed = 1;
     puts("streamIO closed");
@@ -129,7 +128,7 @@ void StreamIO::write(const char *buf, ssize_t len, OutBack callback)
     wr_acb.aio_buf = (void*)buf;
     wr_acb.aio_nbytes = len;
     onComplete = callback;
-    if( 0 != aio_write(&wr_acb)) {
+    if( 0 != Aio::aioWrite(&wr_acb)) {
         err = errno;
         this->close();
         printf("ERROR aio write %X: %s\n", err, strerror(err));

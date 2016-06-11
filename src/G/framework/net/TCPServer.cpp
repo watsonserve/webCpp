@@ -47,7 +47,6 @@ int TCPServer::setKey(const char *keyFile)
     return 0;
 }
 
-#if defined (__linux__) || defined(__linux)
 int TCPServer::initPool(int thr, int simu, int idleTime)
 {
     struct aioinit aioInit;
@@ -55,70 +54,12 @@ int TCPServer::initPool(int thr, int simu, int idleTime)
     aioInit.aio_threads = thr;   // Maximum number of threads
     aioInit.aio_num = simu;       // Number of expected simultaneous requests
     aioInit.aio_idle_time = idleTime;  // Number of seconds before idle thread terminates (since glibc 2.2)
-    aio_init(&aioInit);
-    
-    return 0;
-}
-#endif
+    Aio::aioInit(&aioInit);
 
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
-int TCPServer::service(IOEvents *dispatcher, int max)
-{
-    /*
-    int kq, nEvent, i;
-    SOCKET sockfd, clientFd;
-    struct sockaddr addr;
-    socklen_t len;
-    struct kevent kev, *eventlist;
-    
-    sockfd = TCPsetup(port);    // 创建socket
-    if( -1 == sockfd ) {
-        perror("Can't create socket");
-        return -1;
-    }
-    kq = kqueue();  // 准备注册内核事件
-    if(-1 == kq) {
-        perror("Can't create kqueue");
-        return -1;
-    }
-    eventlist = (struct kevent *)malloc(sizeof(struct kevent) * max);  // 可用事件列表
-    if(NULL == eventlist) {
-        perror("Can't create kqueue");
-        return -1;
-    }
-    EV_SET(&kev, sockfd, EVFILT_READ, 0, 0, 0, NULL);  // 注册socket
-    while (1) {
-        nEvent = kevent(kq, NULL, 0, eventlist, max, NULL);  // 获取可用事件
-        for(i=0; i<nEvent; i++)
-        {
-            if (eventlist[i].flags & EV_ERROR)  // 出错
-            {
-                close((int)(eventlist[i].ident));
-                continue;
-            }
-            if(eventlist[i].ident == sockfd)  // 新的客户到了
-            {
-                clientFd = accept(sockfd, &addr, &len);
-                if( -1 == clientFd) {
-                    perror("Can't create kqueue");
-                    return -1;
-                }
-                EV_SET(&kev, clientFd, EVFILT_READ, EV_DISABLE, 0, 0, NULL);
-                continue;
-            }
-            // a client
-            // 上独占锁
-            
-            // 入队
-            // 解锁
-            // 触发POSIX信号量
-        }
-        
-    }
-    */
     return 0;
 }
-#elif defined (__linux__) || defined(__linux)
+
+#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__) || defined (__linux__) || defined(__linux)
 int TCPServer::service(IOEvents *dispatcher, int max)
 {
     int i;
@@ -133,7 +74,7 @@ int TCPServer::service(IOEvents *dispatcher, int max)
         return -1;
     }
 
-    mem = (char*)malloc(max*BUFSIZ);
+    mem = (char*)malloc(max * BUFSIZ);
     if(NULL == mem) {
         perror("alloc buffer");
         return -1;
@@ -156,7 +97,6 @@ int TCPServer::service(IOEvents *dispatcher, int max)
         clientFd = accept(sockfd, &addr, &len);
         if( -1 != clientFd && clientFd < max )
         {
-            
             ioHandles[clientFd].setFd(clientFd, NET_SOCKET);
             ioHandles[clientFd].cleanCache();
             ioHandles[clientFd].listen();
@@ -276,7 +216,7 @@ int TCPServer::serviceSafe(IOEvents *dispatcher, int max)
 //                 continue;
 //             }
 //             // a message
-//             aio_read(clientFd);
+//             Aio::aioRead(clientFd);
 //             epoll_ctl(epfd, EPOLL_CTL_ADD, clientFd, events + i);
 //             continue;
 //         }

@@ -40,7 +40,7 @@ $(OBJ)/G/framework/Object.o : $(SRC)/Object.cpp
 	$(CC) $(CFLAGS) $^ -o $@ -I $(INC)
 
 #io
-$(LIB)/G/libGio.a : $(OBJ)/G/framework/StreamIO.o $(OBJ)/G/framework/Output.o $(OBJ)/G/framework/Input.o
+$(LIB)/G/libGio.a : $(OBJ)/G/framework/StreamIO.o $(OBJ)/G/framework/Output.o $(OBJ)/G/framework/Input.o $(OBJ)/G/framework/Aio.o
 	$(AR) $(ARFLAGS) $@ $^
 
 $(OBJ)/G/framework/StreamIO.o : $(SRC)/IO/StreamIO.cpp
@@ -50,6 +50,9 @@ $(OBJ)/G/framework/Output.o : $(SRC)/IO/Output.cpp
 	$(CC) $(CFLAGS) $^ -o $@ -I $(INC)
 
 $(OBJ)/G/framework/Input.o : $(SRC)/IO/Input.cpp
+	$(CC) $(CFLAGS) $^ -o $@ -I $(INC)
+
+$(OBJ)/G/framework/Aio.o : $(SRC)/IO/Aio.cpp
 	$(CC) $(CFLAGS) $^ -o $@ -I $(INC)
 
 #server

@@ -12,7 +12,6 @@ extern "C" {
     #include <stdlib.h>
     #include <unistd.h>
     #include <errno.h>
-    #include <aio.h>
     #include <fcntl.h>
 }
 #include <string>
@@ -55,7 +54,7 @@ void Input::listen()
 {
     int err;
     // this->ioEvents->onConnect(this);
-    if( 0 != aio_read(&rd_acb)) {
+    if( 0 != Aio::aioRead(&rd_acb)) {
         err = errno;
         ::close(rd_acb.aio_fildes);
         printf("aio %X\n", err);

@@ -10,9 +10,7 @@
 #define _G_INPUT_HPP_
 
 #include <string>
-extern "C" {
-    #include "aio.h"
-}
+#include "G/Aio.hpp"
 #include "G/IOEvents.hpp"
 
 namespace G {

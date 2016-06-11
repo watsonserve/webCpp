@@ -10,9 +10,7 @@
 #define _G_IO_HPP_
 
 #include <string>
-extern "C" {
-    #include "aio.h"
-}
+#include "G/Aio.hpp"
 #include "G/IOHandle.hpp"
 #include "G/IOEvents.hpp"
 #include "G/Input.hpp"

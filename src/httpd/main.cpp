@@ -39,7 +39,8 @@ int logger(HTTPRequest *req, HTTPResponse *res)
 
 int routes(HTTPRequest *req, HTTPResponse *res)
 {
-    if(req->get("path") == "/")
+    std::string path = req->get("path");
+    if("/" == path || "/index.html" == path)
     {
         res->setContent("hello world\r\n");
         res->end();

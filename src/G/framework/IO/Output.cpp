@@ -12,7 +12,6 @@ extern "C" {
     #include <stdlib.h>
     #include <unistd.h>
     #include <errno.h>
-    #include <aio.h>
     #include <fcntl.h>
 }
 #include <string>
