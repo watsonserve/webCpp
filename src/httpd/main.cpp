@@ -7,6 +7,7 @@
 #include "G/net/http/Dispatcher.hpp"
 #include "G/net/http/MiddleWare.hpp"
 #include "httpd/RedisSession.hpp"
+#include "httpd/Route.hpp"
 
 class GCookie : public MiddleWare
 {
@@ -36,18 +37,6 @@ int logger(HTTPRequest *req, HTTPResponse *res)
     return 0;
 }
 
-int routes(HTTPRequest *req, HTTPResponse *res)
-{
-    std::string path = req->get("path");
-    if("/" == path || "/index.json" == path)
-    {
-        res->setContent("{\"hello\": \"world\"}\r\n");
-        res->end();
-        return 1;
-    }
-    return 0;
-}
-
 int except(HTTPRequest *req, HTTPResponse *res)
 {
     res->setCode(500);
@@ -62,14 +51,16 @@ int main(int argc, char *argv[])
     GCookie cookie;
     RedisSession session;
     TCPServer srv;
+    Route routes;
     const int max = 512;
+
     HTTPResponse::initDict();
     dispatcher.init(max);
     dispatcher.use(parser);
     dispatcher.use(logger);
     //dispatcher.use(&cookie);
     //dispatcher.use(&session);
-    dispatcher.use(routes);
+    dispatcher.use(&routes);
     dispatcher.use(except);
 
     srv.initPool(20, 64, 1);
