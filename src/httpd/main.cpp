@@ -39,9 +39,9 @@ int logger(HTTPRequest *req, HTTPResponse *res)
 int routes(HTTPRequest *req, HTTPResponse *res)
 {
     std::string path = req->get("path");
-    if("/" == path || "/index.html" == path)
+    if("/" == path || "/index.json" == path)
     {
-        res->setContent("hello world\r\n");
+        res->setContent("{\"hello\": \"world\"}\r\n");
         res->end();
         return 1;
     }
