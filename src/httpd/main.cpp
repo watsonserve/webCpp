@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <aio.h>
 #include "G/net/TCPServer.hpp"
 #include "G/net/http/Request.hpp"
 #include "G/net/http/Response.hpp"
@@ -19,7 +18,7 @@ public:
 
 int GCookie::call(HTTPRequest *req, HTTPResponse *res)
 {
-    res->set("Cookie", "domin=watsonserve.com");
+    res->set("Set-Cookie", "domin=watsonserve.com");
     return 0;
 }
 

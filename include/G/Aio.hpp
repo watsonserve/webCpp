@@ -26,7 +26,7 @@ struct aioinit
 namespace G {
     class Aio : public Object {
     public:
-        static int aioInit(struct aioinit *);
+        static void aioInit(struct aioinit *);
         static int aioRead(struct aiocb *);
         static int aioWrite(struct aiocb *);
         static ssize_t aioReturn(struct aiocb *);

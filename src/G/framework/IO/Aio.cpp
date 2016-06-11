@@ -11,9 +11,10 @@
 using namespace G;
 
 #if defined (__linux__) || defined(__linux)
-int Aio::aioInit(struct aioinit * aip)
+void Aio::aioInit(struct aioinit * aip)
 {
-    return aio_init(aip);
+    aio_init(aip);
+    return;
 }
 
 int Aio::aioRead(struct aiocb *aiocbp)
@@ -42,6 +43,8 @@ int Aio::aioCancel(int fd, struct aiocb *aiocbp)
 }
 
 #else
+#include <stdlib.h>
+#include <poll.h>
 
 int Aio::aioInit(struct aioinit * aip)
 {
