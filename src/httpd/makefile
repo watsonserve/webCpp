@@ -27,10 +27,17 @@ LD = ld
 CFLAGS = -c -O3 -Wall
 ARFLAGS = crsv
 
+<<<<<<< HEAD
 $(BIN)/webCpp : $(OBJ)/httpd.o $(OBJ)/HTTPSession.o $(LIB)/G/libGhttpd.a $(LIB)/G/libGserver.a $(LIB)/G/libGio.a $(LIB)/G/libGobject.a $(LIB)/G/libGnet.a $(LIB)/G/libGutil.a
+=======
+$(BIN)/test : $(OBJ)/httpd.o $(OBJ)/Route.o $(OBJ)/HTTPSession.o $(LIB)/G/libGhttpd.a $(LIB)/G/libGserver.a $(LIB)/G/libGio.a $(LIB)/G/libGobject.a $(LIB)/G/libGnet.a $(LIB)/G/libGutil.a
+>>>>>>> 1e8f969f098e69925e81fb2630372d5834eb36e6
 	$(CXX) $(LDFLAGS) $^ -o $@ -ldl -lpthread -lc -lrt
 
 $(OBJ)/httpd.o : $(SRC)/main.cpp
+	$(CC) $(CFLAGS) $^ -o $@ -I $(INC)
+
+$(OBJ)/Route.o : $(SRC)/httpd/Route.cpp
 	$(CC) $(CFLAGS) $^ -o $@ -I $(INC)
 
 $(OBJ)/HTTPSession.o : $(SRC)/httpd/HTTPSession.cpp
