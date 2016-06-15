@@ -11,8 +11,7 @@
 ########################################
 
 ROOT = ../..
-OBJ = $(ROOT)/tmp/.objs
-ASM = $(ROOT)/tmp/.asms
+OBJ = /tmp/.objs
 INC = $(ROOT)/include
 LIB = $(ROOT)/lib
 SRC = $(ROOT)/src/httpd
@@ -27,7 +26,9 @@ LD = ld
 CFLAGS = -c -O3 -Wall
 ARFLAGS = crsv
 
-$(BIN)/test : $(OBJ)/httpd.o $(OBJ)/Route.o $(OBJ)/HTTPSession.o $(LIB)/G/libGhttpd.a $(LIB)/G/libGserver.a $(LIB)/G/libGio.a $(LIB)/G/libGobject.a $(LIB)/G/libGnet.a $(LIB)/G/libGutil.a
+WEBCPP = $(LIB)/G/libGhttpd.a $(LIB)/G/libGserver.a $(LIB)/G/libGio.a $(LIB)/G/libGobject.a $(LIB)/G/libGnet.a $(LIB)/G/libGutil.a
+
+$(BIN)/test : $(OBJ)/httpd.o $(OBJ)/Route.o $(OBJ)/HTTPSession.o $(WEBCPP)
 	$(CXX) $(LDFLAGS) $^ -o $@ -ldl -lpthread -lc -lrt
 
 $(OBJ)/httpd.o : $(SRC)/main.cpp
