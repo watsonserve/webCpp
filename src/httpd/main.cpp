@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include "G/net/TCPServer.hpp"
-#include "G/net/http/Request.hpp"
-#include "G/net/http/Response.hpp"
-#include "G/net/http/Dispatcher.hpp"
-#include "G/net/http/MiddleWare.hpp"
+#include "G/webCpp.hpp"
 #include "httpd/RedisSession.hpp"
 #include "httpd/Route.hpp"
 
