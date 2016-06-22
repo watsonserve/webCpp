@@ -3,6 +3,7 @@
 #include <errno.h>
 #include "G/webCpp.hpp"
 #include "httpd/RedisSession.hpp"
+#include "httpd/Parser.hpp"
 #include "httpd/Route.hpp"
 
 class GCookie : public MiddleWare
@@ -17,14 +18,6 @@ int GCookie::call(HTTPRequest *req, HTTPResponse *res)
 {
     res->set("Set-Cookie", "domin=watsonserve.com");
     return 0;
-}
-
-int parser(HTTPRequest *req, HTTPResponse *res)
-{
-    res->set("Connection", "close");
-    res->set("Content-Type", "text/plain; charset=UTF-8");
-
-	return 0;
 }
 
 int logger(HTTPRequest *req, HTTPResponse *res)
@@ -46,13 +39,14 @@ int main(int argc, char *argv[])
     HTTPDispatcher dispatcher;
     GCookie cookie;
     RedisSession session;
+    Parser parser;
     TCPServer srv;
     Route routes;
     const int max = 512;
 
     HTTPResponse::initDict();
     dispatcher.init(max);
-    dispatcher.use(parser);
+    dispatcher.use(&parser);
     dispatcher.use(logger);
     //dispatcher.use(&cookie);
     //dispatcher.use(&session);

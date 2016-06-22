@@ -74,9 +74,6 @@ HTTPResponse::~HTTPResponse()
 
 void HTTPResponse::init(HTTPResponse *that, Output *fh)
 {
-    that->set("proto", "HTTP/1.1");
-    that->set("code", "200");
-    that->set("stat", "OK");
     that->fh = fh;
     return;
 }
