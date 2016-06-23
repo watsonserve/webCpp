@@ -17,7 +17,7 @@ namespace G {
         static int init(HTTPRequest *request, StreamIO *fh);
         HTTPRequest();
         virtual ~HTTPRequest();
-        virtual IOHandle *fh getSock();
+        virtual IOHandle* getSock();
         virtual void setSession(void *);
         virtual void* getSession();
     };
