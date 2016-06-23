@@ -21,7 +21,7 @@ HTTPRequest::~HTTPRequest()
     return;
 }
 
-IOHandle *fh HTTPRequest::getSock()
+IOHandle * HTTPRequest::getSock()
 {
     return fh;
 }
