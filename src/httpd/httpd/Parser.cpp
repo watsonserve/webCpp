@@ -6,8 +6,12 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
+#include <string>
+#include <vector>
 #include "Parser.hpp"
+#include "G/GUtil.hpp"
 
+using namespace std;
 using namespace G;
 
 int Parser::initReq(HTTPRequest *req, StreamIO *fh)
