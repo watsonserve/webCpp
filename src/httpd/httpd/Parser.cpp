@@ -22,11 +22,11 @@ int Parser::initReq(HTTPRequest *req, StreamIO *fh)
 
     tmp = fh->gets();
     split(foo, tmp, " ");
-    if(foo.size() != 3)
-    {
-        puts(tmp.c_str());
-        exit(1);
-    }
+    // if(foo.size() != 3)
+    // {
+    //     puts(tmp.c_str());
+    //     exit(1);
+    // }
     req->set("method", foo[0]);
     req->set("protocol", foo[2]);
     tmp = foo[1];
@@ -128,7 +128,7 @@ int Parser::initRes(HTTPResponse *res)
 
 int Parser::call(HTTPRequest *req, HTTPResponse *res)
 {
-    initReq(req, req->getSock());
+    initReq(req, (StreamIO*)req->getSock());
     initRes(res);
     return 0;
 }
