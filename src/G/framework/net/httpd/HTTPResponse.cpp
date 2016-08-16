@@ -75,6 +75,11 @@ HTTPResponse::~HTTPResponse()
 void HTTPResponse::init(HTTPResponse *that, Output *fh)
 {
     that->fh = fh;
+    that->set("proto", "HTTP/1.1");
+    that->set("code", "200");
+    that->set("stat", "OK");
+    that->set("Connection", "close");
+    that->set("Content-Type", "text/plain; charset=UTF-8");
     return;
 }
 

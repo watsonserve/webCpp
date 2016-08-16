@@ -16,7 +16,6 @@ namespace G {
     class Parser : public MiddleWare
     {
         virtual int initReq(HTTPRequest *req, StreamIO *fh);
-        virtual int initRes(HTTPResponse *res);
     public:
         virtual int call(HTTPRequest *req, HTTPResponse *res);
     };
