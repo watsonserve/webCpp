@@ -1,0 +1,448 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A198CCF1D0BA5DF00EBAFCC /* Aio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A198CCE1D0BA5DF00EBAFCC /* Aio.cpp */; };
+		1AE13F481CE577D30098FAFD /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F301CE577D30098FAFD /* Input.cpp */; };
+		1AE13F491CE577D30098FAFD /* IOHandle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F311CE577D30098FAFD /* IOHandle.cpp */; };
+		1AE13F4A1CE577D30098FAFD /* Output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F321CE577D30098FAFD /* Output.cpp */; };
+		1AE13F4B1CE577D30098FAFD /* StreamIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F331CE577D30098FAFD /* StreamIO.cpp */; };
+		1AE13F4D1CE577D30098FAFD /* HTTPDispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F371CE577D30098FAFD /* HTTPDispatcher.cpp */; };
+		1AE13F4E1CE577D30098FAFD /* HTTPGram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F381CE577D30098FAFD /* HTTPGram.cpp */; };
+		1AE13F4F1CE577D30098FAFD /* HTTPRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F391CE577D30098FAFD /* HTTPRequest.cpp */; };
+		1AE13F501CE577D30098FAFD /* HTTPResponse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F3A1CE577D30098FAFD /* HTTPResponse.cpp */; };
+		1AE13F511CE577D30098FAFD /* TCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F3B1CE577D30098FAFD /* TCPServer.cpp */; };
+		1AE13F521CE577D30098FAFD /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F3C1CE577D30098FAFD /* Object.cpp */; };
+		1AE13F531CE577D30098FAFD /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F3D1CE577D30098FAFD /* Server.cpp */; };
+		1AE13F551CE577D30098FAFD /* Gnet.c in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F401CE577D30098FAFD /* Gnet.c */; };
+		1AE13F561CE577D30098FAFD /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F411CE577D30098FAFD /* util.cpp */; };
+		1AE13F571CE577D30098FAFD /* HTTPSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F441CE577D30098FAFD /* HTTPSession.cpp */; };
+		1AE13F581CE577D30098FAFD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F461CE577D30098FAFD /* main.cpp */; };
+		1AFA44C71D0C0A2200B99A95 /* Route.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AFA44C51D0C0A2200B99A95 /* Route.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1AAF6F7F1C9AE24E00DB05D7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1A198CCE1D0BA5DF00EBAFCC /* Aio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Aio.cpp; sourceTree = "<group>"; };
+		1A198CD01D0BA60200EBAFCC /* Aio.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Aio.hpp; sourceTree = "<group>"; };
+		1AE13F1A1CE577D30098FAFD /* GUtil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GUtil.hpp; sourceTree = "<group>"; };
+		1AE13F1B1CE577D30098FAFD /* Input.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Input.hpp; sourceTree = "<group>"; };
+		1AE13F1C1CE577D30098FAFD /* IOEvents.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IOEvents.hpp; sourceTree = "<group>"; };
+		1AE13F1D1CE577D30098FAFD /* IOHandle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IOHandle.hpp; sourceTree = "<group>"; };
+		1AE13F1F1CE577D30098FAFD /* Gnet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gnet.h; sourceTree = "<group>"; };
+		1AE13F211CE577D30098FAFD /* Dispatcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Dispatcher.hpp; sourceTree = "<group>"; };
+		1AE13F221CE577D30098FAFD /* Gram.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Gram.hpp; sourceTree = "<group>"; };
+		1AE13F231CE577D30098FAFD /* MiddleWare.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MiddleWare.hpp; sourceTree = "<group>"; };
+		1AE13F241CE577D30098FAFD /* Request.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Request.hpp; sourceTree = "<group>"; };
+		1AE13F251CE577D30098FAFD /* Response.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Response.hpp; sourceTree = "<group>"; };
+		1AE13F261CE577D30098FAFD /* Server.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Server.hpp; sourceTree = "<group>"; };
+		1AE13F271CE577D30098FAFD /* TCPServer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TCPServer.hpp; sourceTree = "<group>"; };
+		1AE13F291CE577D30098FAFD /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
+		1AE13F2A1CE577D30098FAFD /* Output.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Output.hpp; sourceTree = "<group>"; };
+		1AE13F2B1CE577D30098FAFD /* StreamIO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StreamIO.hpp; sourceTree = "<group>"; };
+		1AE13F301CE577D30098FAFD /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
+		1AE13F311CE577D30098FAFD /* IOHandle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IOHandle.cpp; sourceTree = "<group>"; };
+		1AE13F321CE577D30098FAFD /* Output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Output.cpp; sourceTree = "<group>"; };
+		1AE13F331CE577D30098FAFD /* StreamIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StreamIO.cpp; sourceTree = "<group>"; };
+		1AE13F371CE577D30098FAFD /* HTTPDispatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HTTPDispatcher.cpp; sourceTree = "<group>"; };
+		1AE13F381CE577D30098FAFD /* HTTPGram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HTTPGram.cpp; sourceTree = "<group>"; };
+		1AE13F391CE577D30098FAFD /* HTTPRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HTTPRequest.cpp; sourceTree = "<group>"; };
+		1AE13F3A1CE577D30098FAFD /* HTTPResponse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HTTPResponse.cpp; sourceTree = "<group>"; };
+		1AE13F3B1CE577D30098FAFD /* TCPServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TCPServer.cpp; sourceTree = "<group>"; };
+		1AE13F3C1CE577D30098FAFD /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
+		1AE13F3D1CE577D30098FAFD /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
+		1AE13F401CE577D30098FAFD /* Gnet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Gnet.c; sourceTree = "<group>"; };
+		1AE13F411CE577D30098FAFD /* util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = util.cpp; sourceTree = "<group>"; };
+		1AE13F441CE577D30098FAFD /* HTTPSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HTTPSession.cpp; sourceTree = "<group>"; };
+		1AE13F451CE577D30098FAFD /* RedisSession.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RedisSession.hpp; sourceTree = "<group>"; };
+		1AE13F461CE577D30098FAFD /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		1AE13F5A1CE5F6860098FAFD /* GHTTPd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GHTTPd; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AFA44C51D0C0A2200B99A95 /* Route.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Route.cpp; sourceTree = "<group>"; };
+		1AFA44C61D0C0A2200B99A95 /* Route.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Route.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1AAF6F7E1C9AE24E00DB05D7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1AAF6F781C9AE24E00DB05D7 = {
+			isa = PBXGroup;
+			children = (
+				1AE13F181CE577D30098FAFD /* include */,
+				1AE13F2C1CE577D30098FAFD /* src */,
+				1AE13F5A1CE5F6860098FAFD /* GHTTPd */,
+			);
+			sourceTree = "<group>";
+		};
+		1AE13F181CE577D30098FAFD /* include */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F191CE577D30098FAFD /* G */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		1AE13F191CE577D30098FAFD /* G */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F1A1CE577D30098FAFD /* GUtil.hpp */,
+				1AE13F291CE577D30098FAFD /* Object.hpp */,
+				1A198CD01D0BA60200EBAFCC /* Aio.hpp */,
+				1AE13F1C1CE577D30098FAFD /* IOEvents.hpp */,
+				1AE13F1B1CE577D30098FAFD /* Input.hpp */,
+				1AE13F2A1CE577D30098FAFD /* Output.hpp */,
+				1AE13F1D1CE577D30098FAFD /* IOHandle.hpp */,
+				1AE13F2B1CE577D30098FAFD /* StreamIO.hpp */,
+				1AE13F1E1CE577D30098FAFD /* net */,
+			);
+			path = G;
+			sourceTree = "<group>";
+		};
+		1AE13F1E1CE577D30098FAFD /* net */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F1F1CE577D30098FAFD /* Gnet.h */,
+				1AE13F261CE577D30098FAFD /* Server.hpp */,
+				1AE13F271CE577D30098FAFD /* TCPServer.hpp */,
+				1AE13F201CE577D30098FAFD /* http */,
+			);
+			path = net;
+			sourceTree = "<group>";
+		};
+		1AE13F201CE577D30098FAFD /* http */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F211CE577D30098FAFD /* Dispatcher.hpp */,
+				1AE13F221CE577D30098FAFD /* Gram.hpp */,
+				1AE13F241CE577D30098FAFD /* Request.hpp */,
+				1AE13F251CE577D30098FAFD /* Response.hpp */,
+				1AE13F231CE577D30098FAFD /* MiddleWare.hpp */,
+			);
+			path = http;
+			sourceTree = "<group>";
+		};
+		1AE13F2C1CE577D30098FAFD /* src */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F2D1CE577D30098FAFD /* G */,
+				1AE13F421CE577D30098FAFD /* httpd */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		1AE13F2D1CE577D30098FAFD /* G */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F411CE577D30098FAFD /* util.cpp */,
+				1AE13F3F1CE577D30098FAFD /* net */,
+				1AE13F2E1CE577D30098FAFD /* framework */,
+			);
+			path = G;
+			sourceTree = "<group>";
+		};
+		1AE13F2E1CE577D30098FAFD /* framework */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F3C1CE577D30098FAFD /* Object.cpp */,
+				1AE13F3D1CE577D30098FAFD /* Server.cpp */,
+				1AE13F2F1CE577D30098FAFD /* IO */,
+				1AE13F351CE577D30098FAFD /* net */,
+			);
+			path = framework;
+			sourceTree = "<group>";
+		};
+		1AE13F2F1CE577D30098FAFD /* IO */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F301CE577D30098FAFD /* Input.cpp */,
+				1AE13F311CE577D30098FAFD /* IOHandle.cpp */,
+				1AE13F321CE577D30098FAFD /* Output.cpp */,
+				1AE13F331CE577D30098FAFD /* StreamIO.cpp */,
+				1A198CCE1D0BA5DF00EBAFCC /* Aio.cpp */,
+			);
+			path = IO;
+			sourceTree = "<group>";
+		};
+		1AE13F351CE577D30098FAFD /* net */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F3B1CE577D30098FAFD /* TCPServer.cpp */,
+				1AE13F361CE577D30098FAFD /* httpd */,
+			);
+			path = net;
+			sourceTree = "<group>";
+		};
+		1AE13F361CE577D30098FAFD /* httpd */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F371CE577D30098FAFD /* HTTPDispatcher.cpp */,
+				1AE13F381CE577D30098FAFD /* HTTPGram.cpp */,
+				1AE13F391CE577D30098FAFD /* HTTPRequest.cpp */,
+				1AE13F3A1CE577D30098FAFD /* HTTPResponse.cpp */,
+			);
+			path = httpd;
+			sourceTree = "<group>";
+		};
+		1AE13F3F1CE577D30098FAFD /* net */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F401CE577D30098FAFD /* Gnet.c */,
+			);
+			path = net;
+			sourceTree = "<group>";
+		};
+		1AE13F421CE577D30098FAFD /* httpd */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F431CE577D30098FAFD /* httpd */,
+				1AE13F461CE577D30098FAFD /* main.cpp */,
+			);
+			path = httpd;
+			sourceTree = "<group>";
+		};
+		1AE13F431CE577D30098FAFD /* httpd */ = {
+			isa = PBXGroup;
+			children = (
+				1AE13F451CE577D30098FAFD /* RedisSession.hpp */,
+				1AFA44C61D0C0A2200B99A95 /* Route.hpp */,
+				1AE13F441CE577D30098FAFD /* HTTPSession.cpp */,
+				1AFA44C51D0C0A2200B99A95 /* Route.cpp */,
+			);
+			path = httpd;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1AAF6F801C9AE24E00DB05D7 /* GHTTPd */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AAF6F881C9AE24E00DB05D7 /* Build configuration list for PBXNativeTarget "GHTTPd" */;
+			buildPhases = (
+				1AAF6F7D1C9AE24E00DB05D7 /* Sources */,
+				1AAF6F7E1C9AE24E00DB05D7 /* Frameworks */,
+				1AAF6F7F1C9AE24E00DB05D7 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GHTTPd;
+			productName = GHTTPd;
+			productReference = 1AE13F5A1CE5F6860098FAFD /* GHTTPd */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1AAF6F791C9AE24E00DB05D7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				KnownAssetTags = (
+					release,
+				);
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = watsserve;
+				TargetAttributes = {
+					1AAF6F801C9AE24E00DB05D7 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+				};
+			};
+			buildConfigurationList = 1AAF6F7C1C9AE24E00DB05D7 /* Build configuration list for PBXProject "GHTTPd" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 1AAF6F781C9AE24E00DB05D7;
+			productRefGroup = 1AAF6F781C9AE24E00DB05D7;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1AAF6F801C9AE24E00DB05D7 /* GHTTPd */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1AAF6F7D1C9AE24E00DB05D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AE13F481CE577D30098FAFD /* Input.cpp in Sources */,
+				1AFA44C71D0C0A2200B99A95 /* Route.cpp in Sources */,
+				1A198CCF1D0BA5DF00EBAFCC /* Aio.cpp in Sources */,
+				1AE13F4F1CE577D30098FAFD /* HTTPRequest.cpp in Sources */,
+				1AE13F521CE577D30098FAFD /* Object.cpp in Sources */,
+				1AE13F571CE577D30098FAFD /* HTTPSession.cpp in Sources */,
+				1AE13F581CE577D30098FAFD /* main.cpp in Sources */,
+				1AE13F511CE577D30098FAFD /* TCPServer.cpp in Sources */,
+				1AE13F551CE577D30098FAFD /* Gnet.c in Sources */,
+				1AE13F4B1CE577D30098FAFD /* StreamIO.cpp in Sources */,
+				1AE13F491CE577D30098FAFD /* IOHandle.cpp in Sources */,
+				1AE13F561CE577D30098FAFD /* util.cpp in Sources */,
+				1AE13F4E1CE577D30098FAFD /* HTTPGram.cpp in Sources */,
+				1AE13F4A1CE577D30098FAFD /* Output.cpp in Sources */,
+				1AE13F4D1CE577D30098FAFD /* HTTPDispatcher.cpp in Sources */,
+				1AE13F501CE577D30098FAFD /* HTTPResponse.cpp in Sources */,
+				1AE13F531CE577D30098FAFD /* Server.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1AAF6F861C9AE24E00DB05D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lc";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		1AAF6F871C9AE24E00DB05D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-lc";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		1AAF6F891C9AE24E00DB05D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				"HEADER_SEARCH_PATHS[arch=*]" = include;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PUBLIC_HEADERS_FOLDER_PATH[sdk=*]" = include/;
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+			};
+			name = Debug;
+		};
+		1AAF6F8A1C9AE24E00DB05D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				"HEADER_SEARCH_PATHS[arch=*]" = include;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PUBLIC_HEADERS_FOLDER_PATH[sdk=*]" = include/;
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1AAF6F7C1C9AE24E00DB05D7 /* Build configuration list for PBXProject "GHTTPd" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AAF6F861C9AE24E00DB05D7 /* Debug */,
+				1AAF6F871C9AE24E00DB05D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AAF6F881C9AE24E00DB05D7 /* Build configuration list for PBXNativeTarget "GHTTPd" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AAF6F891C9AE24E00DB05D7 /* Debug */,
+				1AAF6F8A1C9AE24E00DB05D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1AAF6F791C9AE24E00DB05D7 /* Project object */;
+}
