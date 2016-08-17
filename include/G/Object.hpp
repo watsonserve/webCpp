@@ -17,6 +17,8 @@ namespace G {
     protected:
         std::string isA;
     public:
+        static void init(Object &, std::string &a);
+        static void init(Object &, char *a);
         void getIsA(std::string &a);
         std::string getIsA();
     };

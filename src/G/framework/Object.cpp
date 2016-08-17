@@ -10,6 +10,17 @@
 
 using namespace G;
 
+
+void Object::init(Object &obj, std::string &a)
+{
+    obj.isA = a;
+}
+
+void Object::init(Object &obj, char *a)
+{
+    obj.isA = a;
+}
+
 void Object::getIsA(std::string &a)
 {
     a = this->isA;

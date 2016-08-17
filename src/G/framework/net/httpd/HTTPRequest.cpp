@@ -36,3 +36,16 @@ void* HTTPRequest::getSession()
 {
     return this->session;
 }
+
+void HTTPRequest::setCookies(std::map<std::string, std::string> cookies)
+{
+    this->cookies = cookies;
+    return;
+}
+
+std::map<std::string, std::string> HTTPRequest::getCookies()
+{
+    return this->cookies;
+}
+
+
