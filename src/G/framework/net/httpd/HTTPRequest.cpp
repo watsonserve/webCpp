@@ -20,8 +20,8 @@ int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
     //     puts(tmp.c_str());
     //     exit(1);
     // }
-    req->set("method", foo[0]);
-    req->set("protocol", foo[2]);
+    request->set("method", foo[0]);
+    request->set("protocol", foo[2]);
     tmp = foo[1];
     while (1)    /* 设定从第二行开始的每一行 */
     {
@@ -29,7 +29,7 @@ int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
         if (str.empty())
             break;
         split(foo, str, ": ");    /* 获取第一行 'GET URI HTTP/1.1' */
-        req->set(foo[0], foo[1]);
+        request->set(foo[0], foo[1]);
     }
     tmpFlag = 0;  /* 0 path, 1 args, 2 hash */
     for (unsigned int i=0; i<tmp.length(); i++)
@@ -37,7 +37,7 @@ int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
         if ('?' == tmp[i] || '#' == tmp[i])
         {
             str = tmp.substr(0, i);
-            req->set("path", str);
+            request->set("path", str);
             if ('?' == tmp[i])
             {
                 tmpFlag = 1;
@@ -52,7 +52,7 @@ int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
     }
     if (0 == tmpFlag)
     {
-        req->set("path", tmp);
+        request->set("path", tmp);
     }
     if (1 == tmpFlag)  /* set query */
     {
@@ -71,7 +71,7 @@ int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
                 case '&':
                     if(kvFlag)
                     {
-                        req->_GET.set(key, tmp.substr(begin, i-begin));
+                        request->_GET.set(key, tmp.substr(begin, i-begin));
                         kvFlag = 0;
                     }
                     break;
@@ -83,9 +83,9 @@ int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
         if (kvFlag)
         {
             if (0 == i-begin)
-                req->_GET.set(key, "");
+                request->_GET.set(key, "");
             else
-                req->_GET.set(key, tmp.substr(begin, i-begin));
+                request->_GET.set(key, tmp.substr(begin, i-begin));
         }
     }
     return 0;
