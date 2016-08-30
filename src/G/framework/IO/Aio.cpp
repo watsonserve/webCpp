@@ -53,7 +53,7 @@ void* Aio::listenEvnt(void * args)
     
     while (1)
     {
-        nEvent = kevent(kq, NULL, 0, eventList, conf.aio_num, NULL);  // 获取可用事件
+        nEvent = kevent(Aio::kq, NULL, 0, Aio::eventList, conf.aio_num, NULL);  // 获取可用事件
         for(i=0; i<nEvent; i++)
         {
             if (eventList[i].flags & EV_ERROR)  // 出错
@@ -62,8 +62,8 @@ void* Aio::listenEvnt(void * args)
                 continue;
             }
             cbp = cbList + eventList[i].ident;
-            // 写消息队列
-            // 触发信号量
+            mq.push(cbp);        // 写消息队列
+            sem_post(pEventSem); // 触发信号量
         }
         
     }
@@ -80,12 +80,13 @@ void* Aio::eventCallback(void* args)
             exit(1);
         }
         // 读消息队列
-        cbp = mq.read();
+        cbp = (struct aiocb *)mq.front();
         if(NULL == cbp) {
             continue;
         }
         read(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
         // 执行回调
+        cbp->aio_sigevent.sigev_notify_function(cbp->aio_sigevent.sigev_value);
     }
     return NULL;
 }
@@ -97,8 +98,8 @@ int Aio::aioInit(struct aioinit * aip)
     pthread_t tid;
 
     conf = *aip;
-    kq = kqueue();  // 准备注册内核事件
-    if(-1 == kq) {
+    Aio::kq = kqueue();  // 准备注册内核事件
+    if(-1 == Aio::kq) {
         perror("Can't create kqueue");
         return -1;
     }

@@ -39,14 +39,14 @@ int main(int argc, char *argv[])
     HTTPDispatcher dispatcher;
     GCookie cookie;
     RedisSession session;
-    Parser parser;
+    //Parser parser;
     TCPServer srv;
     Route routes;
     const int max = 512;
 
     HTTPResponse::initDict();
     dispatcher.init(max);
-    dispatcher.use(&parser);
+    //dispatcher.use(&parser);
     dispatcher.use(logger);
     //dispatcher.use(&cookie);
     //dispatcher.use(&session);
