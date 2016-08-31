@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A198CCF1D0BA5DF00EBAFCC /* Aio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A198CCE1D0BA5DF00EBAFCC /* Aio.cpp */; };
 		1A272F681D732CC5001B3D2D /* MQ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A272F671D732CC5001B3D2D /* MQ.cpp */; };
+		1A48B9181D7726B500631D68 /* URL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A48B9171D7726B500631D68 /* URL.cpp */; };
 		1AE13F481CE577D30098FAFD /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F301CE577D30098FAFD /* Input.cpp */; };
 		1AE13F491CE577D30098FAFD /* IOHandle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F311CE577D30098FAFD /* IOHandle.cpp */; };
 		1AE13F4A1CE577D30098FAFD /* Output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F321CE577D30098FAFD /* Output.cpp */; };
@@ -44,6 +45,8 @@
 		1A198CD01D0BA60200EBAFCC /* Aio.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Aio.hpp; sourceTree = "<group>"; };
 		1A272F651D732C62001B3D2D /* MQ.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MQ.hpp; sourceTree = "<group>"; };
 		1A272F671D732CC5001B3D2D /* MQ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MQ.cpp; sourceTree = "<group>"; };
+		1A48B9171D7726B500631D68 /* URL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URL.cpp; sourceTree = "<group>"; };
+		1A48B9191D7726CF00631D68 /* URL.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = URL.hpp; sourceTree = "<group>"; };
 		1AE13F1A1CE577D30098FAFD /* GUtil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GUtil.hpp; sourceTree = "<group>"; };
 		1AE13F1B1CE577D30098FAFD /* Input.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Input.hpp; sourceTree = "<group>"; };
 		1AE13F1C1CE577D30098FAFD /* IOEvents.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IOEvents.hpp; sourceTree = "<group>"; };
@@ -139,6 +142,7 @@
 				1AE13F1F1CE577D30098FAFD /* Gnet.h */,
 				1AE13F261CE577D30098FAFD /* Server.hpp */,
 				1AE13F271CE577D30098FAFD /* TCPServer.hpp */,
+				1A48B9191D7726CF00631D68 /* URL.hpp */,
 				1AE13F201CE577D30098FAFD /* http */,
 			);
 			path = net;
@@ -204,6 +208,7 @@
 			children = (
 				1AE13F3B1CE577D30098FAFD /* TCPServer.cpp */,
 				1AE13F361CE577D30098FAFD /* httpd */,
+				1A48B9171D7726B500631D68 /* URL.cpp */,
 			);
 			path = net;
 			sourceTree = "<group>";
@@ -317,6 +322,7 @@
 				1AE13F511CE577D30098FAFD /* TCPServer.cpp in Sources */,
 				1AE13F551CE577D30098FAFD /* Gnet.c in Sources */,
 				1AE13F4B1CE577D30098FAFD /* StreamIO.cpp in Sources */,
+				1A48B9181D7726B500631D68 /* URL.cpp in Sources */,
 				1AE13F491CE577D30098FAFD /* IOHandle.cpp in Sources */,
 				1AE13F561CE577D30098FAFD /* util.cpp in Sources */,
 				1AE13F4E1CE577D30098FAFD /* HTTPGram.cpp in Sources */,
