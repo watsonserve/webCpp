@@ -36,17 +36,22 @@ int except(HTTPRequest *req, HTTPResponse *res)
 
 int main(int argc, char *argv[])
 {
+    std::string s = "123rn456";
+    long off = s.find("rn");
+    printf("off: %ld\n%s\n", off, s.substr(0, off).c_str());
+    return 0;
+    
     HTTPDispatcher dispatcher;
     GCookie cookie;
     RedisSession session;
-    Parser parser;
+    //Parser parser;
     TCPServer srv;
     Route routes;
     const int max = 512;
 
     HTTPResponse::initDict();
     dispatcher.init(max);
-    dispatcher.use(&parser);
+    //dispatcher.use(&parser);
     dispatcher.use(logger);
     //dispatcher.use(&cookie);
     //dispatcher.use(&session);

@@ -13,8 +13,8 @@ int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
     string tmp, str, data, firstRow;
     vector<string> foo, bar;
 
-    tmp = fh->gets();
-    split(foo, tmp, " ");
+    tmp = fh->gets(tmp, CRLF);
+    split(foo, tmp, " ");    /* 获取第一行 'GET URI HTTP/1.1' */
     // if(foo.size() != 3)
     // {
     //     puts(tmp.c_str());
@@ -25,10 +25,10 @@ int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
     tmp = foo[1];
     while (1)    /* 设定从第二行开始的每一行 */
     {
-        str = fh->gets();
+        str = fh->gets(str, CRLF);
         if (str.empty())
             break;
-        split(foo, str, ": ");    /* 获取第一行 'GET URI HTTP/1.1' */
+        split(foo, str, ": ");
         request->set(foo[0], foo[1]);
     }
     tmpFlag = 0;  /* 0 path, 1 args, 2 hash */

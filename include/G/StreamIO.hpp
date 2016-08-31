@@ -20,6 +20,13 @@ namespace G {
 
     class IOEvents;
 
+    typedef enum lineEndFlag
+    {
+        CR,
+        LF,
+        CRLF
+    } LineEndFlag;
+
     class StreamIO : public Input, public Output, public IOHandle
     {
         std::string cache;
@@ -39,7 +46,9 @@ namespace G {
         virtual void recvd();
         virtual void sent();
         virtual void cleanCache();
-        virtual std::string gets();
+        virtual std::string & gets(std::string &, LineEndFlag);
+        virtual std::string gets(LineEndFlag);
+        virtual std::string load(size_t len);
 
         virtual void write(const char *, ssize_t, OutBack callback);
         virtual void write(std::string &, OutBack callback);

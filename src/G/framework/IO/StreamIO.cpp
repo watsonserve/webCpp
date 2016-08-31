@@ -51,7 +51,9 @@ void StreamIO::recvd()
     inEvents->onData(this); // 通知用户
     if(0 == closed)
     {
+#ifdef debug
         puts("aio read next");
+#endif
         Aio::aioRead(&rd_acb); // 下一次读取
     }
     // 此三者顺序不可变动，如果先调用Aio::aioRead会导致多线程同时读写cache
@@ -84,7 +86,7 @@ void StreamIO::close()
         Aio::aioCancel(rd_acb.aio_fildes, &rd_acb);
     ::close(rd_acb.aio_fildes);
     closed = 1;
-    puts("streamIO closed");
+    // puts("streamIO closed");
     return;
 }
 
@@ -100,18 +102,54 @@ void StreamIO::cleanCache()
     cache.clear();
 }
 
-std::string StreamIO::gets()
+std::string & StreamIO::gets(std::string &dst, LineEndFlag lineEnd)
 {
-    ssize_t off;
-    std::string ret;
+    ssize_t off, lineEndLength;
 
     if(cache.empty())
-        return cache;
-    off = cache.find("\r\n");
+    {
+        dst.erase();
+        return dst;
+    }
+    lineEndLength = 1;
+    switch (lineEnd) {
+        case CR:
+            off = cache.find("\r");
+            break;
+        case LF:
+            off = cache.find("\n");
+            break;
+        case CRLF:
+        default:
+            lineEndLength <<= 1;
+            off = cache.find("\r\n");
+    }
     if(-1 == off)
-        off = cache.length();
-    ret = cache.substr(0, off);
-    cache.erase(0, off);
+    {
+        dst = cache.substr(0, cache.length());
+        cache.erase();
+        return dst;
+    }
+    dst = cache.substr(0, off);
+    cache.erase(0, off + lineEndLength);
+    return dst;
+}
+
+std::string StreamIO::gets(LineEndFlag lineEnd)
+{
+    std::string ret;
+
+    return this->gets(ret, lineEnd);
+}
+
+std::string StreamIO::load(size_t len = 0)
+{
+    std::string ret;
+
+    if(cache.empty() || 1 > len)
+        return cache;
+    ret = cache.substr(0, len);
+    cache.erase(0, len);
     return ret;
 }
 
