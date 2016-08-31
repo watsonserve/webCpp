@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A198CCF1D0BA5DF00EBAFCC /* Aio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A198CCE1D0BA5DF00EBAFCC /* Aio.cpp */; };
+		1A272F681D732CC5001B3D2D /* MQ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A272F671D732CC5001B3D2D /* MQ.cpp */; };
 		1AE13F481CE577D30098FAFD /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F301CE577D30098FAFD /* Input.cpp */; };
 		1AE13F491CE577D30098FAFD /* IOHandle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F311CE577D30098FAFD /* IOHandle.cpp */; };
 		1AE13F4A1CE577D30098FAFD /* Output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F321CE577D30098FAFD /* Output.cpp */; };
@@ -41,6 +42,8 @@
 /* Begin PBXFileReference section */
 		1A198CCE1D0BA5DF00EBAFCC /* Aio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Aio.cpp; sourceTree = "<group>"; };
 		1A198CD01D0BA60200EBAFCC /* Aio.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Aio.hpp; sourceTree = "<group>"; };
+		1A272F651D732C62001B3D2D /* MQ.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MQ.hpp; sourceTree = "<group>"; };
+		1A272F671D732CC5001B3D2D /* MQ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MQ.cpp; sourceTree = "<group>"; };
 		1AE13F1A1CE577D30098FAFD /* GUtil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GUtil.hpp; sourceTree = "<group>"; };
 		1AE13F1B1CE577D30098FAFD /* Input.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Input.hpp; sourceTree = "<group>"; };
 		1AE13F1C1CE577D30098FAFD /* IOEvents.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IOEvents.hpp; sourceTree = "<group>"; };
@@ -88,6 +91,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A272F661D732CB1001B3D2D /* IPC */ = {
+			isa = PBXGroup;
+			children = (
+				1A272F671D732CC5001B3D2D /* MQ.cpp */,
+			);
+			path = IPC;
+			sourceTree = "<group>";
+		};
 		1AAF6F781C9AE24E00DB05D7 = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +127,7 @@
 				1AE13F2A1CE577D30098FAFD /* Output.hpp */,
 				1AE13F1D1CE577D30098FAFD /* IOHandle.hpp */,
 				1AE13F2B1CE577D30098FAFD /* StreamIO.hpp */,
+				1A272F651D732C62001B3D2D /* MQ.hpp */,
 				1AE13F1E1CE577D30098FAFD /* net */,
 			);
 			path = G;
@@ -166,6 +178,7 @@
 		1AE13F2E1CE577D30098FAFD /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				1A272F661D732CB1001B3D2D /* IPC */,
 				1AE13F3C1CE577D30098FAFD /* Object.cpp */,
 				1AE13F3D1CE577D30098FAFD /* Server.cpp */,
 				1AE13F2F1CE577D30098FAFD /* IO */,
@@ -296,6 +309,7 @@
 				1AE13F481CE577D30098FAFD /* Input.cpp in Sources */,
 				1AFA44C71D0C0A2200B99A95 /* Route.cpp in Sources */,
 				1A198CCF1D0BA5DF00EBAFCC /* Aio.cpp in Sources */,
+				1A272F681D732CC5001B3D2D /* MQ.cpp in Sources */,
 				1AE13F4F1CE577D30098FAFD /* HTTPRequest.cpp in Sources */,
 				1AE13F521CE577D30098FAFD /* Object.cpp in Sources */,
 				1AE13F571CE577D30098FAFD /* HTTPSession.cpp in Sources */,

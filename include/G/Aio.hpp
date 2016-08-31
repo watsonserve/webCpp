@@ -23,8 +23,27 @@ struct aioinit
 };
 #endif
 
+#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+#include <sys/types.h>
+#include <sys/event.h>
+#include <sys/time.h>
+#include <semaphore.h>
+#include "MQ.hpp"
+#endif
+
 namespace G {
     class Aio : public Object {
+        
+#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+        static int kq;
+        static struct kevent *eventList;
+        static struct aiocb *cbList;
+        static aioinit conf;
+        static sem_t * pEventSem;
+        static void* listenEvnt(void *);
+        static void* eventCallback(void *);
+        static MQ mq;
+#endif
     public:
         static int aioInit(struct aioinit *);
         static int aioRead(struct aiocb *);
