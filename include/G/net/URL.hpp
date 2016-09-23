@@ -17,16 +17,17 @@ namespace G {
 
     class URL : public Object {
         std::string scheme;
+        std::string user;
+        std::string password;
         std::string domain;
-        int port;
+        unsigned int port;
         std::string path;
         std::string search;
         std::string hash;
         std::map<std::string, std::string> query;
-        URL();
-        
     public:
-        static URL parse(std::string &uri);
+        static int parse(URL *, const std::string &uri);
+        URL();
         virtual ~URL();
         std::string getScheme();
         std::string getQuery(const std::string &);

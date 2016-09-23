@@ -6,6 +6,7 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
+#include <regex.h>
 #include "G/net/URL.hpp"
 
 using namespace G;
@@ -15,75 +16,51 @@ URL::URL()
     
 }
 
-URL URL::parse(const std::string &arg)
+int URL::parse(URL *ret, const std::string &uri)
 {
-    // (\w+)://([\w\.]+):*(\d*)/(.+)\?*(.*)#*(.*)
-    URL ret;
-    std::string uri;
-    unsigned int i;
+    // (\w+)://(\w+?):(S+?)@([\w\.]+):*(\d*)/(.+)\?*(.*)#*(.*)
+    // scheme :// username : password @ domain : port / path ? query # hash
+    size_t off;
+    std::string arg, tmp;
 
-    uri = arg;
-    for (i=0; i<uri.length(); i++)
+    arg = uri;
+    off = arg.find("://");
+    if (std::string::npos != off)
     {
-        switch(uri[i])
+        ret->scheme = arg.substr(0, off);
+        arg.erase(0, off + 3);
+    }
+    else if (arg[0] == arg[1] && '/' == arg[0])
+    {
+        arg.erase(0, 2);
+    }
+    off = arg.find('/');
+    if (std::string::npos != off) // 有路径
+    {
+        tmp = arg.substr(off);
+        arg.erase(off);
+    }
+    off = arg.find('@');
+    if (std::string::npos != off) // 有用户
+    {
+        ret->user = arg.substr(0, off);
+        arg.erase(0, off + 1);
+        off = ret->user.find(':');
+        if (std::string::npos != off) // 有密码
         {
-            case ':':
-                if(0 == ret.scheme.length())
-                {
-                    ret.scheme = uri.substr(0, i);
-                    uri.erase(0, i);
-                }
-                break;
-            case '?':
-                tmpFlag = 1;
-                tmp = tmp.erase(0, i+1);
-                break;
-            else
-            {
-                tmpFlag = 2;
-            }
-            break;
+            ret->password = ret->user.substr(off + 1);
+            ret->user.erase(off);
         }
     }
-    if (0 == tmpFlag)
+    off = arg.find(':');
+    if (std::string::npos != off) // 有端口
     {
-        request->set("path", tmp);
+        sscanf(arg.substr(off + 1).c_str(), "%u", &(ret->port));
+        arg.erase(off);
     }
-    if (1 == tmpFlag)  /* set query */
-    {
-        int begin = 0;
-        int kvFlag = 0;
-        string key;
-        unsigned int i;
-        for (i=0; i<tmp.length(); i++)
-        {
-            switch (tmp[i])
-            {
-                case '=':
-                    key = tmp.substr(begin, i-begin);
-                    kvFlag = 1;
-                    break;
-                case '&':
-                    if(kvFlag)
-                    {
-                        request->_GET.set(key, tmp.substr(begin, i-begin));
-                        kvFlag = 0;
-                    }
-                    break;
-                default:
-                    continue;
-            }
-            begin = i +1;
-        }
-        if (kvFlag)
-        {
-            if (0 == i-begin)
-                request->_GET.set(key, "");
-            else
-                request->_GET.set(key, tmp.substr(begin, i-begin));
-        }
-    }
-    return ret;
+    ret->domain = arg;
+    printf("%s :// %s : %s @ %s : %u\n", ret->scheme.c_str(), ret->user.c_str(), ret->password.c_str(), ret->domain.c_str(), ret->port);
+    return 0;
 }
 
 URL::~URL()
@@ -93,35 +70,35 @@ URL::~URL()
 
 std::string URL::getScheme()
 {
-    
+    return this->scheme;
 }
 
 std::string URL::getDomain()
 {
-    
+    return this->domain;
 }
 
 int URL::getPort()
 {
-    
+    return this->port;
 }
 
 std::string URL::getPath()
 {
-    
+    return this->path;
 }
 
 std::string URL::getSearch()
 {
-    
+    return this->search;
 }
 
 std::string URL::getQuery(const std::string &key)
 {
-    
+    return this->query[key];
 }
 
 std::string URL::getHash()
 {
-    
+    return this->hash;
 }
