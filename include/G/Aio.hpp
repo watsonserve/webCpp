@@ -21,6 +21,9 @@ struct aioinit
     int aio_num;       // Number of expected simultaneous requests
     int aio_idle_time;
 };
+#include "MQ.hpp"
+#else
+// on linux
 #endif
 
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
@@ -28,12 +31,12 @@ struct aioinit
 #include <sys/event.h>
 #include <sys/time.h>
 #include <semaphore.h>
-#include "MQ.hpp"
 #endif
 
 namespace G {
     class Aio : public Object {
         
+    public:
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
         static int kq;
         static struct kevent *eventList;
@@ -44,7 +47,6 @@ namespace G {
         static void* eventCallback(void *);
         static MQ mq;
 #endif
-    public:
         static int aioInit(struct aioinit *);
         static int aioRead(struct aiocb *);
         static int aioWrite(struct aiocb *);

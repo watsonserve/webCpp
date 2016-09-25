@@ -22,7 +22,7 @@ namespace G {
         std::queue<void *> mQueue;
         pthread_rwlock_t locker;
     public:
-        MQ();
+        MQ() {};
         static int init(MQ *);
         virtual ~MQ();
         void push(void*);

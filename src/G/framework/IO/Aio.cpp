@@ -46,6 +46,13 @@ int Aio::aioCancel(int fd, struct aiocb *aiocbp)
 #include <stdlib.h>
 #include <pthread.h>
 
+int Aio::kq;
+struct kevent * Aio::eventList;
+struct aiocb * Aio::cbList;
+aioinit Aio::conf;
+sem_t * Aio::pEventSem;
+MQ Aio::mq;
+
 void* Aio::listenEvnt(void * args)
 {
     int i, nEvent;
@@ -138,7 +145,7 @@ int Aio::aioInit(struct aioinit * aip)
         return -1;
     }
     // 初始化消息队列
-    
+    MQ::init(&(Aio::mq));
     return 0;
 }
 
@@ -152,22 +159,22 @@ int Aio::aioRead(struct aiocb *aiocbp)
 
 int Aio::aioWrite(struct aiocb *aiocbp)
 {
-    return aio_write(aiocbp);
+    return 0;
 }
 
 ssize_t Aio::aioReturn(struct aiocb *aiocbp)
 {
-    return aio_return(aiocbp);
+    return 0;
 }
 
 int Aio::aioError(const struct aiocb *aiocbp)
 {
-    return aio_error(aiocbp);
+    return 0;
 }
 
 int Aio::aioCancel(int fd, struct aiocb *aiocbp)
 {
-    return aio_cancel(fd, aiocbp);
+    return 0;
 }
 
 #endif

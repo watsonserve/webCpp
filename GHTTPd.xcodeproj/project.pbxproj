@@ -423,6 +423,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				"HEADER_SEARCH_PATHS[arch=*]" = include;
+				OTHER_LDFLAGS = (
+					"-lc",
+					"-lpthread",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PUBLIC_HEADERS_FOLDER_PATH[sdk=*]" = include/;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
@@ -435,6 +439,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				"HEADER_SEARCH_PATHS[arch=*]" = include;
+				OTHER_LDFLAGS = (
+					"-lc",
+					"-lpthread",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PUBLIC_HEADERS_FOLDER_PATH[sdk=*]" = include/;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
