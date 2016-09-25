@@ -58,7 +58,6 @@ int main(int argc, char *argv[])
     srv.setCert("");
     srv.setKey("");
     int ret = srv.service(&dispatcher, max, false);
-    //dispatcher.task(STDIN_FILENO);
     printf("%s\n", strerror(ret));
     return 0;
 }

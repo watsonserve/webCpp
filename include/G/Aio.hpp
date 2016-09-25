@@ -31,6 +31,14 @@ struct aioinit
 #include <sys/event.h>
 #include <sys/time.h>
 #include <semaphore.h>
+
+typedef struct aio_back
+{
+    struct aiocb cb;
+    ssize_t readyDataLen;
+    int error;
+} AioBack;
+
 #endif
 
 namespace G {
@@ -40,7 +48,7 @@ namespace G {
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
         static int kq;
         static struct kevent *eventList;
-        static struct aiocb *cbList;
+        static AioBack *abList;
         static aioinit conf;
         static sem_t * pEventSem;
         static void* listenEvnt(void *);

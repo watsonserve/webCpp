@@ -28,19 +28,23 @@ void MQ::push(void* ele)
         exit(1);
     }
     mQueue.push(ele);
+    printf("mq push");
     pthread_rwlock_unlock(&locker);
 }
 
 void* MQ::front()
 {
     void * ret;
-    
+
+    ret = NULL;
     if(0 != pthread_rwlock_wrlock(&locker)) {
         // todo
         exit(1);
     }
-    ret = mQueue.front();
-    mQueue.pop();
+    if (!mQueue.empty()) {
+        ret = mQueue.front();
+        mQueue.pop();
+    }
     pthread_rwlock_unlock(&locker);
     return ret;
 }

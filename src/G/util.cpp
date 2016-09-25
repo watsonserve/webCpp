@@ -39,3 +39,4 @@ int G::split(vector<string> &ret, const string &str, const string &sep)
     }
     return 0;
 }
+

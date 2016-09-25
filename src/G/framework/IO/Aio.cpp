@@ -44,11 +44,14 @@ int Aio::aioCancel(int fd, struct aiocb *aiocbp)
 
 #else
 #include <stdlib.h>
+#include <unistd.h>
 #include <pthread.h>
+#include <errno.h>
+#include "G/Number.hpp"
 
 int Aio::kq;
 struct kevent * Aio::eventList;
-struct aiocb * Aio::cbList;
+AioBack * Aio::abList;
 aioinit Aio::conf;
 sem_t * Aio::pEventSem;
 MQ Aio::mq;
@@ -56,7 +59,7 @@ MQ Aio::mq;
 void* Aio::listenEvnt(void * args)
 {
     int i, nEvent;
-    struct aiocb *cbp;
+    AioBack *abp;
     
     while (1)
     {
@@ -68,9 +71,12 @@ void* Aio::listenEvnt(void * args)
                 close((int)(eventList[i].ident));
                 continue;
             }
-            cbp = cbList + eventList[i].ident;
-            mq.push(cbp);        // 写消息队列
-            sem_post(pEventSem); // 触发信号量
+            abp = abList + eventList[i].ident;
+            mq.push(abp);        // 写消息队列
+            if (0 == sem_post(pEventSem)) { // 触发信号量
+                perror("post sem");
+                exit(1);
+            }
         }
         
     }
@@ -79,19 +85,27 @@ void* Aio::listenEvnt(void * args)
 
 void* Aio::eventCallback(void* args)
 {
+    AioBack *abp;
     struct aiocb *cbp;
+
     while (1)
     {
         // 等待信号量
         if(0 != sem_wait(pEventSem)) {
+            perror("wait a sem");
             exit(1);
         }
         // 读消息队列
-        cbp = (struct aiocb *)mq.front();
-        if(NULL == cbp) {
+        abp = (AioBack *)mq.front();
+        if(NULL == abp) {
             continue;
         }
-        read(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
+        cbp = &(abp->cb);
+        
+        abp->readyDataLen = read(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
+        if (1 > abp->readyDataLen) {
+            abp->error = errno;
+        }
         // 执行回调
         cbp->aio_sigevent.sigev_notify_function(cbp->aio_sigevent.sigev_value);
     }
@@ -101,8 +115,10 @@ void* Aio::eventCallback(void* args)
 int Aio::aioInit(struct aioinit * aip)
 {
     int i;
+    pid_t pid;
     pthread_attr_t attr;
     pthread_t tid;
+    std::string spid;
 
     conf = *aip;
     Aio::kq = kqueue();  // 准备注册内核事件
@@ -115,37 +131,50 @@ int Aio::aioInit(struct aioinit * aip)
         perror("Can't create event list");
         return -1;
     }
-    cbList = (struct aiocb *)malloc(sizeof(struct aiocb) * aip->aio_num);
-    if(NULL == cbList) {
+    abList = (AioBack *)malloc(sizeof(struct aiocb) * aip->aio_num);
+    if(NULL == abList) {
         perror("Can't create cblist");
+        return -1;
+    }
+    // 初始化消息队列
+    if (0 != MQ::init(&(Aio::mq))) {
+        perror("init message queue faild");
+        return -1;
+    }
+    // 初始化信号量
+    pid = getpid();
+    spid = "/tmp/";
+    spid += Number::stringify((long long)pid) + ".sem";
+    pEventSem = sem_open(spid.c_str(), O_CREAT, 0777, 0);
+    if(NULL == pEventSem) {
+        perror("init named sem faild");
         return -1;
     }
     // 创建线程
     if(0 != pthread_attr_init(&attr)) {
+        perror("init thread attr faild");
         return -1;
     }
     if(0 != pthread_create(&tid, &attr, Aio::listenEvnt, NULL)) {
+        perror("create thread faild");
         return -1;
     }
     if(0 != pthread_detach(tid)) {
+        perror("detach thread faild");
         return -1;
     }
+
     for(i = 0; i < aip->aio_threads; i++)
     {
         if(0 != pthread_create(&tid, &attr, Aio::eventCallback, NULL)) {
+            perror("create a work thread faild");
             return -1;
         }
         if(0 != pthread_detach(tid)) {
+            perror("detach a work thread faild");
             return -1;
         }
     }
-    // 初始化信号量
-    pEventSem = sem_open("/tmp/+pid+.sem", O_CREAT, 0777);
-    if(NULL == pEventSem) {
-        return -1;
-    }
-    // 初始化消息队列
-    MQ::init(&(Aio::mq));
     return 0;
 }
 
@@ -159,17 +188,20 @@ int Aio::aioRead(struct aiocb *aiocbp)
 
 int Aio::aioWrite(struct aiocb *aiocbp)
 {
+    struct kevent kev;
+
+    EV_SET(&kev, aiocbp->aio_fildes, EVFILT_WRITE, EV_DISABLE, 0, 0, NULL);
     return 0;
 }
 
 ssize_t Aio::aioReturn(struct aiocb *aiocbp)
 {
-    return 0;
+    return abList[aiocbp->aio_fildes].readyDataLen;
 }
 
 int Aio::aioError(const struct aiocb *aiocbp)
 {
-    return 0;
+    return abList[aiocbp->aio_fildes].error;
 }
 
 int Aio::aioCancel(int fd, struct aiocb *aiocbp)

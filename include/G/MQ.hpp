@@ -13,7 +13,7 @@ extern "C" {
     #include <pthread.h>
 }
 #include <queue>
-#include "Object.hpp"
+#include "G/Object.hpp"
 
 namespace G {
 
