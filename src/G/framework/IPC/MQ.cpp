@@ -28,7 +28,6 @@ void MQ::push(void* ele)
         exit(1);
     }
     mQueue.push(ele);
-    printf("mq push");
     pthread_rwlock_unlock(&locker);
 }
 

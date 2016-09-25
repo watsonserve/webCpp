@@ -34,7 +34,6 @@ struct aioinit
 
 typedef struct aio_back
 {
-    struct aiocb cb;
     ssize_t readyDataLen;
     int error;
 } AioBack;

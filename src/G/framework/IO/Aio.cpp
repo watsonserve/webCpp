@@ -59,7 +59,6 @@ MQ Aio::mq;
 void* Aio::listenEvnt(void * args)
 {
     int i, nEvent;
-    AioBack *abp;
     
     while (1)
     {
@@ -71,9 +70,8 @@ void* Aio::listenEvnt(void * args)
                 close((int)(eventList[i].ident));
                 continue;
             }
-            abp = abList + eventList[i].ident;
-            mq.push(abp);        // 写消息队列
-            if (0 == sem_post(pEventSem)) { // 触发信号量
+            mq.push(eventList[i].udata);        // 写消息队列
+            if (-1 == sem_post(pEventSem)) { // 触发信号量
                 perror("post sem");
                 exit(1);
             }
@@ -96,12 +94,12 @@ void* Aio::eventCallback(void* args)
             exit(1);
         }
         // 读消息队列
-        abp = (AioBack *)mq.front();
-        if(NULL == abp) {
+        cbp = (struct aiocb *)mq.front();
+        if(NULL == cbp) {
             continue;
         }
-        cbp = &(abp->cb);
-        
+
+        abp = abList + cbp->aio_fildes;
         abp->readyDataLen = read(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
         if (1 > abp->readyDataLen) {
             abp->error = errno;
@@ -131,7 +129,7 @@ int Aio::aioInit(struct aioinit * aip)
         perror("Can't create event list");
         return -1;
     }
-    abList = (AioBack *)malloc(sizeof(struct aiocb) * aip->aio_num);
+    abList = (AioBack *)malloc(sizeof(AioBack) * aip->aio_num);
     if(NULL == abList) {
         perror("Can't create cblist");
         return -1;
@@ -182,16 +180,16 @@ int Aio::aioRead(struct aiocb *aiocbp)
 {
     struct kevent kev;
 
-    EV_SET(&kev, aiocbp->aio_fildes, EVFILT_READ, EV_DISABLE, 0, 0, NULL);
-    return 0;
+    EV_SET(&kev, aiocbp->aio_fildes, EVFILT_READ, EV_ADD | EV_ONESHOT, 0, 0, aiocbp);
+    return kevent(kq, &kev, 1, NULL, 0, NULL);
 }
 
 int Aio::aioWrite(struct aiocb *aiocbp)
 {
     struct kevent kev;
 
-    EV_SET(&kev, aiocbp->aio_fildes, EVFILT_WRITE, EV_DISABLE, 0, 0, NULL);
-    return 0;
+    EV_SET(&kev, aiocbp->aio_fildes, EVFILT_WRITE, EV_ADD | EV_ONESHOT, 0, 0, aiocbp);
+    return kevent(kq, &kev, 1, NULL, 0, NULL);
 }
 
 ssize_t Aio::aioReturn(struct aiocb *aiocbp)
