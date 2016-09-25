@@ -6,7 +6,8 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
-#include <regex.h>
+#include <vector>
+#include "G/GUtil.hpp"
 #include "G/net/URL.hpp"
 
 using namespace G;
@@ -20,8 +21,10 @@ int URL::parse(URL *ret, const std::string &uri)
 {
     // (\w+)://(\w+?):(S+?)@([\w\.]+):*(\d*)/(.+)\?*(.*)#*(.*)
     // scheme :// username : password @ domain : port / path ? query # hash
+    int i;
     size_t off;
-    std::string arg, tmp;
+    std::string arg;
+    std::vector<std::string> kvs;
 
     arg = uri;
     off = arg.find("://");
@@ -37,8 +40,21 @@ int URL::parse(URL *ret, const std::string &uri)
     off = arg.find('/');
     if (std::string::npos != off) // 有路径
     {
-        tmp = arg.substr(off);
+        ret->path = arg.substr(off);
         arg.erase(off);
+        
+        off = ret->path.find('#');
+        if (std::string::npos != off) // 有hash
+        {
+            ret->hash = ret->path.substr(off);
+            ret->path.erase(off);
+        }
+        off = ret->path.find('?');
+        if (std::string::npos != off) // 有参数
+        {
+            ret->search = ret->path.substr(off + 1);
+            ret->path.erase(off);
+        }
     }
     off = arg.find('@');
     if (std::string::npos != off) // 有用户
@@ -59,7 +75,17 @@ int URL::parse(URL *ret, const std::string &uri)
         arg.erase(off);
     }
     ret->domain = arg;
-    printf("%s :// %s : %s @ %s : %u\n", ret->scheme.c_str(), ret->user.c_str(), ret->password.c_str(), ret->domain.c_str(), ret->port);
+    // 解析get参数
+    split(kvs, ret->search, "&");
+    for (i = 0; i < kvs.size(); i++)
+    {
+        string &item = kvs[i];
+        off = item.find('=');
+        if (std::string::npos != off)
+        {
+            ret->query[item.substr(0, off)] = item.substr(off + 1);
+        }
+    }
     return 0;
 }
 
