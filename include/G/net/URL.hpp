@@ -31,6 +31,7 @@ namespace G {
         virtual ~URL();
         std::string getScheme();
         std::string getQuery(const std::string &);
+        const std::map<std::string, std::string> & queryMap();
         std::string getSearch();
         std::string getHash();
         std::string getDomain();

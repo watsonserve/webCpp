@@ -10,7 +10,6 @@ using namespace G;
 int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
 {
     request->fh = fh;
-    int tmpFlag;
     string tmp, str, data, firstRow;
     vector<string> foo, bar;
     URL uri;
@@ -34,7 +33,7 @@ int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
         request->set(foo[0], foo[1]);
     }
     request->set("path", uri.getPath());
-    // todo
+    request->_GET.setMap(uri.queryMap());
     return 0;
 }
 

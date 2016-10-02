@@ -119,6 +119,11 @@ std::string URL::getSearch()
     return this->search;
 }
 
+const std::map<std::string, std::string> & URL::queryMap()
+{
+    return this->query;
+}
+
 std::string URL::getQuery(const std::string &key)
 {
     return this->query[key];
