@@ -13,9 +13,11 @@ int Route::call(HTTPRequest *req, HTTPResponse *res)
     std::string path = req->get("path");
     if("/" == path || "/index.json" == path)
     {
+        puts(path.c_str());
         res->setContent("{\"hello\": \"world\"}\r\n");
         res->end();
         return 1;
     }
+    printf("fine");
     return 0;
 }
