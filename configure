@@ -1,0 +1,10 @@
+#bin/bash
+
+files=$(find src -name "*.cpp")
+echo '' > makefile
+
+for file in $files
+do
+    file=${file:4}
+    echo -e "\$(OBJ)/${file} : \$(SRC)/${file}\n\t\$(CC) \$(CFLAGS) \$^ -o \$@ -I \$(INC)\n" >> makefile
+done
