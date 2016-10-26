@@ -6,22 +6,24 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
-#include <stdlib.h>
 #include "G/MQ.hpp"
 
 using namespace G;
 
-int MQ::init(MQ *self)
+template<class T>
+int MQ<T>::init(MQ<T> *self)
 {
     return pthread_rwlock_init(&(self->locker), NULL);
 }
 
-MQ::~MQ()
+template<class T>
+MQ<T>::~MQ()
 {
     pthread_rwlock_destroy(&locker);
 }
 
-void MQ::push(void* ele)
+template<class T>
+void MQ<T>::push(T ele)
 {
     if(0 != pthread_rwlock_wrlock(&locker)) {
         // todo
@@ -31,7 +33,8 @@ void MQ::push(void* ele)
     pthread_rwlock_unlock(&locker);
 }
 
-void* MQ::front()
+template<class T>
+void* MQ<T>::front()
 {
     void * ret;
 

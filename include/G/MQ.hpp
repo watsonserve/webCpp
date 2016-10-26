@@ -10,6 +10,7 @@
 #define MQ_h
 
 extern "C" {
+    #include <stdlib.h>
     #include <pthread.h>
 }
 #include <queue>
@@ -17,15 +18,16 @@ extern "C" {
 
 namespace G {
 
+    template <class T>
     class MQ : public Object
     {
-        std::queue<void *> mQueue;
+        std::queue<T> mQueue;
         pthread_rwlock_t locker;
     public:
         MQ() {};
         static int init(MQ *);
         virtual ~MQ();
-        void push(void*);
+        void push(T);
         void* front();
     };
 

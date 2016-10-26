@@ -62,45 +62,63 @@ int TCPServer::initPool(int thr, int simu, int idleTime)
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__) || defined (__linux__) || defined(__linux)
 int TCPServer::service(IOEvents *dispatcher, int max)
 {
-    int i;
+    int i, errorNo;
     SOCKET sockfd, clientFd;
     struct sockaddr addr;
     socklen_t len;
     StreamIO *ioHandles;
     char *mem;
-    sockfd = TCPsetup(port);    // 创建socket
+
+    // 创建socket
+    sockfd = TCPsetup(port);
     if( -1 == sockfd ) {
         perror("Can't create socket");
         return -1;
     }
 
+    // 内存池
     mem = (char*)malloc(max * BUFSIZ);
     if(NULL == mem) {
         perror("alloc buffer");
         return -1;
     }
 
+    // io句柄池
     ioHandles = new StreamIO[max];
     if(NULL == ioHandles) {
         perror("alloc IO handles");
         return -1;
     }
 
+    // io句柄绑定缓存区
     for(i=0; i<max; i++)
     {
         if( NULL == StreamIO::init(ioHandles + i, dispatcher, mem + (i*BUFSIZ), BUFSIZ))
             exit(1);
     }
 
+    // 网络监听循环
     while(1)
     {
         clientFd = accept(sockfd, &addr, &len);
-        if( -1 != clientFd && clientFd < max )
-        {
-            ioHandles[clientFd].setFd(clientFd, NET_SOCKET);
-            ioHandles[clientFd].cleanCache();
-            ioHandles[clientFd].listen();
+        if(-1 == clientFd) {
+            // 系统层错误
+            errorNo = errno;
+            perror("accept");
+            if (EBADF == errorNo || EINVAL == errorNo)
+                return -1;
         }
+        // 用户层错误
+        if(clientFd >= max)
+        {
+            close(clientFd);
+            fprintf(stderr, "Too many connect, denial of service");
+            continue;
+        }
+        // 正常情况
+        ioHandles[clientFd].setFd(clientFd, NET_SOCKET);
+        ioHandles[clientFd].cleanCache();
+        ioHandles[clientFd].listen();
     }
     return 0;
 }

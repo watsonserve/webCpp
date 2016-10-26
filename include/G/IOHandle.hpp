@@ -21,7 +21,11 @@ namespace G {
         FIFO
     } HandleType;
 
-    class IOHandle: public Object {
+
+    // interface
+
+    class IOHandle: public Object
+    {
     protected:
         HandleType type;
     public:

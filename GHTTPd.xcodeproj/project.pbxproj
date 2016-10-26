@@ -12,7 +12,6 @@
 		1A48B9181D7726B500631D68 /* URL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A48B9171D7726B500631D68 /* URL.cpp */; };
 		1A492AB31D97BDBD000B7FF8 /* Number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A492AB21D97BDBD000B7FF8 /* Number.cpp */; };
 		1AE13F481CE577D30098FAFD /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F301CE577D30098FAFD /* Input.cpp */; };
-		1AE13F491CE577D30098FAFD /* IOHandle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F311CE577D30098FAFD /* IOHandle.cpp */; };
 		1AE13F4A1CE577D30098FAFD /* Output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F321CE577D30098FAFD /* Output.cpp */; };
 		1AE13F4B1CE577D30098FAFD /* StreamIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F331CE577D30098FAFD /* StreamIO.cpp */; };
 		1AE13F4D1CE577D30098FAFD /* HTTPDispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AE13F371CE577D30098FAFD /* HTTPDispatcher.cpp */; };
@@ -66,7 +65,6 @@
 		1AE13F2A1CE577D30098FAFD /* Output.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Output.hpp; sourceTree = "<group>"; };
 		1AE13F2B1CE577D30098FAFD /* StreamIO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StreamIO.hpp; sourceTree = "<group>"; };
 		1AE13F301CE577D30098FAFD /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
-		1AE13F311CE577D30098FAFD /* IOHandle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IOHandle.cpp; sourceTree = "<group>"; };
 		1AE13F321CE577D30098FAFD /* Output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Output.cpp; sourceTree = "<group>"; };
 		1AE13F331CE577D30098FAFD /* StreamIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StreamIO.cpp; sourceTree = "<group>"; };
 		1AE13F371CE577D30098FAFD /* HTTPDispatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HTTPDispatcher.cpp; sourceTree = "<group>"; };
@@ -84,6 +82,8 @@
 		1AE13F5A1CE5F6860098FAFD /* GHTTPd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GHTTPd; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AFA44C51D0C0A2200B99A95 /* Route.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Route.cpp; sourceTree = "<group>"; };
 		1AFA44C61D0C0A2200B99A95 /* Route.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Route.hpp; sourceTree = "<group>"; };
+		9DBED88E1DC08A3A009F1888 /* thread */ = {isa = PBXFileReference; lastKnownFileType = folder; path = thread; sourceTree = "<group>"; };
+		9DBED88F1DC08A65009F1888 /* ThreadPool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ThreadPool.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +144,7 @@
 				1A272F651D732C62001B3D2D /* MQ.hpp */,
 				1AE13F1E1CE577D30098FAFD /* net */,
 				1A492AB51D97BE16000B7FF8 /* Number.hpp */,
+				9DBED88F1DC08A65009F1888 /* ThreadPool.hpp */,
 			);
 			path = G;
 			sourceTree = "<group>";
@@ -194,6 +195,7 @@
 		1AE13F2E1CE577D30098FAFD /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				9DBED88E1DC08A3A009F1888 /* thread */,
 				1A492AB41D97BDD2000B7FF8 /* lang */,
 				1A272F661D732CB1001B3D2D /* IPC */,
 				1AE13F3C1CE577D30098FAFD /* Object.cpp */,
@@ -208,7 +210,6 @@
 			isa = PBXGroup;
 			children = (
 				1AE13F301CE577D30098FAFD /* Input.cpp */,
-				1AE13F311CE577D30098FAFD /* IOHandle.cpp */,
 				1AE13F321CE577D30098FAFD /* Output.cpp */,
 				1AE13F331CE577D30098FAFD /* StreamIO.cpp */,
 				1A198CCE1D0BA5DF00EBAFCC /* Aio.cpp */,
@@ -337,7 +338,6 @@
 				1AE13F551CE577D30098FAFD /* Gnet.c in Sources */,
 				1AE13F4B1CE577D30098FAFD /* StreamIO.cpp in Sources */,
 				1A48B9181D7726B500631D68 /* URL.cpp in Sources */,
-				1AE13F491CE577D30098FAFD /* IOHandle.cpp in Sources */,
 				1AE13F561CE577D30098FAFD /* util.cpp in Sources */,
 				1AE13F4E1CE577D30098FAFD /* HTTPGram.cpp in Sources */,
 				1AE13F4A1CE577D30098FAFD /* Output.cpp in Sources */,

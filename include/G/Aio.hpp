@@ -21,7 +21,7 @@ struct aioinit
     int aio_num;       // Number of expected simultaneous requests
     int aio_idle_time;
 };
-#include "MQ.hpp"
+#include "ThreadPool.hpp"
 #else
 // on linux
 #endif
@@ -49,10 +49,9 @@ namespace G {
         static struct kevent *eventList;
         static AioBack *abList;
         static aioinit conf;
-        static sem_t * pEventSem;
         static void* listenEvnt(void *);
         static void* eventCallback(void *);
-        static MQ mq;
+        static ThreadPool threadPool;
 #endif
         static int aioInit(struct aioinit *);
         static int aioRead(struct aiocb *);
