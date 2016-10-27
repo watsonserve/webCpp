@@ -25,7 +25,7 @@ void* ThreadPool::thFunction(void* args)
 
     self = (ThreadPool *)args;
     pSem = self->pSem;
-    mq = self->mq;
+    mq = &(self->mq);
 
     while (1)
     {
@@ -35,7 +35,7 @@ void* ThreadPool::thFunction(void* args)
             exit(1);
         }
         // 读消息队列
-        message = (Message*)mq->front();
+        message = (Message*)(mq->front());
         if(NULL == message || NULL == message->function) {
             continue;
         }
@@ -56,7 +56,7 @@ int ThreadPool::init(ThreadPool * self, int max, Func function, const char *name
 
     self->size = max;
     // 初始化消息队列
-    if (0 != MQ::init(&(self->mq))) {
+    if (0 != MQ<Message>::init(&(self->mq))) {
         perror("init message queue faild");
         return -1;
     }
@@ -79,7 +79,7 @@ int ThreadPool::init(ThreadPool * self, int max, Func function, const char *name
 
     for(i = 0; i < max; i++)
     {
-        if(0 != pthread_create(&tid, &attr, function, &(self->ta))) {
+        if(0 != pthread_create(&tid, &attr, function, &self)) {
             perror("create a work thread faild");
             return -1;
         }

@@ -21,7 +21,7 @@ struct aioinit
     int aio_num;       // Number of expected simultaneous requests
     int aio_idle_time;
 };
-#include "ThreadPool.hpp"
+#include "G/ThreadPool.hpp"
 #else
 // on linux
 #endif
@@ -30,7 +30,6 @@ struct aioinit
 #include <sys/types.h>
 #include <sys/event.h>
 #include <sys/time.h>
-#include <semaphore.h>
 
 typedef struct aio_back
 {

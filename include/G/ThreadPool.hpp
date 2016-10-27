@@ -31,7 +31,6 @@ namespace G {
     class ThreadPool : public Object
     {
         int size;
-        int count;
         static void* thFunction(void *);
     protected:
         MQ<Message> mq;

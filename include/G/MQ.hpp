@@ -25,8 +25,8 @@ namespace G {
         pthread_rwlock_t locker;
     public:
         MQ() {};
-        static int init(MQ *);
         virtual ~MQ();
+        static int init(MQ *);
         void push(T);
         void* front();
     };
