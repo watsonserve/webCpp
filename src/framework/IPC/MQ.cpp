@@ -10,19 +10,19 @@
 
 using namespace G;
 
-template<class T>
+template<typename T>
 int MQ<T>::init(MQ<T> *self)
 {
     return pthread_rwlock_init(&(self->locker), NULL);
 }
 
-template<class T>
+template<typename T>
 MQ<T>::~MQ()
 {
     pthread_rwlock_destroy(&locker);
 }
 
-template<class T>
+template<typename T>
 void MQ<T>::push(T ele)
 {
     if(0 != pthread_rwlock_wrlock(&locker)) {
@@ -33,12 +33,11 @@ void MQ<T>::push(T ele)
     pthread_rwlock_unlock(&locker);
 }
 
-template<class T>
-void* MQ<T>::front()
+template<typename T>
+T MQ<T>::front()
 {
-    void * ret;
+    T ret;
 
-    ret = NULL;
     if(0 != pthread_rwlock_wrlock(&locker)) {
         // todo
         exit(1);

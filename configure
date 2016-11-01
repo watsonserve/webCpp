@@ -16,7 +16,7 @@ header="${header}\nLD = ld"
 header="${header}\nCFLAGS = -c -O3 -Wall"
 header="${header}\nCXXFLAGS = -c -O3 -Wall --std=c++11"
 header="${header}\nARFLAGS = crsv"
-header="${header}\nSHAREFLAGS = -shared -fPIC -lc -lpthread\n"
+header="${header}\nSHAREFLAGS = -shared -fPIC -lc -lpthread -lstdc++\n"
 
 obj_dir='/tmp/.objs'
 if [[ ! -d ${obj_dir} ]]; then

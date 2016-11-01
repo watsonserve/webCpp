@@ -18,7 +18,7 @@ extern "C" {
 
 namespace G {
 
-    template <class T>
+    template <typename T>
     class MQ : public Object
     {
         std::queue<T> mQueue;
@@ -28,7 +28,7 @@ namespace G {
         virtual ~MQ();
         static int init(MQ *);
         void push(T);
-        void* front();
+        T front();
     };
 
 }
