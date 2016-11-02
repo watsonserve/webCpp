@@ -21,22 +21,18 @@
 
 namespace G {
 
-    typedef void* (*Func)(void *);
-
-    typedef struct message
-    {
-        void * args;
-        Func function;
-    } Message;
 
     class ThreadPool : public Object
     {
-        int size;
-        static void* thFunction(void *);
-    protected:
-        MQ<Message> mq;
-        sem_t* pSem;
     public:
+        typedef void* (*Func)(void *);
+
+        typedef struct message
+        {
+            void * args;
+            Func function;
+        } Message;
+
         ThreadPool() {};
         virtual ~ThreadPool() {};
         static int init(ThreadPool *, int, std::string &);
@@ -45,6 +41,12 @@ namespace G {
         static int init(ThreadPool *, int, Func, const char *);
         int call(void *);
         int call(void *, Func);
+    private:
+        int size;
+        static void* thFunction(void *);
+    protected:
+        MQ<Message> mq;
+        sem_t* pSem;
     };
 }
 

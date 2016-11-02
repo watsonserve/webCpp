@@ -15,14 +15,16 @@ header="${header}\nAS = as"
 header="${header}\nLD = ld"
 header="${header}\nCFLAGS = -c -O3 -Wall"
 header="${header}\nCXXFLAGS = -c -O3 -Wall --std=c++11"
-header="${header}\nARFLAGS = crsv"
+header="${header}\nARFLAGS = -crsv"
 header="${header}\nSHAREFLAGS = -shared -fPIC -lc -lpthread -lstdc++\n"
 
+# 创建存放目标文件的目录
 obj_dir='/tmp/.objs'
 if [[ ! -d ${obj_dir} ]]; then
     mkdir /tmp/.objs
 fi
 
+# 区分C++ 和 C
 function makeout ()
 {
     local obj_file=$1
@@ -33,26 +35,29 @@ function makeout ()
     if [[ "cpp" == ${ext_name} ]]; then
         a_relation="${a_relation}\t\$(CXX) \$(CXXFLAGS) \$^ -o \$@ -I \$(INC)"
     elif [[ "c" -eq ${ext_name} ]]; then
-        #echo ${ext_name}
         a_relation="${a_relation}\t\$(CC) \$(CFLAGS) \$^ -o \$@ -I \$(INC)"
     fi
 }
 
+# 编译framework
 framework='src/framework'
 static_libs=$(ls ${framework})
 out=''
 share_dep=''
 
+# 遍历源目录
 for sl in ${static_libs}; do
 
     static_lib_path=${framework}/${sl}
 
     if [[ -d ${static_lib_path} ]]; then
 
+        # 按文件类型查找
         src_files=$(find ${static_lib_path} -type f \( -name '*.c' -or -name '*.cpp' \))
         objs=""
         ocr=""
 
+        # 遍历文件
         for file in $src_files; do
 
             file=${file:4}
@@ -64,9 +69,10 @@ for sl in ${static_libs}; do
 
             ocr="${ocr}\n${a_relation}\n"
         done
-
+        # 变小写
         lib_name=`tr '[A-Z]' '[a-z]' <<< "${sl}"`
         lib_name="\$(LIB)/libG${lib_name}.a"
+        # 添加共享库依赖
         share_dep="${share_dep} ${lib_name}"
         out="${out}${lib_name} :${objs}\n"
         out="${out}\t\$(AR) \$(ARFLAGS) \$@ \$^\n\n"
