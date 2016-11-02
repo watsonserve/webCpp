@@ -17,12 +17,6 @@ int MQ<T>::init(MQ<T> *self)
 }
 
 template <typename T>
-MQ<T>::MQ()
-{
-    pthread_rwlock_init(&(this->locker), NULL);
-}
-
-template <typename T>
 MQ<T>::~MQ()
 {
     pthread_rwlock_destroy(&locker);
