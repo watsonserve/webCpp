@@ -16,6 +16,7 @@
 #endif
 
 #include "G/Object.hpp"
+#include "G/Number.hpp"
 #include "G/MQ.hpp"
 
 namespace G {

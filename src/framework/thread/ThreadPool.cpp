@@ -13,12 +13,11 @@ using namespace G;
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
-#include "G/Number.hpp"
 
 // 默认线程
 void* ThreadPool::thFunction(void* args)
 {
-    Message *message;
+    Message message;
     sem_t *pSem;
     MQ<Message> *mq;
     ThreadPool *self;
@@ -35,11 +34,11 @@ void* ThreadPool::thFunction(void* args)
             exit(1);
         }
         // 读消息队列
-        message = (Message*)(mq->front());
-        if(NULL == message || NULL == message->function) {
+        message = (Message)(mq->front());
+        if(NULL == message.function) {
             continue;
         }
-        message->function(message->args);
+        message.function(message.args);
     }
 
     return NULL;

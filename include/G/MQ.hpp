@@ -13,24 +13,26 @@ extern "C" {
     #include <stdlib.h>
     #include <pthread.h>
 }
+#include <deque>
 #include <queue>
 #include "G/Object.hpp"
 
 namespace G {
 
-    template <class T>
+    template <typename T>
     class MQ : public Object
     {
         std::queue<T> mQueue;
         pthread_rwlock_t locker;
     public:
-        MQ() {};
+        MQ();
         virtual ~MQ();
-        static int init(MQ *);
-        void push(T);
-        void* front();
+        static int init(MQ<T> *);
+        void push(const T);
+        T front();
     };
 
 }
+template class G::MQ<int>;
 
 #endif /* MQ_h */
