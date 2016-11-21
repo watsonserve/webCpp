@@ -53,8 +53,9 @@ void Input::callback(union sigval inHandle)
 void Input::listen()
 {
     int err;
+
     // this->ioEvents->onConnect(this);
-    if( 0 != Aio::aioRead(&rd_acb)) {
+    if(0 != Aio::aioRead(&rd_acb)) {
         err = errno;
         ::close(rd_acb.aio_fildes);
         printf("aio %X\n", err);

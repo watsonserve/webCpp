@@ -10,7 +10,6 @@ using namespace G;
 int HTTPRequest::init(HTTPRequest *request, StreamIO *fh)
 {
     request->fh = fh;
-    int tmpFlag;
     string tmp, str, data, firstRow;
     vector<string> foo, bar;
     URL uri;

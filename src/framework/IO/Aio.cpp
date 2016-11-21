@@ -47,14 +47,13 @@ int Aio::aioCancel(int fd, struct aiocb *aiocbp)
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
-#include "G/Number.hpp"
+#include "G/ThreadPool.hpp"
 
 int Aio::kq;
 struct kevent * Aio::eventList;
 AioBack * Aio::abList;
 aioinit Aio::conf;
-sem_t * Aio::pEventSem;
-MQ Aio::mq;
+ThreadPool Aio::threadPool;
 
 void* Aio::listenEvnt(void * args)
 {
@@ -62,7 +61,8 @@ void* Aio::listenEvnt(void * args)
     
     while (1)
     {
-        nEvent = kevent(Aio::kq, NULL, 0, Aio::eventList, conf.aio_num, NULL);  // 获取可用事件
+        // 获取可用事件
+        nEvent = kevent(Aio::kq, NULL, 0, Aio::eventList, conf.aio_num, NULL);
         for(i=0; i<nEvent; i++)
         {
             if (eventList[i].flags & EV_ERROR)  // 出错
@@ -70,14 +70,13 @@ void* Aio::listenEvnt(void * args)
                 close((int)(eventList[i].ident));
                 continue;
             }
-            mq.push(eventList[i].udata);        // 写消息队列
-            if (-1 == sem_post(pEventSem)) { // 触发信号量
-                perror("post sem");
+            if (-1 == threadPool.call(eventList[i].udata, Aio::eventCallback)) {
+                perror("request thread pool");
                 exit(1);
             }
         }
-        
     }
+
     return NULL;
 }
 
@@ -86,19 +85,9 @@ void* Aio::eventCallback(void* args)
     AioBack *abp;
     struct aiocb *cbp;
 
-    while (1)
+    cbp = (struct aiocb *)args;
+    if(NULL != cbp)
     {
-        // 等待信号量
-        if(0 != sem_wait(pEventSem)) {
-            perror("wait a sem");
-            exit(1);
-        }
-        // 读消息队列
-        cbp = (struct aiocb *)mq.front();
-        if(NULL == cbp) {
-            continue;
-        }
-
         abp = abList + cbp->aio_fildes;
         abp->readyDataLen = read(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
         if (1 > abp->readyDataLen) {
@@ -107,24 +96,26 @@ void* Aio::eventCallback(void* args)
         // 执行回调
         cbp->aio_sigevent.sigev_notify_function(cbp->aio_sigevent.sigev_value);
     }
+
     return NULL;
 }
 
 int Aio::aioInit(struct aioinit * aip)
 {
-    int i;
-    pid_t pid;
     pthread_attr_t attr;
     pthread_t tid;
-    std::string spid;
 
     conf = *aip;
-    Aio::kq = kqueue();  // 准备注册内核事件
+
+    // 准备注册内核事件
+    Aio::kq = kqueue();
     if(-1 == Aio::kq) {
         perror("Can't create kqueue");
         return -1;
     }
-    eventList = (struct kevent *)malloc(sizeof(struct kevent) * aip->aio_num);  // 可用事件列表
+
+    // 可用事件列表
+    eventList = (struct kevent *)malloc(sizeof(struct kevent) * aip->aio_num);
     if(NULL == eventList) {
         perror("Can't create event list");
         return -1;
@@ -134,20 +125,13 @@ int Aio::aioInit(struct aioinit * aip)
         perror("Can't create cblist");
         return -1;
     }
-    // 初始化消息队列
-    if (0 != MQ::init(&(Aio::mq))) {
-        perror("init message queue faild");
+
+    // 初始化线程池
+    if (0 != ThreadPool::init(&(Aio::threadPool), aip->aio_threads, "0")) {
+        perror("init thread pool faild");
         return -1;
     }
-    // 初始化信号量
-    pid = getpid();
-    spid = "/tmp/";
-    spid += Number::stringify((long long)pid) + ".sem";
-    pEventSem = sem_open(spid.c_str(), O_CREAT, 0777, 0);
-    if(NULL == pEventSem) {
-        perror("init named sem faild");
-        return -1;
-    }
+
     // 创建线程
     if(0 != pthread_attr_init(&attr)) {
         perror("init thread attr faild");
@@ -162,17 +146,6 @@ int Aio::aioInit(struct aioinit * aip)
         return -1;
     }
 
-    for(i = 0; i < aip->aio_threads; i++)
-    {
-        if(0 != pthread_create(&tid, &attr, Aio::eventCallback, NULL)) {
-            perror("create a work thread faild");
-            return -1;
-        }
-        if(0 != pthread_detach(tid)) {
-            perror("detach a work thread faild");
-            return -1;
-        }
-    }
     return 0;
 }
 
