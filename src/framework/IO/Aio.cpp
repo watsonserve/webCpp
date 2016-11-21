@@ -126,7 +126,7 @@ int Aio::aioInit(struct aioinit * aip)
         return -1;
     }
 
-    // 初始化消息队列
+    // 初始化线程池
     if (0 != ThreadPool::init(&(Aio::threadPool), aip->aio_threads, "0")) {
         perror("init thread pool faild");
         return -1;
