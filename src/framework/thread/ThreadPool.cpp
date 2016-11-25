@@ -70,6 +70,7 @@ int ThreadPool::init(ThreadPool * self, int max, Func function, const char *name
         perror("init named sem faild");
         return -1;
     }
+
     // 创建线程
     if(0 != pthread_attr_init(&attr)) {
         perror("init thread attr faild");

@@ -14,7 +14,6 @@
 		9D7544861DC2F27D00761FED /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D7544821DC2F27D00761FED /* Input.cpp */; };
 		9D7544871DC2F27D00761FED /* Output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D7544831DC2F27D00761FED /* Output.cpp */; };
 		9D7544881DC2F27D00761FED /* StreamIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D7544841DC2F27D00761FED /* StreamIO.cpp */; };
-		9D75448C1DC2F2C400761FED /* MQ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D75448B1DC2F2C400761FED /* MQ.cpp */; };
 		9D7544911DC2F2F300761FED /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D7544901DC2F2F300761FED /* ThreadPool.cpp */; };
 		9D7544951DC2F30C00761FED /* Gnet.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D7544921DC2F30C00761FED /* Gnet.c */; };
 		9D7544961DC2F30C00761FED /* TCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D7544931DC2F30C00761FED /* TCPServer.cpp */; };
@@ -70,7 +69,6 @@
 		9D7544821DC2F27D00761FED /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Input.cpp; path = framework/IO/Input.cpp; sourceTree = "<group>"; };
 		9D7544831DC2F27D00761FED /* Output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Output.cpp; path = framework/IO/Output.cpp; sourceTree = "<group>"; };
 		9D7544841DC2F27D00761FED /* StreamIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StreamIO.cpp; path = framework/IO/StreamIO.cpp; sourceTree = "<group>"; };
-		9D75448B1DC2F2C400761FED /* MQ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MQ.cpp; path = framework/IPC/MQ.cpp; sourceTree = "<group>"; };
 		9D7544901DC2F2F300761FED /* ThreadPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ThreadPool.cpp; path = framework/thread/ThreadPool.cpp; sourceTree = "<group>"; };
 		9D7544921DC2F30C00761FED /* Gnet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Gnet.c; path = framework/net/Gnet.c; sourceTree = "<group>"; };
 		9D7544931DC2F30C00761FED /* TCPServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TCPServer.cpp; path = framework/net/TCPServer.cpp; sourceTree = "<group>"; };
@@ -195,7 +193,6 @@
 				9D7544A51DC2F36100761FED /* lang */,
 				9D75448F1DC2F2E200761FED /* thread */,
 				9D75448E1DC2F2D400761FED /* net */,
-				9D75448D1DC2F2CC00761FED /* IPC */,
 				9D75448A1DC2F29600761FED /* IO */,
 			);
 			name = framework;
@@ -210,14 +207,6 @@
 				9D7544841DC2F27D00761FED /* StreamIO.cpp */,
 			);
 			name = IO;
-			sourceTree = "<group>";
-		};
-		9D75448D1DC2F2CC00761FED /* IPC */ = {
-			isa = PBXGroup;
-			children = (
-				9D75448B1DC2F2C400761FED /* MQ.cpp */,
-			);
-			name = IPC;
 			sourceTree = "<group>";
 		};
 		9D75448E1DC2F2D400761FED /* net */ = {
@@ -334,7 +323,6 @@
 				9D7544A81DC2F38100761FED /* Object.cpp in Sources */,
 				1AE13F571CE577D30098FAFD /* HTTPSession.cpp in Sources */,
 				9D75449E1DC2F32200761FED /* HTTPGram.cpp in Sources */,
-				9D75448C1DC2F2C400761FED /* MQ.cpp in Sources */,
 				9D7544A31DC2F35D00761FED /* Number.cpp in Sources */,
 				1AE13F581CE577D30098FAFD /* main.cpp in Sources */,
 				9D7544861DC2F27D00761FED /* Input.cpp in Sources */,
@@ -349,7 +337,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -382,7 +370,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -399,7 +387,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -426,7 +414,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-lc",

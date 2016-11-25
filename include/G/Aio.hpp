@@ -45,11 +45,11 @@ namespace G {
     public:
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
         static int kq;
-        static struct kevent *eventList;
         static AioBack *abList;
         static aioinit conf;
         static void* listenEvnt(void *);
-        static void* eventCallback(void *);
+        static void* readCallback(void *);
+        static void* writeCallback(void *);
         static ThreadPool threadPool;
 #endif
         static int aioInit(struct aioinit *);
