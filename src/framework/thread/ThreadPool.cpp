@@ -78,7 +78,7 @@ int ThreadPool::init(ThreadPool * self, int max, Func function, const char *name
 
     for(i = 0; i < max; i++)
     {
-        if(0 != pthread_create(&tid, &attr, function, &self)) {
+        if(0 != pthread_create(&tid, &attr, function, self)) {
             perror("create a work thread faild");
             return -1;
         }
