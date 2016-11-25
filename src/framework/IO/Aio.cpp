@@ -50,19 +50,27 @@ int Aio::aioCancel(int fd, struct aiocb *aiocbp)
 #include "G/ThreadPool.hpp"
 
 int Aio::kq;
-struct kevent * Aio::eventList;
 AioBack * Aio::abList;
 aioinit Aio::conf;
 ThreadPool Aio::threadPool;
 
 void* Aio::listenEvnt(void * args)
 {
+    struct kevent * eventList;
+    ThreadPool::Func way;
     int i, nEvent;
+
+    // 可用事件列表
+    eventList = (struct kevent *)malloc(sizeof(struct kevent) * conf.aio_num);
+    if(NULL == eventList) {
+        perror("Can't create event list");
+        exit(1);
+    }
     
     while (1)
     {
         // 获取可用事件
-        nEvent = kevent(Aio::kq, NULL, 0, Aio::eventList, conf.aio_num, NULL);
+        nEvent = kevent(Aio::kq, NULL, 0, eventList, conf.aio_num, NULL);
         for(i=0; i<nEvent; i++)
         {
             if (eventList[i].flags & EV_ERROR)  // 出错
@@ -70,7 +78,19 @@ void* Aio::listenEvnt(void * args)
                 close((int)(eventList[i].ident));
                 continue;
             }
-            if (-1 == threadPool.call(eventList[i].udata, Aio::eventCallback)) {
+            switch (eventList[i].filter)
+            {
+                case EVFILT_READ:
+                    way = Aio::readCallback;
+                    break;
+                case EVFILT_WRITE:
+                    way = Aio::writeCallback;
+                    break;
+                default:
+                    perror("not read or write event");
+                    exit(1);
+            }
+            if (-1 == threadPool.call(eventList[i].udata, way)) {
                 perror("request thread pool");
                 exit(1);
             }
@@ -80,7 +100,7 @@ void* Aio::listenEvnt(void * args)
     return NULL;
 }
 
-void* Aio::eventCallback(void* args)
+void* Aio::readCallback(void* args)
 {
     AioBack *abp;
     struct aiocb *cbp;
@@ -100,6 +120,26 @@ void* Aio::eventCallback(void* args)
     return NULL;
 }
 
+void* Aio::writeCallback(void* args)
+{
+    AioBack *abp;
+    struct aiocb *cbp;
+    
+    cbp = (struct aiocb *)args;
+    if(NULL != cbp)
+    {
+        abp = abList + cbp->aio_fildes;
+        abp->readyDataLen = write(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
+        if (1 > abp->readyDataLen) {
+            abp->error = errno;
+        }
+        // 执行回调
+        cbp->aio_sigevent.sigev_notify_function(cbp->aio_sigevent.sigev_value);
+    }
+    
+    return NULL;
+}
+
 int Aio::aioInit(struct aioinit * aip)
 {
     pthread_attr_t attr;
@@ -114,12 +154,6 @@ int Aio::aioInit(struct aioinit * aip)
         return -1;
     }
 
-    // 可用事件列表
-    eventList = (struct kevent *)malloc(sizeof(struct kevent) * aip->aio_num);
-    if(NULL == eventList) {
-        perror("Can't create event list");
-        return -1;
-    }
     abList = (AioBack *)malloc(sizeof(AioBack) * aip->aio_num);
     if(NULL == abList) {
         perror("Can't create cblist");
