@@ -24,6 +24,18 @@ if [[ ! -d ${obj_dir} ]]; then
     mkdir /tmp/.objs
 fi
 
+# 创建bin目录
+bin_dir="$(pwd)/bin"
+if [[ ! -d ${bin_dir} ]]; then
+    mkdir ${bin_dir}
+fi
+
+# 创建lib目录
+lib_dir="$(pwd)/lib"
+if [[ ! -d ${lib_dir} ]]; then
+    mkdir ${lib_dir}
+fi
+
 # 区分C++ 和 C
 function makeout ()
 {
