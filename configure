@@ -1,13 +1,16 @@
 #!/bin/bash
 
+root=$(pwd)/$(dirname "${BASH_SOURCE-$0}")
+prelen=${#root}+5
+
 header="#! /bin/make\n"
-header="${header}\nROOT = $(pwd)"
+header="${header}\nROOT = ${root}"
 header="${header}\nOBJ = /tmp/.objs"
-header="${header}\nSRC = \$(ROOT)/src"
+header="${header}\nSRC = \${ROOT}/src"
 header="${header}\nASM = /tmp/.asms"
-header="${header}\nINC = \$(ROOT)/include"
-header="${header}\nLIB = \$(ROOT)/lib"
-header="${header}\nBIN = \$(ROOT)/bin"
+header="${header}\nINC = \${ROOT}/include"
+header="${header}\nLIB = \${ROOT}/lib"
+header="${header}\nBIN = \${ROOT}/bin"
 header="${header}\nCXX = g++"
 header="${header}\nCC = gcc"
 header="${header}\nAR = ar"
@@ -25,13 +28,13 @@ if [[ ! -d ${obj_dir} ]]; then
 fi
 
 # 创建bin目录
-bin_dir="$(pwd)/bin"
+bin_dir="${root}/bin"
 if [[ ! -d ${bin_dir} ]]; then
     mkdir ${bin_dir}
 fi
 
 # 创建lib目录
-lib_dir="$(pwd)/lib"
+lib_dir="${root}/lib"
 if [[ ! -d ${lib_dir} ]]; then
     mkdir ${lib_dir}
 fi
@@ -42,17 +45,17 @@ function makeout ()
     local obj_file=$1
     local src_file=$2
     local ext_name=${src_file#*.}
-    a_relation="\$(OBJ)/${obj_file} : \$(SRC)/${src_file}\n"
+    a_relation="\${OBJ}/${obj_file} : \${SRC}/${src_file}\n"
 
     if [[ "cpp" == ${ext_name} ]]; then
-        a_relation="${a_relation}\t\$(CXX) \$(CXXFLAGS) \$^ -o \$@ -I \$(INC)"
+        a_relation="${a_relation}\t\${CXX} \${CXXFLAGS} \$^ -o \$@ -I \${INC}"
     elif [[ "c" -eq ${ext_name} ]]; then
-        a_relation="${a_relation}\t\$(CC) \$(CFLAGS) \$^ -o \$@ -I \$(INC)"
+        a_relation="${a_relation}\t\${CC} \${CFLAGS} \$^ -o \$@ -I \${INC}"
     fi
 }
 
 # 编译framework
-framework='src/framework'
+framework="${root}/src/framework"
 static_libs=$(ls ${framework})
 out=''
 share_dep=''
@@ -72,33 +75,33 @@ for sl in ${static_libs}; do
         # 遍历文件
         for file in $src_files; do
 
-            file=${file:4}
+            file=${file:${prelen}}
             obj_file=${file//\//_}
             obj_file=${obj_file//./_}.o
 
-            objs="${objs} \$(OBJ)/${obj_file}"
+            objs="${objs} \${OBJ}/${obj_file}"
             makeout ${obj_file} ${file}
 
             ocr="${ocr}\n${a_relation}\n"
         done
         # 变小写
         lib_name=`tr '[A-Z]' '[a-z]' <<< "${sl}"`
-        lib_name="\$(LIB)/libG${lib_name}.a"
+        lib_name="\${LIB}/libG${lib_name}.a"
         # 添加共享库依赖
         share_dep="${share_dep} ${lib_name}"
         out="${out}${lib_name} :${objs}\n"
-        out="${out}\t\$(AR) \$(ARFLAGS) \$@ \$^\n\n"
+        out="${out}\t\${AR} \${ARFLAGS} \$@ \$^\n\n"
         out="${out}${ocr}"
 
     elif [[ -f ${static_lib_path} ]]; then
 
-        src_file=${static_lib_path:4}
+        src_file=${static_lib_path:${prelen}}
         obj_file=${src_file//\//_}
         obj_file=${obj_file//./_}.o
 
         makeout ${obj_file} ${src_file}
 
-        share_dep="${share_dep} \$(OBJ)/${obj_file}"
+        share_dep="${share_dep} \${OBJ}/${obj_file}"
         out="${out}${a_relation}\n"
 
     fi
@@ -106,7 +109,9 @@ for sl in ${static_libs}; do
 
 done
 
-so="\$(LIB)/libFramework.so : ${share_dep}\n"
-so="${so}\t\$(CXX) \$(SHAREFLAGS) -o \$@ \$^\n\n\n"
+so="\${LIB}/libFramework.so : ${share_dep}\n"
+so="${so}\t\${CXX} \${SHAREFLAGS} -o \$@ \$^\n\n\n"
 
-echo -e "${header}\n${so}${out}\n" > makefile
+clear="clear :\n\trm -rf \${OBJ}/*\n\trm -rf \${ROOT}/lib/*\n\trm -rf \${ROOT}/bin/*"
+
+echo -e "${header}\n${so}${out}\n${clear}" > ${root}/makefile
