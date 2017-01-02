@@ -9,8 +9,11 @@
 #ifndef ThreadPool_h
 #define ThreadPool_h
 
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
 #include <semaphore.h>
+#include <fcntl.h>
+
+#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+
 #else
 #include <pthread.h>
 #endif
