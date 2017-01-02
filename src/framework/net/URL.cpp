@@ -21,7 +21,7 @@ int URL::parse(URL *ret, const std::string &uri)
 {
     // (\w+)://(\w+?):(S+?)@([\w\.]+):*(\d*)/(.+)\?*(.*)#*(.*)
     // scheme :// username : password @ domain : port / path ? query # hash
-    int i;
+    size_t i;
     size_t off;
     std::string arg;
     std::vector<std::string> kvs;

@@ -11,10 +11,10 @@
 using namespace G;
 
 #if defined (__linux__) || defined(__linux)
-void Aio::aioInit(struct aioinit * aip)
+int Aio::aioInit(struct aioinit * aip)
 {
     aio_init(aip);
-    return;
+    return 0;
 }
 
 int Aio::aioRead(struct aiocb *aiocbp)
