@@ -43,7 +43,9 @@ struct aioinit
 
 typedef struct aio_back
 {
-    ssize_t readyDataLen;
+    ssize_t dataLen;
+    ssize_t doneLen;
+    ssize_t sumSize;
     int error;
 } AioBack;
 
@@ -62,11 +64,12 @@ namespace G {
     	// MAC or BSD
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
         static int kq;
-        static struct kevent *eventList;
-        static AioBack *abList;
+        static AioBack *rdList;
+        static AioBack *wrList;
         static aioinit conf;
         static void* listenEvnt(void *);
-        static void* eventCallback(void *);
+        static void* readCallback(void *);
+        static void* writeCallback(void *);
         static ThreadPool threadPool;
 
         // UNIX

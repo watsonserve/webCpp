@@ -33,7 +33,7 @@ so
 {
   "linux": " POSIX aio", // 以后会添加epoll + POSIX信号量模拟aio
   "BSD系": "kqueue + POSIX信号量模拟aio",
-  "UNIX系": "poll + POSIX信号量模拟aio",
+  "SYSTEM V": "poll + POSIX信号量模拟aio",
   "windows": "不支持"
 }
 ```
@@ -51,6 +51,12 @@ so
       ├─IOEvents: IO事件接口
       |  |
       |  └─HTTPDispatcher
+      |
+      ├─MQ<T>: 消息队列
+      |
+      ├─ThreadPool: 线程池
+      |
+      ├─Aio: 异步IO
       |
       ├─HTTPGram
       |  |
