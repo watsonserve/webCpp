@@ -20,6 +20,8 @@ def main():
     # 创建存放目标文件的目录
     if not os.path.exists(OBJ_DIR):
         os.makedirs(OBJ_DIR)
+    if not os.path.exists(LIB_DIR):
+        os.makedirs(LIB_DIR)
 
     # 编译framework
     aoRelations = dict()
@@ -83,6 +85,7 @@ if '__main__' == __name__:
         'ARFLAGS = -crsv',
         'SHAREFLAGS = -shared -fPIC -lc -lpthread -lstdc++'
     ]
+    LIB_DIR = 'lib'
     OBJ_DIR = '/tmp/.objs'
     framework = 'src/framework'
 
