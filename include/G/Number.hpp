@@ -20,7 +20,7 @@ namespace G
         static unsigned long parseUInt(const char *);
         static long long parseInt64(const char *);
         static unsigned long long parseUInt64(const char *);
-        
+
         static std::string stringify(long long);
         static std::string stringify(unsigned long long);
     };

@@ -11,10 +11,10 @@
 using namespace G;
 
 #if defined (__linux__) || defined(__linux)
-void Aio::aioInit(struct aioinit * aip)
+int Aio::aioInit(struct aioinit * aip)
 {
     aio_init(aip);
-    return;
+    return 0;
 }
 
 int Aio::aioRead(struct aiocb *aiocbp)
@@ -50,7 +50,8 @@ int Aio::aioCancel(int fd, struct aiocb *aiocbp)
 #include "G/ThreadPool.hpp"
 
 int Aio::kq;
-AioBack * Aio::abList;
+AioBack * Aio::rdList;
+AioBack * Aio::wrList;
 aioinit Aio::conf;
 ThreadPool Aio::threadPool;
 
@@ -108,9 +109,9 @@ void* Aio::readCallback(void* args)
     cbp = (struct aiocb *)args;
     if(NULL != cbp)
     {
-        abp = abList + cbp->aio_fildes;
-        abp->readyDataLen = read(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
-        if (1 > abp->readyDataLen) {
+        abp = rdList + cbp->aio_fildes;
+        abp->dataLen = read(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
+        if (1 > abp->dataLen) {
             abp->error = errno;
         }
         // 执行回调
@@ -124,14 +125,23 @@ void* Aio::writeCallback(void* args)
 {
     AioBack *abp;
     struct aiocb *cbp;
-    
+    struct kevent kev;
+
     cbp = (struct aiocb *)args;
     if(NULL != cbp)
     {
-        abp = abList + cbp->aio_fildes;
-        abp->readyDataLen = write(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
-        if (1 > abp->readyDataLen) {
+        abp = wrList + cbp->aio_fildes;
+        abp->dataLen = write(cbp->aio_fildes, (char*)cbp->aio_buf + abp->doneLen, abp->sumSize - abp->doneLen);
+        if (1 > abp->dataLen) {
             abp->error = errno;
+        }
+        abp->doneLen += abp->dataLen;
+        if (cbp->aio_nbytes > abp->doneLen)
+        {
+            // 未读完，再监听
+            EV_SET(&kev, cbp->aio_fildes, EVFILT_WRITE, EV_ADD | EV_ONESHOT, 0, 0, cbp);
+            kevent(kq, &kev, 1, NULL, 0, NULL);
+            return NULL;
         }
         // 执行回调
         cbp->aio_sigevent.sigev_notify_function(cbp->aio_sigevent.sigev_value);
@@ -154,19 +164,24 @@ int Aio::aioInit(struct aioinit * aip)
         return -1;
     }
 
-    abList = (AioBack *)malloc(sizeof(AioBack) * aip->aio_num);
-    if(NULL == abList) {
+    rdList = (AioBack *)malloc(sizeof(AioBack) * aip->aio_num);
+    if(NULL == rdList) {
+        perror("Can't create cblist");
+        return -1;
+    }
+    wrList = (AioBack *)malloc(sizeof(AioBack) * aip->aio_num);
+    if(NULL == wrList) {
         perror("Can't create cblist");
         return -1;
     }
 
-    // 初始化线程池
+    // 初始化工作线程池
     if (0 != ThreadPool::init(&(Aio::threadPool), aip->aio_threads, "0")) {
         perror("init thread pool faild");
         return -1;
     }
 
-    // 创建线程
+    // 创建监听线程
     if(0 != pthread_attr_init(&attr)) {
         perror("init thread attr faild");
         return -1;
@@ -194,19 +209,27 @@ int Aio::aioRead(struct aiocb *aiocbp)
 int Aio::aioWrite(struct aiocb *aiocbp)
 {
     struct kevent kev;
+    AioBack *abp;
 
+    abp = wrList + aiocbp->aio_fildes;
+    abp->doneLen = 0;
+    abp->sumSize = aiocbp->aio_nbytes;
     EV_SET(&kev, aiocbp->aio_fildes, EVFILT_WRITE, EV_ADD | EV_ONESHOT, 0, 0, aiocbp);
     return kevent(kq, &kev, 1, NULL, 0, NULL);
 }
 
 ssize_t Aio::aioReturn(struct aiocb *aiocbp)
 {
-    return abList[aiocbp->aio_fildes].readyDataLen;
+    if(LIO_READ == aiocbp->aio_lio_opcode)
+        return rdList[aiocbp->aio_fildes].dataLen;
+    return wrList[aiocbp->aio_fildes].dataLen;
 }
 
 int Aio::aioError(const struct aiocb *aiocbp)
 {
-    return abList[aiocbp->aio_fildes].error;
+    if(LIO_READ == aiocbp->aio_lio_opcode)
+        return rdList[aiocbp->aio_fildes].error;
+    return wrList[aiocbp->aio_fildes].error;
 }
 
 int Aio::aioCancel(int fd, struct aiocb *aiocbp)
