@@ -9,7 +9,7 @@
 #include "G/net/Gnet.h"
 
 
-SOCKET UDPsetup( unsigned short port )
+SOCKET UDPsetup(const unsigned short port)
 {
     int eno;
 	SOCKET sockfd;
@@ -33,27 +33,74 @@ SOCKET UDPsetup( unsigned short port )
     return sockfd;
 }
 
-SOCKET TCPsetup( unsigned short port )
+SOCKET TCPsetup(const unsigned short port)
+{
+    int eno;
+    SOCKET sockfd;
+    struct sockaddr_in my_addr;
+
+    my_addr.sin_family = AF_INET;
+    my_addr.sin_port = htons(port);
+    my_addr.sin_addr.s_addr = INADDR_ANY;
+    memset(my_addr.sin_zero, 0, sizeof(my_addr.sin_zero));
+
+    //创建套接字
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (-1 == sockfd)
+        return -1;
+
+    //绑定IP地址及端口
+    if (-1 == bind(sockfd, (struct sockaddr *) &my_addr, sizeof(struct sockaddr)))
+        goto EXIT_ERR;
+    
+    //开始监听本机port端口
+    if (-1 == listen(sockfd, 5))
+        goto EXIT_ERR;
+
+    return sockfd;
+
+EXIT_ERR:
+    eno = errno;
+    closesocket(sockfd);
+    errno = eno;
+    return -1;
+}
+
+SOCKET UNIXsetup(const char *path)
 {
     int eno;
 	SOCKET sockfd;
-    struct sockaddr_in my_addr;
+    struct sockaddr_un my_addr;
+    size_t path_len;
 
-	my_addr.sin_family = AF_INET;
-    my_addr.sin_port = htons(port);
-    my_addr.sin_addr.s_addr = INADDR_ANY;
-    memset(my_addr.sin_zero, 0, 8);
-//创建套接字
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if ( -1 == sockfd )
+    memset(&my_addr, 0, sizeof(my_addr));
+
+    // 检查长度
+    path_len = strlen(path);
+    if (path_len > (sizeof(my_addr.sun_path) - 1))
         return -1;
-//绑定IP地址及端口
-    if ( -1 == bind(sockfd, (struct sockaddr *) &my_addr, sizeof(struct sockaddr)) )
+
+	my_addr.sun_family = AF_LOCAL;
+    strncpy(my_addr.sun_path, path, path_len);
+
+    // 创建套接字
+    sockfd = socket(AF_LOCAL, SOCK_STREAM, 0);
+    if (-1 == sockfd)
+        return -1;
+
+    // 删除路径
+    unlink(path);
+
+    // 绑定路径
+    if (-1 == bind(sockfd, (struct sockaddr *) &my_addr, SUN_LEN(&my_addr)))
 		goto EXIT_ERR;
-//开始监听本机port端口
-    if ( -1 == listen(sockfd, 5) )
+
+    // 开始监听本机port端口
+    if (-1 == listen(sockfd, 5))
 		goto EXIT_ERR;
+
     return sockfd;
+
 EXIT_ERR:
     eno = errno;
     closesocket(sockfd);
