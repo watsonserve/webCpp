@@ -3,13 +3,17 @@
 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/un.h>
 
 typedef int SOCKET;
+
 #define closesocket(fd) close(fd)
 
-SOCKET UDPsetup( unsigned short port );
+SOCKET UDPsetup(const unsigned short port);
 
-SOCKET TCPsetup( unsigned short port );
+SOCKET TCPsetup(const unsigned short port);
+
+SOCKET UNIXsetup(const char *path);
 
 SOCKET TCPsetCli( char* HostAddr, unsigned short port );
 
