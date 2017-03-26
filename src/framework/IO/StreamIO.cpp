@@ -105,6 +105,11 @@ void StreamIO::cleanCache()
     cache.clear();
 }
 
+int StreamIO::isEmpty()
+{
+	return cache.empty() ? 1: 0;
+}
+
 std::string & StreamIO::gets(std::string &dst, LineEndFlag lineEnd)
 {
     ssize_t off, lineEndLength;
