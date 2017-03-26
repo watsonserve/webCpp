@@ -40,20 +40,23 @@ void StreamIO::recvd()
             inEvents->onError(this);
         }
         inEvents->onClose(this);
-        if(0 == closed)
+        if(0 == this->closed)
         {
             ::close(rd_acb.aio_fildes);
-            closed = 1;
+            this->closed = 1;
         }
         return;
     }
     cache.append((char*)(rd_acb.aio_buf), len); // 写入缓冲区
     inEvents->onData(this); // 通知用户
-    if(0 == closed)
+    if(0 == this->closed)
     {
 #ifdef debug
         puts("aio read next");
 #endif
+        if (FILE == this->type) {
+            rd_acb.aio_offset += len;
+        }
         Aio::aioRead(&rd_acb); // 下一次读取
     }
     // 此三者顺序不可变动，如果先调用Aio::aioRead会导致多线程同时读写cache
