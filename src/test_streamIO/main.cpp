@@ -23,7 +23,10 @@ public:
     virtual void onConnect(StreamIO *in) {};
     virtual void onData(StreamIO *in)
     {
-    	printf("%X %s\n", ++(this->num), in->gets(LF).c_str());
+	while(!in->isEmpty())
+	{
+            printf("%X %s\n", ++(this->num), in->gets(LF).c_str());
+	}
     };
     virtual void onError(StreamIO *in) {};
     virtual void onClose(StreamIO *in) {};
@@ -42,7 +45,7 @@ int main()
 	}
 	
 	StreamIO::init(&streamIO, &ioEvents, buf, BUFSIZ);
-	streamIO.setFd(fd, FILE);
+	streamIO.setFd(fd, G::FILE);
 	streamIO.listen();
 	sleep(1);
 	std::cout << std::endl << "over!\n";
