@@ -1,3 +1,6 @@
+# Project
+GHTTPd.xcodeproj/*
+
 # Compiled Object files
 *.slo
 *.lo
