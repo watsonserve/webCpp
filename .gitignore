@@ -3,6 +3,7 @@ GHTTPd.xcodeproj/*
 bin/*
 makefile
 */.DS_Store
+.DS_Store
 
 # Compiled Object files
 *.slo
