@@ -22,7 +22,7 @@ int GCookie::call(HTTPRequest *req, HTTPResponse *res)
 
 int logger(HTTPRequest *req, HTTPResponse *res)
 {
-    printf("log: %d %s\n", ((StreamIO*)(res->getSock()))->getFd(), req->get("path").c_str() );
+    printf("log: %s\n", req->_GET.get("path").c_str());
     return 0;
 }
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     dispatcher.init(max);
     //dispatcher.use(&parser);
     dispatcher.use(logger);
-    //dispatcher.use(&cookie);
+    dispatcher.use(&cookie);
     //dispatcher.use(&session);
     dispatcher.use(&routes);
     dispatcher.use(except);

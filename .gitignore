@@ -1,5 +1,8 @@
 # Project
 GHTTPd.xcodeproj/*
+bin/*
+makefile
+*/.DS_Store
 
 # Compiled Object files
 *.slo

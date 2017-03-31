@@ -46,6 +46,7 @@ namespace G {
         virtual void recvd();
         virtual void sent();
         virtual void cleanCache();
+        virtual int isEmpty();
         virtual std::string & gets(std::string &, LineEndFlag);
         virtual std::string gets(LineEndFlag);
         virtual std::string load(size_t len);
