@@ -62,7 +62,9 @@ void Input::listen()
     if(0 != Aio::aioRead(&rd_acb)) {
         err = errno;
         ::close(rd_acb.aio_fildes);
-        printf("aio %X\n", err);
+#ifdef debug
+        printf("aio %s\n", strerror(err));
+#endif
     }
     return;
 }

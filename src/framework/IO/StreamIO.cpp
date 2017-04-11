@@ -48,6 +48,9 @@ void StreamIO::recvd()
         return;
     }
     cache.append((char*)(rd_acb.aio_buf), len); // 写入缓冲区
+#ifdef debug
+    printf("cache-length: %lu\n", cache.length());
+#endif
     inEvents->onData(this); // 通知用户
     if(0 == this->closed)
     {
@@ -57,6 +60,9 @@ void StreamIO::recvd()
         if (FILE == this->type) {
             rd_acb.aio_offset += len;
         }
+#ifdef debug
+        printf("file-offset: %llu\n", rd_acb.aio_offset);
+#endif
         Aio::aioRead(&rd_acb); // 下一次读取
     }
     // 此三者顺序不可变动，如果先调用Aio::aioRead会导致多线程同时读写cache
