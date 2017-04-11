@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include <iostream>
+#include "G/Aio.hpp"
 #include "G/StreamIO.hpp"
 #include "G/IOHandle.hpp"
 #include "G/IOEvents.hpp"
@@ -20,9 +21,12 @@ public:
     	this->num = 0;
     };
     virtual ~Async() {};
-    virtual void onConnect(StreamIO *in) {};
+    virtual void onConnect(StreamIO *in) {
+        printf("get File");
+    };
     virtual void onData(StreamIO *in)
     {
+        printf("onData\n");
 	while(!in->isEmpty())
 	{
             printf("%X %s\n", ++(this->num), in->gets(LF).c_str());
@@ -38,6 +42,12 @@ int main()
 	char buf[BUFSIZ];
 	StreamIO streamIO;
 	Async ioEvents;
+	struct aioinit ai;
+
+	ai.aio_num = 8;
+	ai.aio_threads = 4;
+
+	Aio::aioInit(&ai);
 
 	fd = open("main.cpp", O_RDONLY);
 	if (-1 == fd) {
