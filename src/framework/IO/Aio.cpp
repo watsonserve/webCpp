@@ -110,7 +110,7 @@ void* Aio::readCallback(void* args)
     if(NULL != cbp)
     {
         abp = rdList + cbp->aio_fildes;
-        abp->dataLen = read(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
+        abp->dataLen = pread(cbp->aio_fildes, (char*)cbp->aio_buf, cbp->aio_nbytes, cbp->aio_offset);
         if (1 > abp->dataLen) {
             abp->error = errno;
         }
