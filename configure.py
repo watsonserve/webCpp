@@ -83,7 +83,7 @@ if '__main__' == __name__:
         'CFLAGS = -c -O3 -Wall',
         'CXXFLAGS = -c -O3 -Wall --std=c++11',
         'ARFLAGS = -crsv',
-        'SHAREFLAGS = -shared -fPIC -lc -rt -lpthread -lstdc++'
+        'SHAREFLAGS = -shared -fPIC -lc -lrt -lpthread -lstdc++'
     ]
     LIB_DIR = 'lib'
     OBJ_DIR = '/tmp/.objs'

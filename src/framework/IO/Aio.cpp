@@ -110,10 +110,11 @@ void* Aio::readCallback(void* args)
     if(NULL != cbp)
     {
         abp = rdList + cbp->aio_fildes;
-        abp->dataLen = read(cbp->aio_fildes, (char*)cbp->aio_buf + cbp->aio_offset, cbp->aio_nbytes);
+        abp->dataLen = pread(cbp->aio_fildes, (char*)cbp->aio_buf, cbp->aio_nbytes, cbp->aio_offset);
         if (1 > abp->dataLen) {
             abp->error = errno;
         }
+
         // 执行回调
         cbp->aio_sigevent.sigev_notify_function(cbp->aio_sigevent.sigev_value);
     }
@@ -138,11 +139,13 @@ void* Aio::writeCallback(void* args)
         abp->doneLen += abp->dataLen;
         if (cbp->aio_nbytes > abp->doneLen)
         {
+
             // 未读完，再监听
             EV_SET(&kev, cbp->aio_fildes, EVFILT_WRITE, EV_ADD | EV_ONESHOT, 0, 0, cbp);
             kevent(kq, &kev, 1, NULL, 0, NULL);
             return NULL;
         }
+
         // 执行回调
         cbp->aio_sigevent.sigev_notify_function(cbp->aio_sigevent.sigev_value);
     }
