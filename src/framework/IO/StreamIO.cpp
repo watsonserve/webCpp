@@ -40,19 +40,28 @@ void StreamIO::recvd()
             inEvents->onError(this);
         }
         inEvents->onClose(this);
-        if(0 == closed)
+        if(0 == this->closed)
         {
             ::close(rd_acb.aio_fildes);
-            closed = 1;
+            this->closed = 1;
         }
         return;
     }
     cache.append((char*)(rd_acb.aio_buf), len); // 写入缓冲区
+#ifdef debug
+    printf("cache-length: %lu\n", cache.length());
+#endif
     inEvents->onData(this); // 通知用户
-    if(0 == closed)
+    if(0 == this->closed)
     {
 #ifdef debug
         puts("aio read next");
+#endif
+        if (FILE == this->type) {
+            rd_acb.aio_offset += len;
+        }
+#ifdef debug
+        printf("file-offset: %llu\n", rd_acb.aio_offset);
 #endif
         Aio::aioRead(&rd_acb); // 下一次读取
     }
@@ -100,6 +109,11 @@ StreamIO* StreamIO::init(StreamIO *ioHandle, G::IOEvents *ioEvents, void* mem, s
 void StreamIO::cleanCache()
 {
     cache.clear();
+}
+
+int StreamIO::isEmpty()
+{
+	return cache.empty() ? 1: 0;
 }
 
 std::string & StreamIO::gets(std::string &dst, LineEndFlag lineEnd)
