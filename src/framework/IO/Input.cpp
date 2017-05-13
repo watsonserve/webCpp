@@ -45,6 +45,11 @@ Input* Input::init(Input *inHandle, G::IOEvents *ioEvents, void* mem, size_t mem
     return inHandle;
 }
 
+Input::Input()
+{
+    this->isA = "Input";
+}
+
 void Input::callback(union sigval inHandle)
 {
     ((StreamIO *)(inHandle.sival_ptr))->recvd();

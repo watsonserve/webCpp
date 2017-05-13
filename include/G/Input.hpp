@@ -27,6 +27,7 @@ namespace G {
         static size_t bufSize;
         static Input* init(Input *, IOEvents *, void* mem, size_t memLen);
 
+        Input();
         virtual void recvd() =0;
         virtual void listen();
     };

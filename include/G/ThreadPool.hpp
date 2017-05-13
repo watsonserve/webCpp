@@ -36,7 +36,7 @@ namespace G {
             Func function;
         } Message;
 
-        ThreadPool() {};
+        ThreadPool();
         virtual ~ThreadPool() {};
         static int init(ThreadPool *, int, std::string &);
         static int init(ThreadPool *, int, Func, std::string &);
