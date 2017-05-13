@@ -30,10 +30,14 @@ Input* Input::init(Input *inHandle, G::IOEvents *ioEvents, void* mem, size_t mem
     inHandle->rd_acb.aio_sigevent.sigev_notify_function = Input::callback;    // Function used for thread notification (SIGEV_THREAD)
 
     inHandle->inEvents = ioEvents;
-    if(NULL != mem && 0 == memLen)  // 分配未知内存
-        return NULL;
-    if(0 == memLen) // NULL == mem 未分配内存
-        memLen = StreamIO::bufSize; // 使用默认缓冲尺寸
+    if(0 == memLen)
+    {
+        if(NULL != mem)  // 分配未知内存
+            return NULL;
+
+        // NULL == mem 未分配内存 使用默认缓冲尺寸
+        memLen = StreamIO::bufSize;
+    }
     inHandle->rd_acb.aio_nbytes = memLen;
     if(NULL == mem) // 未分配内存
     {
@@ -58,7 +62,9 @@ void Input::listen()
     if(0 != Aio::aioRead(&rd_acb)) {
         err = errno;
         ::close(rd_acb.aio_fildes);
-        printf("aio %X\n", err);
+#ifdef debug
+        printf("aio %s\n", strerror(err));
+#endif
     }
     return;
 }
