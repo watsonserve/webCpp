@@ -38,6 +38,7 @@ void* ThreadPool::thFunction(void* args)
             perror("wait a sem");
             exit(1);
         }
+
         // 读消息队列
         message = (Message)(mq->front());
         if(NULL == message.function) {
@@ -59,11 +60,13 @@ int ThreadPool::init(ThreadPool * self, int max, Func function, const char *name
     std::string spid;
 
     self->size = max;
+
     // 初始化消息队列
     if (0 != MQ<Message>::init(&(self->mq))) {
         perror("init message queue faild");
         return -1;
     }
+
     // 初始化信号量
     pid = getpid();
     spid = "/tmp/";
@@ -126,11 +129,7 @@ int ThreadPool::call(void * args, Func function)
     message.args = args;
     message.function = function;
 
-    this->mq.push(message);     // 写消息队列
+     // 写消息队列
+    this->mq.push(message);
     return sem_post(pSem);
 }
-
-
-
-
-

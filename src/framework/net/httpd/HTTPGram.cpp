@@ -17,6 +17,11 @@ bool HTTPGram::isset(const std::string &key)
     return false;
 }
 
+void HTTPGram::setMap(const std::map<std::string, std::string> &data)
+{
+    this->data = data;
+}
+
 void HTTPGram::set(const std::string &key, const std::string &value)
 {
     data[key] = value;

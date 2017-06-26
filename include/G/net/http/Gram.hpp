@@ -15,6 +15,7 @@ namespace G {
         HTTPGram();
         virtual ~HTTPGram();
         virtual bool isset(const std::string &key);
+        virtual void setMap(const std::map<std::string, std::string> &);
         virtual void set(const std::string &key, const std::string &value);    /* left */
         virtual void set(const char *key, const std::string &value);
         virtual void set(const char *key, const char *value);
