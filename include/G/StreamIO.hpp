@@ -18,7 +18,7 @@
 
 namespace G {
 
-    extern class IOEvents;
+    class IOEvents;
 
     typedef enum lineEndFlag
     {

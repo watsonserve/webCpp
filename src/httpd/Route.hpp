@@ -9,8 +9,6 @@
 #ifndef Rotes_hpp
 #define Rotes_hpp
 
-#include "Route.hpp"
-
 #include "G/net/http/MiddleWare.hpp"
 
 using namespace G;

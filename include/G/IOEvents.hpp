@@ -13,7 +13,7 @@
 
 namespace G {
 
-    extern class StreamIO;
+    class StreamIO;
 
     class IOEvents : public Object
     {

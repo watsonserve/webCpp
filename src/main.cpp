@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+
 #include "G/webCpp.hpp"
+
 #include "httpd/RedisSession.hpp"
 #include "httpd/Parser.hpp"
 #include "httpd/Route.hpp"
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
     GCookie cookie;
     RedisSession session;
     //Parser parser;
-    TCPServer srv;
+    UNIXServer srv;
     Route routes;
     const int max = 512;
 
@@ -54,10 +56,8 @@ int main(int argc, char *argv[])
     dispatcher.use(except);
 
     srv.initPool(20, 64, 1);
-    srv.setPort(8800);
-    srv.setCert("");
-    srv.setKey("");
-    int ret = srv.service(&dispatcher, max, false);
+    srv.setPath("/run/webcpp.sock");
+    int ret = srv.service(&dispatcher, max);
     printf("%s\n", strerror(ret));
     return 0;
 }

@@ -10,11 +10,11 @@
 #
 ########################################
 
-ROOT = ../..
+ROOT = ..
 OBJ = /tmp/.objs
 INC = $(ROOT)/include
 LIB = $(ROOT)/lib
-SRC = $(ROOT)/src/httpd
+SRC = $(ROOT)/src
 BIN = $(ROOT)/bin
 
 CXX = g++
@@ -28,8 +28,8 @@ ARFLAGS = crsv
 
 WEBCPP = $(LIB)/libFramework.so
 
-$(BIN)/webcpp : $(OBJ)/httpd.o $(OBJ)/Route.o $(OBJ)/HTTPSession.o
-	$(CXX) $(LDFLAGS) $^ -o $@ -L $(LIB) -lFramework -ldl -lpthread -lc -lstdc++
+$(BIN)/webcpp : $(OBJ)/httpd.o $(OBJ)/Route.o $(OBJ)/HTTPSession.o $(LIB)/libNet.a $(LIB)/libIo.a $(LIB)/libLang.a $(LIB)/libThread.a $(LIB)/libException.a
+	$(CXX) $(LDFLAGS) $^ -o $@ -ldl -lpthread -lrt -lc -lstdc++ --std=c++11
 
 $(OBJ)/httpd.o : $(SRC)/main.cpp
 	$(CC) $(CFLAGS) $^ -o $@ -I $(INC)

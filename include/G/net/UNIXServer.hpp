@@ -13,11 +13,10 @@ namespace G {
         UNIXServer();
         UNIXServer(const char *path);
         UNIXServer(std::string &path);
-        virtual ~UNIXServer();
-        virtual int initPool(int, int, int);
+        virtual ~UNIXServer() override;
         int setPath(const char *);
         int setPath(std::string&);
-        virtual int service(G::IOEvents *, int max);
+        SOCKET initSocket() override;
     };
 
 }

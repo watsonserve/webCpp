@@ -70,7 +70,7 @@ int ThreadPool::init(ThreadPool * self, int max, Func function, const char *name
     // 初始化信号量
     pid = getpid();
     spid = "/tmp/";
-    spid += Number::stringify((long long)pid) + "_";
+    spid += std::to_string((long long)pid) + "_";
     spid += name;
     spid += ".sem";
     self->pSem = sem_open(spid.c_str(), O_CREAT, 0777, 0);

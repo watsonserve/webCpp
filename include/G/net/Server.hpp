@@ -3,6 +3,9 @@
 
 #include "G/Object.hpp"
 #include "G/StreamIO.hpp"
+extern "C" {
+    #include "G/net/Gnet.h"
+}
 
 namespace G {
 
@@ -15,8 +18,9 @@ namespace G {
     public:
         Server() {};
         virtual ~Server() {};
-        int setPort(int);
-        virtual int service(G::IOEvents *, int) =0;
+        virtual int initPool(int, int, int);
+        virtual SOCKET initSocket() =0;
+        virtual int service(G::IOEvents *, int);
     };
 
 }

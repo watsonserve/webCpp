@@ -15,8 +15,8 @@
 
 namespace G {
 
-    extern class Output;
-    extern class IOEvents;
+    class Output;
+    class IOEvents;
 
     typedef void (*OutBack)(Output *);
 
