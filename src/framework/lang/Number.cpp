@@ -41,23 +41,3 @@ unsigned long long Number::parseUInt64(const char * str)
     sscanf(str, "%llu", &ret);
     return ret;
 }
-
-std::string Number::stringify(long long src)
-{
-    char buf[24];
-    std::string ret;
-
-    sprintf(buf, "%lld", src);
-    ret = buf;
-    return ret;
-}
-
-std::string Number::stringify(unsigned long long src)
-{
-    char buf[24];
-    std::string ret;
-    
-    sprintf(buf, "%llu", src);
-    ret = buf;
-    return ret;
-}

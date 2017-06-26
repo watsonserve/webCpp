@@ -14,6 +14,11 @@ using namespace G;
 #include <pthread.h>
 #include <errno.h>
 
+ThreadPool::ThreadPool()
+{
+    this->isA = "ThreadPool";
+}
+
 // 默认线程
 void* ThreadPool::thFunction(void* args)
 {
