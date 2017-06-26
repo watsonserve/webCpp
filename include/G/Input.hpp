@@ -15,7 +15,7 @@
 
 namespace G {
 
-    class IOEvents;
+    extern class IOEvents;
 
     class Input : public Object
     {
