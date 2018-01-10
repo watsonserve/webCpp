@@ -15,9 +15,9 @@ SOCKET TCPsetup(const unsigned short port);
 
 SOCKET UNIXsetup(const char *path);
 
-SOCKET TCPsetCli( char* HostAddr, unsigned short port );
+SOCKET TCPsetCli(char* HostAddr, unsigned short port);
 
-short clean( SOCKET clinet_fd );
+short clean(SOCKET clinet_fd);
 
 void killwaitcd(SOCKET cd, char *msg, unsigned long len);
 
