@@ -6,7 +6,8 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 extern "C" {
-    #include <unistd.h>
+#include <unistd.h>
+#include <errno.h>
 }
 #include "G/net/Server.hpp"
 
