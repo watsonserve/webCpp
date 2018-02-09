@@ -28,13 +28,13 @@ void* ThreadPool::thFunction(void* args)
     ThreadPool *self;
 
     self = (ThreadPool *)args;
-    pSem = self->pSem;
+    pSem = &(self->pSem);
     mq = &(self->mq);
 
     while (1)
     {
         // 等待信号量
-        if(0 != sem_wait(pSem)) {
+        if(0 != wait_sem(pSem)) {
             perror("wait a sem");
             exit(1);
         }
@@ -51,13 +51,11 @@ void* ThreadPool::thFunction(void* args)
 }
 
 // 初始化
-int ThreadPool::init(ThreadPool * self, int max, Func function, const char *name)
+int ThreadPool::init(ThreadPool * self, int max, Func function)
 {
     int i;
-    pid_t pid;
-    pthread_attr_t attr;
+    // pthread_attr_t attr;
     pthread_t tid;
-    std::string spid;
 
     self->size = max;
 
@@ -68,26 +66,20 @@ int ThreadPool::init(ThreadPool * self, int max, Func function, const char *name
     }
 
     // 初始化信号量
-    pid = getpid();
-    spid = "/tmp/";
-    spid += std::to_string((long long)pid) + "_";
-    spid += name;
-    spid += ".sem";
-    self->pSem = sem_open(spid.c_str(), O_CREAT, 0777, 0);
-    if(NULL == self->pSem) {
+    if (0 != init_sem(&(self->pSem), 0, 0)) {
         perror("init named sem faild");
         return -1;
     }
 
     // 创建线程
-    if(0 != pthread_attr_init(&attr)) {
-        perror("init thread attr faild");
-        return -1;
-    }
+//    if(0 != pthread_attr_init(&attr)) {
+//        perror("init thread attr faild");
+//        return -1;
+//    }
 
     for(i = 0; i < max; i++)
     {
-        if(0 != pthread_create(&tid, &attr, function, self)) {
+        if(0 != pthread_create(&tid, NULL, function, self)) {
             perror("create a work thread faild");
             return -1;
         }
@@ -99,20 +91,10 @@ int ThreadPool::init(ThreadPool * self, int max, Func function, const char *name
     return 0;
 }
 
-int ThreadPool::init(ThreadPool * self, int max, Func function, std::string &name)
-{
-    return init(self, max, function, name.c_str());
-}
-
 // 默认线程池
-int ThreadPool::init(ThreadPool * self, int max, std::string &name)
+int ThreadPool::init(ThreadPool * self, int max)
 {
-    return ThreadPool::init(self, max, self->thFunction, name.c_str());
-}
-
-int ThreadPool::init(ThreadPool * self, int max, const char *name)
-{
-    return ThreadPool::init(self, max, self->thFunction, name);
+    return ThreadPool::init(self, max, self->thFunction);
 }
 
 // 向线程池委托任务
@@ -131,5 +113,5 @@ int ThreadPool::call(void * args, Func function)
 
      // 写消息队列
     this->mq.push(message);
-    return sem_post(pSem);
+    return post_sem(&this->pSem);
 }

@@ -9,8 +9,11 @@
 #ifndef ThreadPool_h
 #define ThreadPool_h
 
-#include <semaphore.h>
-#include <fcntl.h>
+extern "C"
+{
+    #include <fcntl.h>
+    #include "sem.h"
+}
 
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
 
@@ -23,7 +26,6 @@
 #include "G/MQ.hpp"
 
 namespace G {
-
 
     class ThreadPool : public Object
     {
@@ -38,10 +40,8 @@ namespace G {
 
         ThreadPool();
         virtual ~ThreadPool() {};
-        static int init(ThreadPool *, int, std::string &);
-        static int init(ThreadPool *, int, Func, std::string &);
-        static int init(ThreadPool *, int, const char *);
-        static int init(ThreadPool *, int, Func, const char *);
+        static int init(ThreadPool *, int);
+        static int init(ThreadPool *, int, Func);
         int call(void *);
         int call(void *, Func);
     private:
@@ -49,7 +49,7 @@ namespace G {
         static void* thFunction(void *);
     protected:
         MQ<Message> mq;
-        sem_t* pSem;
+        sem_t pSem;
     };
 }
 

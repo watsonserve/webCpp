@@ -42,7 +42,8 @@ int Aio::aioCancel(int fd, struct aiocb *aiocbp)
     return aio_cancel(fd, aiocbp);
 }
 
-#else
+#elif defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
@@ -72,7 +73,7 @@ void* Aio::listenEvnt(void * args)
     {
         // 获取可用事件
         nEvent = kevent(Aio::kq, NULL, 0, eventList, conf.aio_num, NULL);
-        for(i=0; i<nEvent; i++)
+        for(i = 0; i < nEvent; i++)
         {
             if (eventList[i].flags & EV_ERROR)  // 出错
             {
@@ -155,10 +156,9 @@ void* Aio::writeCallback(void* args)
 
 int Aio::aioInit(struct aioinit * aip)
 {
-    pthread_attr_t attr;
     pthread_t tid;
 
-    conf = *aip;
+    Aio::conf = *aip;
 
     // 准备注册内核事件
     Aio::kq = kqueue();
@@ -179,17 +179,13 @@ int Aio::aioInit(struct aioinit * aip)
     }
 
     // 初始化工作线程池
-    if (0 != ThreadPool::init(&(Aio::threadPool), aip->aio_threads, "0")) {
+    if (0 != ThreadPool::init(&(Aio::threadPool), aip->aio_threads)) {
         perror("init thread pool faild");
         return -1;
     }
 
     // 创建监听线程
-    if(0 != pthread_attr_init(&attr)) {
-        perror("init thread attr faild");
-        return -1;
-    }
-    if(0 != pthread_create(&tid, &attr, Aio::listenEvnt, NULL)) {
+    if(0 != pthread_create(&tid, NULL, Aio::listenEvnt, NULL)) {
         perror("create thread faild");
         return -1;
     }
