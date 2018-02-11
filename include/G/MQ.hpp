@@ -12,6 +12,7 @@
 extern "C" {
     #include <stdlib.h>
     #include <pthread.h>
+    #include "sem.h"
 }
 #include <queue>
 #include "G/Object.hpp"
@@ -22,42 +23,54 @@ namespace G {
     class MQ : public Object
     {
         std::queue<T> mQueue;
-        pthread_rwlock_t locker;
+        sem_t p_sem;
+
     public:
-        MQ() {};
+        MQ() {
+            this->p_sem = 0;
+        };
         virtual ~MQ()
         {
-            pthread_rwlock_destroy(&locker);
+            destroy_sem(&this->p_sem);
         };
 
         static int init(MQ *self)
         {
-            return pthread_rwlock_init(&(self->locker), NULL);
+            // 初始化信号量
+            if (0 != init_sem(&self->p_sem, 0, 0)) {
+                perror("init named sem faild");
+                return -1;
+            }
         };
 
-        void push(const T ele)
+        int push(const T ele)
         {
-            if(0 != pthread_rwlock_wrlock(&locker)) {
-                // todo
-                exit(1);
-            }
+            sem_t *p_sem;
+
+            p_sem = &this->p_sem;
             mQueue.push(ele);
-            pthread_rwlock_unlock(&locker);
+
+            // 等待信号量
+            return post_sem(p_sem);
         };
 
         T front()
         {
+            sem_t *p_sem;
             T ret;
-            
-            if(0 != pthread_rwlock_wrlock(&locker)) {
-                // todo
+
+            p_sem = &this->p_sem;
+
+            // 等待信号量
+            if(0 != wait_sem(p_sem)) {
+                perror("wait a sem");
                 exit(1);
             }
             if (!mQueue.empty()) {
                 ret = mQueue.front();
                 mQueue.pop();
             }
-            pthread_rwlock_unlock(&locker);
+
             // throw exception
             return ret;
         };
