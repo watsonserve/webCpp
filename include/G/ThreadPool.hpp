@@ -12,7 +12,6 @@
 extern "C"
 {
     #include <fcntl.h>
-    #include "sem.h"
 }
 
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
@@ -29,14 +28,14 @@ namespace G {
 
     class ThreadPool : public Object
     {
+        int size;
+        static void* thFunction(void *);
     public:
-        typedef void* (*Func)(void *);
-
-        typedef struct message
+        typedef struct
         {
             void * args;
             Func function;
-        } Message;
+        } message_t;
 
         ThreadPool();
         virtual ~ThreadPool() {};
@@ -44,12 +43,8 @@ namespace G {
         static int init(ThreadPool *, int, Func);
         int call(void *);
         int call(void *, Func);
-    private:
-        int size;
-        static void* thFunction(void *);
     protected:
-        MQ<Message> mq;
-        sem_t pSem;
+        MQ<message_t> mq;
     };
 }
 

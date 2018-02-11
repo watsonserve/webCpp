@@ -25,7 +25,7 @@ namespace G {
     public:
         static void callback(union sigval);
         static size_t bufSize;
-        static Input* init(Input *, IOEvents *, void* mem, size_t memLen);
+        static Input* init(Input *, IOEvents *, void*, size_t);
 
         Input();
         virtual void recvd() =0;

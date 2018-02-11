@@ -35,7 +35,7 @@ namespace G {
         IOEvents *ioEvents;
         size_t len;
     public:
-        static StreamIO* init(StreamIO *ioHandle, G::IOEvents *ioEvents, void* mem, size_t memLen);
+        static StreamIO* init(StreamIO *, G::IOEvents *, void*, size_t);
         StreamIO();
         virtual ~StreamIO() {};
 
@@ -49,10 +49,10 @@ namespace G {
         virtual int isEmpty();
         virtual std::string & gets(std::string &, LineEndFlag);
         virtual std::string gets(LineEndFlag);
-        virtual std::string load(size_t len);
+        virtual std::string load(size_t);
 
-        virtual void write(const char *, ssize_t, OutBack callback);
-        virtual void write(std::string &, OutBack callback);
+        virtual void write(const char *, ssize_t, Func);
+        virtual void write(std::string &, Func);
     };
 
 }

@@ -18,21 +18,19 @@ namespace G {
     class Output;
     class IOEvents;
 
-    typedef void (*OutBack)(Output *);
-
     class Output : public Object
     {
     protected:
         struct aiocb wr_acb;
         IOEvents *outEvents;
-        OutBack onComplete;
+        Func onComplete;
     public:
         static void callback(union sigval);
         static Output* init(Output *, IOEvents *);
 
         virtual void sent() =0;
-        virtual void write(const char *buf, ssize_t len, OutBack callback) =0;
-        virtual void write(std::string &, OutBack callback) =0;
+        virtual void write(const char *buf, ssize_t len, Func callback) =0;
+        virtual void write(std::string &, Func callback) =0;
     };
 }
 
