@@ -19,13 +19,15 @@ typedef dispatch_semaphore_t sem_t;
 int init_sem(sem_t*, int, int);
 int wait_sem(sem_t*);
 int post_sem(sem_t*);
+int destroy_sem(sem_t*);
 
 #else
 #include <semaphore.h>
 
-#define init_sem sem_init
-#define wait_sem sem_wait
-#define post_sem sem_post
+#define    init_sem    sem_init
+#define    wait_sem    sem_wait
+#define    post_sem    sem_post
+#define destroy_sem    sem_destroy;
 
 #endif
 

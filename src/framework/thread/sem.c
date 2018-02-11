@@ -36,4 +36,10 @@ int post_sem(sem_t *sem)
     return 0;
 }
 
+int destroy_sem(sem_t *sem)
+{
+    dispatch_release(*sem);
+    return 0;
+}
+
 #endif
