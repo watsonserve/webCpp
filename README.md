@@ -66,7 +66,10 @@ so
       |  |
       |  └─HTTPSession
       |
-      └─MiddleWare
+      ├─MiddleWare
+      |
+      └─Var
+      
 
 ### 使用方法
 参看main.cpp
