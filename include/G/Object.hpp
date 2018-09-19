@@ -22,7 +22,9 @@ namespace G {
         void getIsA(std::string &a);
         std::string getIsA();
     };
-    
+
+    typedef void* (*Func)(void *);
+
 }
 
 #endif /* _G_HPP_ */

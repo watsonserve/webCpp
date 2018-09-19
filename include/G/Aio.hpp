@@ -14,11 +14,18 @@ extern "C" {
 }
 #include "G/Object.hpp"
 
+#if defined(__linux__) || defined(__linux)
+#define __LINUX__
+#endif
+
+#if defined(__APPLE__) || defined(__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+#define __BSD__
+#endif
 
 /**
  *  UNIX or BSD
  */
-#if !defined (__linux__) && !defined(__linux)
+#ifndef __LINUX__
 
 #include "G/ThreadPool.hpp"
 
@@ -35,7 +42,7 @@ struct aioinit
 /**
  *  MAC or BSD
  */
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+#ifdef __BSD__
 
 #include <sys/types.h>
 #include <sys/event.h>
@@ -62,7 +69,7 @@ namespace G {
     public:
 
     	// MAC or BSD
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+#ifdef __BSD__
         static int kq;
         static AioBack *rdList;
         static AioBack *wrList;
@@ -73,7 +80,7 @@ namespace G {
         static ThreadPool threadPool;
 
         // UNIX
-#elif !defined (__linux__) && !defined(__linux)
+#elif !defined(__LINUX__)
         static int pfd;
 
         // linux

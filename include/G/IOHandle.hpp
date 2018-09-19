@@ -26,6 +26,7 @@ namespace G {
 
     class IOHandle: public Object
     {
+        void *context;
     protected:
         HandleType type;
     public:

@@ -8,23 +8,23 @@
 
 namespace G {
 
-class HTTPDispatcher : public IOEvents
-{
-    std::list<G::MiddleHandle> process;
-    HTTPRequest *requests;
-    HTTPResponse *responses;
-public:
-    HTTPDispatcher();
-    virtual ~HTTPDispatcher();
-    virtual int init(int max);
-    virtual void onConnect(StreamIO *) {};
-    virtual void onData(StreamIO *);
-    virtual void onComplete(StreamIO *) {};
-    virtual void onError(StreamIO *);
-    virtual void onClose(StreamIO *);
-    virtual int use(G::MiddleWare* middleware);
-    virtual int use(G::MiddleWareFunc middleware);
-};
+    class HTTPDispatcher : public IOEvents
+    {
+        std::list<G::MiddleHandle> process;
+        HTTPRequest *requests;
+        HTTPResponse *responses;
+    public:
+        HTTPDispatcher();
+        virtual ~HTTPDispatcher();
+        virtual int init(int max);
+        virtual void onConnect(StreamIO *) {};
+        virtual void onData(StreamIO *);
+        virtual void onComplete(StreamIO *) {};
+        virtual void onError(StreamIO *);
+        virtual void onClose(StreamIO *);
+        virtual int use(G::MiddleWare* middleware);
+        virtual int use(G::MiddleWareFunc middleware);
+    };
 
 }
 

@@ -24,7 +24,7 @@ using namespace G;
 void StreamIO::sent()
 {
     if(NULL != onComplete)
-        onComplete(this);
+        this->onComplete(this);
     return;
 }
 
@@ -71,7 +71,7 @@ void StreamIO::recvd()
 
 StreamIO::StreamIO()
 {
-    onComplete = NULL;
+    this->onComplete = NULL;
     return;
 }
 
@@ -167,20 +167,20 @@ std::string StreamIO::load(size_t len = 0)
     return ret;
 }
 
-void StreamIO::write(std::string &data, OutBack callback)
+void StreamIO::write(std::string &data, Func callback)
 {
     this->write(data.c_str(), data.length(), callback);
     return;
 }
 
-void StreamIO::write(const char *buf, ssize_t len, OutBack callback)
+void StreamIO::write(const char *buf, ssize_t len, Func callback)
 {
     int err;
 
     wr_acb.aio_buf = (void*)buf;
     wr_acb.aio_nbytes = len;
-    onComplete = callback;
-    if( 0 != Aio::aioWrite(&wr_acb)) {
+    this->onComplete = callback;
+    if(0 != Aio::aioWrite(&wr_acb)) {
         err = errno;
         this->close();
         printf("ERROR aio write %X: %s\n", err, strerror(err));

@@ -92,7 +92,7 @@ SOCKET UNIXsetup(const char *path)
     unlink(path);
 
     // 绑定路径
-    if (-1 == bind(sockfd, (struct sockaddr *) &my_addr, SUN_LEN(&my_addr)))
+    if (-1 == bind(sockfd, (struct sockaddr *) &my_addr, (unsigned int)SUN_LEN(&my_addr)))
 		goto EXIT_ERR;
 
     // 开始监听本机port端口
