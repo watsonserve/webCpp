@@ -27,7 +27,7 @@ ThreadPool Aio::threadPool;
 void* Aio::listenEvnt(void * args)
 {
     struct kevent * eventList;
-    ThreadPool::Func way;
+    Func way;
     int i, nEvent;
 
     // 可用事件列表

@@ -6,8 +6,8 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
-#ifndef ThreadPool_h
-#define ThreadPool_h
+#ifndef _ThreadPool_HPP_
+#define _ThreadPool_HPP_
 
 extern "C"
 {
@@ -48,4 +48,4 @@ namespace G {
     };
 }
 
-#endif /* ThreadPool_h */
+#endif /* _ThreadPool_HPP_ */

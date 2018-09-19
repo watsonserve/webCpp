@@ -17,10 +17,11 @@ def makeout(src_file):
     return [obj_file, '%s : $(SRC)/%s\n\t%s $^ -o $@ -I $(INC)\n' % (obj_file, src_file, a_relation)]
 
 class Makefile:
-    def __init__(self, prefix = ''):
+    def __init__(self, prefix = '', dirTree = {}):
+        self.framework = 'src/framework'
         self.root = os.path.split(os.path.realpath(__file__))[0]
         self.prefix = prefix
-        self.framework = 'src/framework'
+        self.dirTree = dirTree
 
     def header(self):
         shareflags = 'SHAREFLAGS = -shared -fPIC -lc -lpthread -lstdc++'
@@ -96,22 +97,44 @@ class Makefile:
         ])
 
     def clean(self):
-        return '\n'.join([
-            'clean :',
-            '\trm -rf $(DIST)/*',
-            '\n',
-        ])
+        foo = map(lambda word: '\trm -rf $(DIST)/' + word.name, self.dirTree.childs)
+        return '\n'.join(['clean :'] + foo + ['\n'])
 
     def __str__(self):
         return '\n'.join([self.header(), self.target(), self.clean(), self.install()])
 
+# 中序遍历目录树，创建目录
+def makedirs(dirTree, path = ''):
+    if '' != path:
+        path += '/'
+
+    absPath = path + dirTree.name
+
+    if not os.path.exists(absPath):
+        os.makedirs(absPath)
+
+    for item in dirTree.childs:
+        makedirs(item, absPath)
+
+class DirTreeNode:
+    def __init__(self, name = ''):
+        self.childs = []
+        self.name = name
+
+    def addChild(self, name = ''):
+        childNode = DirTreeNode(name)
+        self.childs.append(childNode)
+
 def main():
-    makefile = Makefile('')
+    distDir = DirTreeNode('dist')
+    distDir.addChild('objs')
+    distDir.addChild('asms')
+    distDir.addChild('lib')
+
+    makefile = Makefile('', distDir)
 
     # 创建存放目标文件的目录
-    for item in ['dist', 'dist/objs', 'dist/asms', 'dist/lib']:
-        if not os.path.exists(item):
-            os.makedirs(item)
+    makedirs(distDir)
 
     fd = open('makefile', 'w+')
     fd.write('%s' % makefile)
