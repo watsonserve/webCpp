@@ -1,9 +1,9 @@
 # Project
-GHTTPd.xcodeproj/*
-bin/*
+GHTTPd.xcodeproj
+bin
 makefile
-*/.DS_Store
 .DS_Store
+.vs
 
 # Compiled Object files
 *.slo
