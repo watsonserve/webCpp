@@ -8,47 +8,15 @@
 
 #include "G/Aio.hpp"
 
-using namespace G;
-
-#if defined (__linux__) || defined(__linux)
-int Aio::aioInit(struct aioinit * aip)
-{
-    aio_init(aip);
-    return 0;
-}
-
-int Aio::aioRead(struct aiocb *aiocbp)
-{
-    return aio_read(aiocbp);
-}
-
-int Aio::aioWrite(struct aiocb *aiocbp)
-{
-    return aio_write(aiocbp);
-}
-
-ssize_t Aio::aioReturn(struct aiocb *aiocbp)
-{
-    return aio_return(aiocbp);
-}
-
-int Aio::aioError(const struct aiocb *aiocbp)
-{
-    return aio_error(aiocbp);
-}
-
-int Aio::aioCancel(int fd, struct aiocb *aiocbp)
-{
-    return aio_cancel(fd, aiocbp);
-}
-
-#elif defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
 
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
 #include "G/ThreadPool.hpp"
+
+using namespace G;
 
 int Aio::kq;
 AioBack * Aio::rdList;
