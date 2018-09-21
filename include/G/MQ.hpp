@@ -6,10 +6,11 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
-#ifndef MQ_h
-#define MQ_h
+#ifndef _MQ_H_
+#define _MQ_H_
 
 extern "C" {
+    #include <string.h>
     #include <stdlib.h>
     #include <pthread.h>
     #include "sem.h"
@@ -27,7 +28,7 @@ namespace G {
 
     public:
         MQ() {
-            this->p_sem = 0;
+            memset(&this->p_sem, 0, sizeof(sem_t));
         };
         virtual ~MQ()
         {
@@ -41,6 +42,7 @@ namespace G {
                 perror("init named sem faild");
                 return -1;
             }
+            return 0;
         };
 
         int push(const T ele)

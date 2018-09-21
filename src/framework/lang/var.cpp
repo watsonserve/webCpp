@@ -31,7 +31,7 @@ Var::Var(const std::vector<Var> &foo)
 
 Var::Var(const std::map<std::string, Var> &foo)
 {
-    this->type = Object;
+    this->type = var_type_t::Object;
     this->v_dict = foo;
 }
 
@@ -114,7 +114,7 @@ std::string Var::toString()
             ret = ret.erase(ret.length() - 2, 2);
             ret += "]";
             return ret;
-        case Object:
+        case var_type_t::Object:
             //return this->v_dict.keys();
         default:
             return ret;

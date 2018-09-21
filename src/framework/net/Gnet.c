@@ -78,7 +78,9 @@ SOCKET UNIXsetup(const char *path)
     // 检查长度
     path_len = strlen(path);
     if (path_len > (sizeof(my_addr.sun_path) - 1))
+    {
         return -1;
+    }
 
 	my_addr.sun_family = AF_LOCAL;
     strncpy(my_addr.sun_path, path, path_len);
@@ -86,7 +88,9 @@ SOCKET UNIXsetup(const char *path)
     // 创建套接字
     sockfd = socket(AF_LOCAL, SOCK_STREAM, 0);
     if (-1 == sockfd)
+    {
         return -1;
+    }
 
     // 删除路径
     unlink(path);

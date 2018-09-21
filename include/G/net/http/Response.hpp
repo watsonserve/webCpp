@@ -25,7 +25,7 @@ namespace G {
         virtual void setContent(std::string &content);
         virtual void setContent(const char *content);
         virtual int send();
-        virtual int send(OutBack);
+        virtual int send(G::Func);
         virtual int end();
     };
 

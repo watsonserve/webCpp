@@ -70,6 +70,7 @@ void Input::listen()
 #ifdef debug
         printf("aio %s\n", strerror(err));
 #endif
+        errno = err;
     }
     return;
 }

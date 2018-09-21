@@ -137,7 +137,7 @@ std::string HTTPResponse::getHeaders()
     return ret;
 }
 
-int HTTPResponse::send(OutBack callback)
+int HTTPResponse::send(G::Func callback)
 {
     std::string gram;
     this->set("Content-Length", this->content.length());
@@ -159,5 +159,5 @@ void endSent(Output *fh)
 
 int HTTPResponse::end()
 {
-    return send(endSent);
+    return send((G::Func)endSent);
 }

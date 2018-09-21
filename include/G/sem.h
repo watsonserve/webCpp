@@ -27,7 +27,7 @@ int destroy_sem(sem_t*);
 #define    init_sem    sem_init
 #define    wait_sem    sem_wait
 #define    post_sem    sem_post
-#define destroy_sem    sem_destroy;
+#define destroy_sem    sem_destroy
 
 #endif
 

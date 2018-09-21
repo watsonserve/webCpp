@@ -59,7 +59,9 @@ class Makefile:
 
         for parent, dirnames, filenames in os.walk(self.framework):
             if parent == self.framework:
+                # 一级目录
                 for dirname in dirnames:
+                    # 目标静态库
                     aFile = '$(LIB)/lib' + dirname.capitalize() + '.a'
                     aoRelations[aFile] = []
                     osRelations[aFile] = []
@@ -85,7 +87,10 @@ class Makefile:
         # for dep in share_dep:
         #     so += share_dep[dep] + '\n'
         for aLib in aoRelations:
-            so += '%s : %s\n\t$(AR) $(ARFLAGS) $@ $^\n\n%s\n\n' % (aLib, ' '.join(aoRelations[aLib]), '\n'.join(osRelations[aLib]))
+            aLibRelations = aoRelations[aLib]
+            if 0 == len(aLibRelations):
+                continue
+            so += '%s : %s\n\t$(AR) $(ARFLAGS) $@ $^\n\n%s\n\n' % (aLib, ' '.join(aLibRelations), '\n'.join(osRelations[aLib]))
         return so
     
     def install(self):
@@ -97,8 +102,8 @@ class Makefile:
         ])
 
     def clean(self):
-        foo = map(lambda word: '\trm -rf $(DIST)/' + word.name, self.dirTree.childs)
-        return '\n'.join(['clean :'] + foo + ['\n'])
+        foo = map(lambda word: '\trm -rf $(DIST)/' + word.name + '/*', self.dirTree.childs)
+        return '\n'.join(['clean :'] + list(foo) + ['\n'])
 
     def __str__(self):
         return '\n'.join([self.header(), self.target(), self.clean(), self.install()])

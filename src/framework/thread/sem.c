@@ -6,8 +6,8 @@
 //  Copyright © 2018 watsserve. All rights reserved.
 //
 
-#include "sem.h"
 #if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+#include "sem.h"
 
 int init_sem(sem_t *sem, int pshared, int value)
 {
