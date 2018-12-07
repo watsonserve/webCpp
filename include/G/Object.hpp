@@ -8,6 +8,7 @@
 #ifndef _G_HPP_
 #define _G_HPP_
 
+#include "stdafx.h"
 #include <string>
 
 namespace G {

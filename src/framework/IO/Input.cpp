@@ -72,5 +72,4 @@ void Input::listen()
 #endif
         errno = err;
     }
-    return;
 }
