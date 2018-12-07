@@ -4,6 +4,7 @@ bin
 makefile
 .DS_Store
 .vs
+.vscode
 
 # Compiled Object files
 *.slo
