@@ -26,7 +26,7 @@ int HTTPDispatcher::init(int max)
 {
     requests = new HTTPRequest[max];
     responses = new HTTPResponse[max];
-    if(NULL == requests || NULL == responses)
+    if(nullptr == requests || nullptr == responses)
         return -1;
     return 0;
 }

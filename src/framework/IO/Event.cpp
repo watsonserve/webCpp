@@ -6,6 +6,17 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
+// struct kevent {
+//     uintptr_t       ident;          // 文件描述符
+//     int16_t         filter;         /* filter for event */
+//     uint16_t        flags;          // general flags
+//                                        EV_ADD, EV_ENABLE, EV_DISABLE, EV_DELETE,
+//                                        EV_RECEIPT, EV_ONESHOT, EV_CLEAR, EV_EOF, EV_OOBAND, EV_ERRO,
+//     uint32_t        fflags;         /* filter-specific flags */
+//     intptr_t        data;           /* filter-specific data */
+//     void            *udata;         /* opaque user data identifier */
+// };
+
 #include "G/Event.hpp"
 
 #ifdef __BSD__
@@ -18,8 +29,20 @@
 
 using namespace G;
 
-int Event::init(Event &self)
+EventListener::EventListener()
 {
+    this->isA = "EventListener";
+    this->epfd = -1;
+}
+
+int EventListener::init(EventListener &self, ThreadPool * tpool)
+{
+    if (nullptr == tpool) {
+        perror("Can't no thread pool");
+        return -1;
+    }
+    self.tpool = tpool;
+
     // 准备注册内核事件
     self.epfd = kqueue();
     if (-1 == self.epfd) {
@@ -30,23 +53,25 @@ int Event::init(Event &self)
     return 0;
 }
 
-void* Event::listen(void * args)
+void EventListener::listen(int fd_num)
 {
-    struct kevent * eventList;
-    Func way;
+    struct kevent *eventList;
     int i, nEvent;
+    exeable_t *udata;
+    ThreadPool *tpool;
+    tpool = this->tpool;
 
     // 可用事件列表
-    eventList = (struct kevent *)malloc(sizeof(struct kevent) * conf.aio_num);
-    if (NULL == eventList) {
+    eventList = (struct kevent *)malloc(sizeof(struct kevent) * fd_num);
+    if (nullptr == eventList) {
         perror("Can't create event list");
         exit(1);
     }
-    
+
     while (1)
     {
         // 获取可用事件
-        nEvent = kevent(Aio::kq, NULL, 0, eventList, conf.aio_num, NULL);
+        nEvent = kevent(this->epfd, nullptr, 0, eventList, fd_num, nullptr);
         for(i = 0; i < nEvent; i++)
         {
             if (eventList[i].flags & EV_ERROR)  // 出错
@@ -54,26 +79,16 @@ void* Event::listen(void * args)
                 close((int)(eventList[i].ident));
                 continue;
             }
-            switch (eventList[i].filter)
-            {
-                case EVFILT_READ:
-                    way = Aio::readCallback;
-                    break;
-                case EVFILT_WRITE:
-                    way = Aio::writeCallback;
-                    break;
-                default:
-                    perror("not read or write event");
-                    exit(1);
-            }
-            if (-1 == threadPool.call(eventList[i].udata, way)) {
+
+            udata = (G::exeable_t *)eventList[i].udata;
+            if (-1 == tpool->call(*udata)) {
                 perror("request thread pool");
                 exit(1);
             }
         }
     }
 
-    return NULL;
+    return;
 }
 
 #endif

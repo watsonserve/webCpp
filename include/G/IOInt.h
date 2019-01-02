@@ -9,8 +9,6 @@
 #ifndef _IOINT_H_
 #define _IOINT_H_
 
-#include "stdafx.h"
-
 static unsigned long epfd;
 
 int IOInt(struct aioinit * aip);
