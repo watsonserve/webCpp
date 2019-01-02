@@ -5,9 +5,7 @@
 //  Created by wangxingzhuo on 09/02/2018.
 //  Copyright © 2018 watsserve. All rights reserved.
 //
-
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
-#include "sem.h"
+#include "G/sem.h"
 
 int init_sem(sem_t *sem, int pshared, int value)
 {
@@ -41,5 +39,3 @@ int destroy_sem(sem_t *sem)
     dispatch_release(*sem);
     return 0;
 }
-
-#endif
