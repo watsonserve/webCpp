@@ -29,7 +29,7 @@ void* ThreadPool::thFunction(void* args)
     {
         // 读消息队列
         message = (exeable_t)(mq.front());
-        if(NULL == message.function) {
+        if(nullptr == message.function) {
             continue;
         }
 
@@ -37,7 +37,7 @@ void* ThreadPool::thFunction(void* args)
         message.function(message.args);
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // 初始化
@@ -62,7 +62,7 @@ int ThreadPool::init(ThreadPool &self, int max)
         #else
             tid ^= tid;
         #endif
-        if(0 != pthread_create(&tid, NULL, self.thFunction, &self)) {
+        if(0 != pthread_create(&tid, nullptr, self.thFunction, &self)) {
             perror("create a work thread faild");
             return -1;
         }
