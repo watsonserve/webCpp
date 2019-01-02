@@ -27,7 +27,7 @@ TCPServer:: ~TCPServer() {}
 
 int TCPServer::setCert(const char *certFile)
 {
-    if (NULL == certFile)
+    if (nullptr == certFile)
     {
         return -1;
     }
@@ -36,7 +36,7 @@ int TCPServer::setCert(const char *certFile)
 
 int TCPServer::setKey(const char *keyFile)
 {
-    if (NULL == keyFile)
+    if (nullptr == keyFile)
     {
         return -1;
     }

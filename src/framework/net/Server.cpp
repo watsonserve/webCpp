@@ -43,14 +43,14 @@ int Server::service(IOEvents *dispatcher, int max)
 
     // 内存池
     mem = (char*)malloc(max * BUFSIZ);
-    if(NULL == mem) {
+    if(nullptr == mem) {
         perror("alloc buffer");
         return -1;
     }
 
     // io句柄池
     ioHandles = new StreamIO[max];
-    if(NULL == ioHandles) {
+    if(nullptr == ioHandles) {
         perror("alloc IO handles");
         return -1;
     }
@@ -58,7 +58,7 @@ int Server::service(IOEvents *dispatcher, int max)
     // io句柄绑定缓存区
     for(i = 0; i < max; i++)
     {
-        if( NULL == StreamIO::init(ioHandles + i, dispatcher, mem + (i * BUFSIZ), BUFSIZ))
+        if( nullptr == StreamIO::init(ioHandles + i, dispatcher, mem + (i * BUFSIZ), BUFSIZ))
             exit(1);
     }
 
@@ -108,7 +108,7 @@ int Server::service(IOEvents *dispatcher, int max)
     }
 
     fds = (struct pollfd *)malloc(max);
-    if(NULL == fds)
+    if(nullptr == fds)
     {
         perror("Can't create socket");
         return -1;
