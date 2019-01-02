@@ -149,7 +149,7 @@ int HTTPResponse::send(G::Func callback)
 
 int HTTPResponse::send()
 {
-    return send(NULL);
+    return send(nullptr);
 }
 
 void endSent(Output *fh)

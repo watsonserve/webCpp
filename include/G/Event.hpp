@@ -9,8 +9,8 @@
 #ifndef _EVENT_HPP_
 #define _EVENT_HPP_
 
-#include "stdafx.h"
 #include "G/Object.hpp"
+#include <string>
 
 #ifdef __BSD__
 
@@ -22,15 +22,15 @@
 
 namespace G {
 
-    class Event : public Object
+    class EventListener : Object
     {
         int epfd;
+        ThreadPool * tpool;
+        EventListener();
     public:
-        Event() {};
-        static int init(Event &self);
-        virtual void set() =0;
-        virtual void listen() =0;
-        virtual ~Event() {};
+        static int init(EventListener &, ThreadPool *);
+        void listen(int);
+        virtual ~EventListener() {};
     };
 
 }

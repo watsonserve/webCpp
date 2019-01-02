@@ -32,18 +32,18 @@ Input* Input::init(Input *inHandle, G::IOEvents *ioEvents, void* mem, size_t mem
     inHandle->inEvents = ioEvents;
     if(0 == memLen)
     {
-        if(NULL != mem)  // 分配未知内存
-            return NULL;
+        if(nullptr != mem)  // 分配未知内存
+            return nullptr;
 
-        // NULL == mem 未分配内存 使用默认缓冲尺寸
+        // nullptr == mem 未分配内存 使用默认缓冲尺寸
         memLen = StreamIO::bufSize;
     }
     inHandle->rd_acb.aio_nbytes = memLen;
-    if(NULL == mem) // 未分配内存
+    if(nullptr == mem) // 未分配内存
     {
         mem = malloc(inHandle->rd_acb.aio_nbytes);
-        if(NULL == mem)
-            return NULL;
+        if(nullptr == mem)
+            return nullptr;
     }
     inHandle->rd_acb.aio_buf = mem;
     return inHandle;

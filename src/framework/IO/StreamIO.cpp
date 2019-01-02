@@ -23,7 +23,7 @@ using namespace G;
 
 void StreamIO::sent()
 {
-    if(NULL != onComplete)
+    if(nullptr != onComplete)
         this->onComplete(this);
     return;
 }
@@ -71,7 +71,7 @@ void StreamIO::recvd()
 
 StreamIO::StreamIO()
 {
-    this->onComplete = NULL;
+    this->onComplete = nullptr;
     return;
 }
 

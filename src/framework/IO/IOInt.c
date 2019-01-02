@@ -30,7 +30,7 @@ void* listenEvent(void * args)
 
     // 可用事件列表
     eventList = (struct kevent *)malloc(sizeof(struct kevent) * eventCnt);
-    if (NULL == eventList) {
+    if (nullptr == eventList) {
         perror("Can't create event list");
         exit(1);
     }
@@ -38,7 +38,7 @@ void* listenEvent(void * args)
     while (1)
     {
         // 获取可用事件
-        nEvent = kevent(epfd, NULL, 0, eventList, eventCnt, NULL);
+        nEvent = kevent(epfd, nullptr, 0, eventList, eventCnt, nullptr);
         for (i = 0; i < nEvent; i++)
         {
             if (eventList[i].flags & EV_ERROR)  // 出错
@@ -72,7 +72,7 @@ void* listenEvent(void * args)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void* Aio::readCallback(void* args)
@@ -81,7 +81,7 @@ void* Aio::readCallback(void* args)
     struct aiocb *cbp;
 
     cbp = (struct aiocb *)args;
-    if(NULL != cbp)
+    if(nullptr != cbp)
     {
         abp = rdList + cbp->aio_fildes;
         abp->dataLen = pread(cbp->aio_fildes, (char*)cbp->aio_buf, cbp->aio_nbytes, cbp->aio_offset);
@@ -93,7 +93,7 @@ void* Aio::readCallback(void* args)
         cbp->aio_sigevent.sigev_notify_function(cbp->aio_sigevent.sigev_value);
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void* Aio::writeCallback(void* args)
@@ -103,7 +103,7 @@ void* Aio::writeCallback(void* args)
     struct kevent kev;
 
     cbp = (struct aiocb *)args;
-    if(NULL != cbp)
+    if(nullptr != cbp)
     {
         abp = wrList + cbp->aio_fildes;
         abp->dataLen = write(cbp->aio_fildes, (char*)cbp->aio_buf + abp->doneLen, abp->sumSize - abp->doneLen);
@@ -116,15 +116,15 @@ void* Aio::writeCallback(void* args)
 
             // 未读完，再监听
             EV_SET(&kev, cbp->aio_fildes, EVFILT_WRITE, EV_ADD | EV_ONESHOT, 0, 0, cbp);
-            kevent(kq, &kev, 1, NULL, 0, NULL);
-            return NULL;
+            kevent(kq, &kev, 1, nullptr, 0, nullptr);
+            return nullptr;
         }
 
         // 执行回调
         cbp->aio_sigevent.sigev_notify_function(cbp->aio_sigevent.sigev_value);
     }
     
-    return NULL;
+    return nullptr;
 }
 
 int Aio::aioInit(struct aioinit * aip)
@@ -141,12 +141,12 @@ int Aio::aioInit(struct aioinit * aip)
     }
 
     rdList = (AioBack *)malloc(sizeof(AioBack) * aip->aio_num);
-    if(NULL == rdList) {
+    if(nullptr == rdList) {
         perror("Can't create cblist");
         return -1;
     }
     wrList = (AioBack *)malloc(sizeof(AioBack) * aip->aio_num);
-    if(NULL == wrList) {
+    if(nullptr == wrList) {
         perror("Can't create cblist");
         return -1;
     }
@@ -158,7 +158,7 @@ int Aio::aioInit(struct aioinit * aip)
     }
 
     // 创建监听线程
-    if(0 != pthread_create(&tid, NULL, Aio::listenEvnt, NULL)) {
+    if(0 != pthread_create(&tid, nullptr, Aio::listenEvnt, nullptr)) {
         perror("create thread faild");
         return -1;
     }
@@ -175,7 +175,7 @@ int Aio::aioRead(struct aiocb *aiocbp)
     struct kevent kev;
 
     EV_SET(&kev, aiocbp->aio_fildes, EVFILT_READ, EV_ADD | EV_ONESHOT, 0, 0, aiocbp);
-    return kevent(kq, &kev, 1, NULL, 0, NULL);
+    return kevent(kq, &kev, 1, nullptr, 0, nullptr);
 }
 
 int Aio::aioWrite(struct aiocb *aiocbp)
@@ -187,7 +187,7 @@ int Aio::aioWrite(struct aiocb *aiocbp)
     abp->doneLen = 0;
     abp->sumSize = aiocbp->aio_nbytes;
     EV_SET(&kev, aiocbp->aio_fildes, EVFILT_WRITE, EV_ADD | EV_ONESHOT, 0, 0, aiocbp);
-    return kevent(kq, &kev, 1, NULL, 0, NULL);
+    return kevent(kq, &kev, 1, nullptr, 0, nullptr);
 }
 
 ssize_t Aio::aioReturn(struct aiocb *aiocbp)
