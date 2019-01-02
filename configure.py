@@ -83,14 +83,19 @@ class Makefile:
                     aoRelations[aFile].append(osr[0])
                     osRelations[aFile].append(osr[1])
 
-        so = '$(LIB)/libFramework.so : %s\n\t$(CXX) $(SHAREFLAGS) -o $@ $^\n\n\n' % (' '.join(aoRelations))
         # for dep in share_dep:
         #     so += share_dep[dep] + '\n'
+        alibSegment = ''
+        aLibs = []
         for aLib in aoRelations:
             aLibRelations = aoRelations[aLib]
             if 0 == len(aLibRelations):
+                print("WARNING: " + aLib + " has no file.")
                 continue
-            so += '%s : %s\n\t$(AR) $(ARFLAGS) $@ $^\n\n%s\n\n' % (aLib, ' '.join(aLibRelations), '\n'.join(osRelations[aLib]))
+            aLibs.append(aLib)
+            alibSegment += '%s : %s\n\t$(AR) $(ARFLAGS) $@ $^\n\n%s\n\n' % (aLib, ' '.join(aLibRelations), '\n'.join(osRelations[aLib]))
+
+        so = '$(LIB)/libFramework.so : %s\n\t$(CXX) $(SHAREFLAGS) -o $@ $^\n\n\n' % (' '.join(aLibs)) + alibSegment
         return so
     
     def install(self):

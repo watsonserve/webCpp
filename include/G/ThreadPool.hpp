@@ -14,37 +14,31 @@ extern "C"
     #include <fcntl.h>
 }
 
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
-
-#else
-#include <pthread.h>
-#endif
-
 #include "G/Object.hpp"
 #include "G/Number.hpp"
 #include "G/MQ.hpp"
+#ifdef __LINUX__
+#include <pthread.h>
+#endif
 
 namespace G {
+    typedef struct
+    {
+        void * args;
+        Func function;
+    } exeable_t;
 
     class ThreadPool : public Object
     {
         int size;
-        static void* thFunction(void *);
+        void* thFunction(void *);
+    protected:
+        MQ<exeable_t> mq;
     public:
-        typedef struct
-        {
-            void * args;
-            Func function;
-        } message_t;
-
         ThreadPool();
         virtual ~ThreadPool() {};
-        static int init(ThreadPool *, int);
-        static int init(ThreadPool *, int, Func);
-        int call(void *);
-        int call(void *, Func);
-    protected:
-        MQ<message_t> mq;
+        static int init(ThreadPool &, int);
+        int call(exeable_t &);
     };
 }
 

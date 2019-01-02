@@ -22,18 +22,13 @@ ThreadPool::ThreadPool()
 // 默认线程
 void* ThreadPool::thFunction(void* args)
 {
-    message_t message;
-    MQ<message_t> *mq;
-    ThreadPool *self;
-
-    self = (ThreadPool *)args;
-    mq = &(self->mq);
+    exeable_t message;
+    MQ<exeable_t> &mq = this->mq;
 
     while (1)
     {
-
         // 读消息队列
-        message = (message_t)(mq->front());
+        message = (exeable_t)(mq.front());
         if(NULL == message.function) {
             continue;
         }
@@ -46,15 +41,15 @@ void* ThreadPool::thFunction(void* args)
 }
 
 // 初始化
-int ThreadPool::init(ThreadPool * self, int max, Func function)
+int ThreadPool::init(ThreadPool &self, int max)
 {
     int i;
     pthread_t tid;
 
-    self->size = max;
+    self.size = max;
 
     // 初始化消息队列
-    if (0 != MQ<message_t>::init(&(self->mq))) {
+    if (0 != MQ<exeable_t>::init(&(self.mq))) {
         perror("init message queue faild");
         return -1;
     }
@@ -62,12 +57,12 @@ int ThreadPool::init(ThreadPool * self, int max, Func function)
     // 创建线程
     for(i = 0; i < max; i++)
     {
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
-        tid = NULL;
-#else
-        tid ^= tid;
-#endif
-        if(0 != pthread_create(&tid, NULL, function, self)) {
+        #ifdef __BSD__
+            tid = nullptr;
+        #else
+            tid ^= tid;
+        #endif
+        if(0 != pthread_create(&tid, NULL, self.thFunction, &self)) {
             perror("create a work thread faild");
             return -1;
         }
@@ -79,26 +74,9 @@ int ThreadPool::init(ThreadPool * self, int max, Func function)
     return 0;
 }
 
-// 默认线程池
-int ThreadPool::init(ThreadPool * self, int max)
-{
-    return ThreadPool::init(self, max, self->thFunction);
-}
-
-// 向线程池委托任务，调起默认
-int ThreadPool::call(void * args)
-{
-    return this->call(args, NULL);
-}
-
 // 向线程池委托任务
-int ThreadPool::call(void * args, Func function)
+int ThreadPool::call(exeable_t &msg)
 {
-    message_t message;
-
-    message.args = args;
-    message.function = function;
-
-     // 写消息队列
-    return this->mq.push(message);
+    // 写消息队列
+    return this->mq.push(msg);
 }
