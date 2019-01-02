@@ -44,7 +44,7 @@ class Makefile:
             'AR = ar',
             'AS = as',
             'LD = ld',
-            'CFLAGS = -c -O3 -Wall',
+            'CFLAGS = -c -O3 -Wall --std=c11',
             'CXXFLAGS = -c -O3 -Wall --std=c++11',
             'ARFLAGS = -crsv',
             shareflags,
