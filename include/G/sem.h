@@ -9,7 +9,8 @@
 #ifndef _SEM_H_
 #define _SEM_H_
 
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+#include "G/stdafx.h"
+#ifdef __BSD__
 
 #include <errno.h>
 #include <dispatch/dispatch.h>
