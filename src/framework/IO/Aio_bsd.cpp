@@ -8,7 +8,7 @@
 
 #include "G/Aio.hpp"
 
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+#if def __BSD__
 
 #include <stdlib.h>
 #include <unistd.h>

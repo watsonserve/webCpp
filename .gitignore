@@ -5,6 +5,7 @@ makefile
 .DS_Store
 .vs
 .vscode
+__pycache__
 
 # Compiled Object files
 *.slo

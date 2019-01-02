@@ -17,15 +17,8 @@
 //     void            *udata;         /* opaque user data identifier */
 // };
 
-#include "G/Event.hpp"
-
+#include "G/EventListener.hpp"
 #ifdef __BSD__
-
-#include <stdlib.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <errno.h>
-#include "G/ThreadPool.hpp"
 
 using namespace G;
 

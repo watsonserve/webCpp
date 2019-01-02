@@ -20,10 +20,10 @@ ThreadPool::ThreadPool()
 }
 
 // 默认线程
-void* ThreadPool::thFunction(void* args)
+void* ThreadPool::thFunction(void* that)
 {
     exeable_t message;
-    MQ<exeable_t> &mq = this->mq;
+    MQ<exeable_t> &mq = ((ThreadPool *)that)->mq;
 
     while (1)
     {
