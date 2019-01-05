@@ -12,6 +12,7 @@
 extern "C"
 {
     #include <fcntl.h>
+    #include "G/Event.h"
 }
 
 #include "G/Object.hpp"
@@ -22,23 +23,18 @@ extern "C"
 #endif
 
 namespace G {
-    typedef struct
-    {
-        void * args;
-        Func function;
-    } exeable_t;
 
     class ThreadPool : public Object
     {
         int size;
         static void* thFunction(void *);
     protected:
-        MQ<exeable_t> mq;
+        MQ<G::event_data_t> mq;
     public:
         ThreadPool();
         virtual ~ThreadPool() {};
         static int init(ThreadPool &, int);
-        int call(exeable_t &);
+        int call(G::event_data_t &);
     };
 }
 

@@ -6,8 +6,8 @@
 //  Copyright © 2018年 watsserve. All rights reserved.
 //
 
-#ifndef _EVENT_HPP_
-#define _EVENT_HPP_
+#ifndef _EVENT_LISTENER_HPP_
+#define _EVENT_LISTENER_HPP_
 
 #include "G/ThreadPool.hpp"
 #include <string>
@@ -16,6 +16,10 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
+
+extern "C" {
+    #include "G/Event.h"
+}
 
 #ifdef __LINUX__
 
@@ -35,6 +39,12 @@ namespace G {
 
 #ifdef __LINUX__
     typedef enum {
+        OPT_ADD = EPOLL_CTL_ADD,
+        OPT_DEL = EPOLL_CTL_DEL,
+        OPT_MOD = EPOLL_CTL_MOD
+    } event_opt_t;
+
+    typedef enum {
         EV_IN = EPOLLIN,
         EV_OUT = EPOLLOUT,
         EV_RDHUP = EPOLLRDHUP,
@@ -45,10 +55,6 @@ namespace G {
         EV_EXCLUSIVE = EPOLLEXCLUSIVE
     } event_type_t;
 
-    typedef struct {
-        unsigned long ident;
-        void* udata;
-    } event_data_t;
 #endif
 
 #ifdef __BSD__
@@ -64,10 +70,10 @@ namespace G {
     public:
         static int init(G::EventListener &, G::ThreadPool *);
         void listen(int);
-        int emit(G::event_type_t, G::event_data_t *);
+        int emit(G::event_opt_t, G::event_data_t *);
         virtual ~EventListener() {};
     };
 
 }
 
-#endif /* _EVENT_HPP_ */
+#endif /* _EVENT_LISTENER_HPP_ */

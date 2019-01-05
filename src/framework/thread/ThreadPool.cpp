@@ -22,19 +22,18 @@ ThreadPool::ThreadPool()
 // 默认线程
 void* ThreadPool::thFunction(void* that)
 {
-    exeable_t message;
-    MQ<exeable_t> &mq = ((ThreadPool *)that)->mq;
+    G::event_data_t event;
+    MQ<G::event_data_t> &mq = ((ThreadPool *)that)->mq;
 
     while (1)
     {
         // 读消息队列
-        message = (exeable_t)(mq.front());
-        if(nullptr == message.function) {
+        event = (G::event_data_t)(mq.front());
+        if(nullptr == event.function) {
             continue;
         }
-
         // 调用业务函数
-        message.function(message.args);
+        event.function(&event);
     }
 
     return nullptr;
@@ -49,7 +48,7 @@ int ThreadPool::init(ThreadPool &self, int max)
     self.size = max;
 
     // 初始化消息队列
-    if (0 != MQ<exeable_t>::init(&(self.mq))) {
+    if (0 != MQ<G::event_data_t>::init(&(self.mq))) {
         perror("init message queue faild");
         return -1;
     }
@@ -75,7 +74,7 @@ int ThreadPool::init(ThreadPool &self, int max)
 }
 
 // 向线程池委托任务
-int ThreadPool::call(exeable_t &msg)
+int ThreadPool::call(G::event_data_t &msg)
 {
     // 写消息队列
     return this->mq.push(msg);
