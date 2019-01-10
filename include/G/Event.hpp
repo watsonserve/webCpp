@@ -9,9 +9,11 @@
 #ifndef _EVENT_HPP_
 #define _EVENT_HPP_
 
+#include "G/Object.hpp"
+
 namespace G {
 
-    class Exeable
+    class Exeable : public Object
     {
         public:
             void *context;
