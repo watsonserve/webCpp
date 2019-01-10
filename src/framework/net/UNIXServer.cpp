@@ -1,13 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <thread>
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
-    #include <sys/event.h>
-#endif
-#include "G/IOHandle.hpp"
 #include "G/net/UNIXServer.hpp"
 
 using namespace G;

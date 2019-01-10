@@ -5,10 +5,6 @@
 //  Created by 王兴卓 on 16/4/12.
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
-extern "C" {
-#include <unistd.h>
-#include <errno.h>
-}
 #include "G/net/Server.hpp"
 
 using namespace G;
@@ -25,7 +21,7 @@ int Server::initPool(int thr, int simu, int idleTime)
     return 0;
 }
 
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__) || defined (__linux__) || defined(__linux)
+#ifdef __BSD__
 int Server::service(IOEvents *dispatcher, int max)
 {
     int i, errorNo;
@@ -89,7 +85,8 @@ int Server::service(IOEvents *dispatcher, int max)
     }
     return 0;
 }
-#else
+#endif
+#ifdef __LINUX__
 int Server::service(IOEvents *dispatcher, int max)
 {
     int pfd, i;
