@@ -17,10 +17,6 @@
 #include <pthread.h>
 #include <errno.h>
 
-extern "C" {
-    #include "G/Event.h"
-}
-
 #ifdef __LINUX__
 
 #include <sys/epoll.h>
@@ -70,7 +66,7 @@ namespace G {
     public:
         static int init(G::EventListener &, G::ThreadPool *);
         void listen(int);
-        int emit(G::event_opt_t, G::event_data_t *);
+        int emit(G::event_opt_t, G::Event *);
         virtual ~EventListener() {};
     };
 

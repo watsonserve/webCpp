@@ -44,7 +44,7 @@ int G::EventListener::init(EventListener &self, ThreadPool * tpool)
     return 0;
 }
 
-int G::EventListener::emit(G::event_opt_t opt, G::event_data_t *eventData)
+int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
 {
     struct epoll_event ev;
     ev.events = eventData->event_type;
@@ -58,7 +58,7 @@ void G::EventListener::listen(int fd_num)
     struct epoll_event *eventList, *event_ptr;
     int i, nEvent;
     register int event_types;
-    G::event_data_t *edata;
+    G::Event *edata;
     ThreadPool *tpool;
     tpool = this->tpool;
 
@@ -76,7 +76,7 @@ void G::EventListener::listen(int fd_num)
         for (i = 0; i < nEvent; i++)
         {
             event_ptr = eventList + i;
-            edata = (G::event_data_t*)(event_ptr->data.ptr);
+            edata = (G::Event*)(event_ptr->data.ptr);
             event_types = event_ptr->events;
             // TODO
             if (event_types & EPOLLERR)  // 出错
