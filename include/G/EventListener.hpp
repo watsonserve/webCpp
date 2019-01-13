@@ -61,11 +61,13 @@ namespace G {
     class EventListener : Object
     {
         int epfd;
+        int max;
         G::ThreadPool * tpool;
         EventListener();
+        static void* listener(void *);
     public:
-        static int init(G::EventListener &, G::ThreadPool *);
-        void listen(int);
+        static int init(G::EventListener &, G::ThreadPool *, int);
+        void listen();
         int emit(G::event_opt_t, G::Event *);
         virtual ~EventListener() {};
     };

@@ -1,14 +1,14 @@
 #ifndef _GSERVER_HPP_
 #define _GSERVER_HPP_
 
-extern "C" {
+extern "C"
+{
     #include <stdio.h>
     #include <stdlib.h>
     #include <unistd.h>
     #include <sys/types.h>
     #include <thread>
     #include <errno.h>
-    #include "G/net/Gnet.h"
     #ifdef __BSD__
         #include <sys/event.h>
     #endif
@@ -18,20 +18,13 @@ extern "C" {
 #include "G/StreamIO.hpp"
 
 namespace G {
-
-    typedef int (*taskFunc)(int fd);
-
     class Server : public G::Object
     {
-    protected:
-        int port;
     public:
         Server() {};
-        virtual ~Server() {};
-        virtual int initPool(int, int, int);
+        virtual ~Server() =0;
         virtual SOCKET initSocket() =0;
-        virtual int service(G::IOEvents *, int);
+        virtual int service(G::IOEvents *, int) =0;
     };
-
 }
 #endif

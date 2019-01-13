@@ -4,6 +4,7 @@ using namespace G;
 
 UNIXServer::UNIXServer()
 {
+	this->isA = "UNIXServer";
 }
 
 UNIXServer::UNIXServer(const char *path)

@@ -28,7 +28,7 @@ EventListener::EventListener()
     this->epfd = -1;
 }
 
-int EventListener::init(EventListener &self, ThreadPool * tpool)
+int EventListener::init(EventListener &self, ThreadPool * tpool, int max)
 {
     if (nullptr == tpool) {
         perror("Can't no thread pool");
@@ -46,16 +46,20 @@ int EventListener::init(EventListener &self, ThreadPool * tpool)
     return 0;
 }
 
-void EventListener::listen(int fd_num)
+void* G::EventListener::listener(void *that)
 {
+    G::EventListener *self;
     struct kevent *eventList;
-    int i, nEvent;
+    int i, nEvent, max;
     exeable_t *udata;
     ThreadPool *tpool;
-    tpool = this->tpool;
+
+    self = (G::EventListener *)that;
+    tpool = self->tpool;
+    max = self->max;
 
     // 可用事件列表
-    eventList = (struct kevent *)malloc(sizeof(struct kevent) * fd_num);
+    eventList = (struct kevent *)malloc(sizeof(struct kevent) * max);
     if (nullptr == eventList) {
         perror("Can't create event list");
         exit(1);
@@ -64,7 +68,11 @@ void EventListener::listen(int fd_num)
     while (1)
     {
         // 获取可用事件
-        nEvent = kevent(this->epfd, nullptr, 0, eventList, fd_num, nullptr);
+        nEvent = kevent(self->epfd, nullptr, 0, eventList, max, nullptr);
+        if (-1 == nEvent) {
+            perror("wait event faild");
+            exit(1);
+        }
         for(i = 0; i < nEvent; i++)
         {
             if (eventList[i].flags & EV_ERROR)  // 出错

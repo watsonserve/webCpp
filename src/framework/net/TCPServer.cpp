@@ -9,14 +9,14 @@
 #include "openssl/err.h"
 */
 
-using namespace G;
+G::TCPServer::TCPServer() {
+    this->isA = "TCPServer";
+}
 
-TCPServer::TCPServer() {}
-
-TCPServer:: ~TCPServer() {}
+G::TCPServer::~TCPServer() {}
 
 
-int TCPServer::setCert(const char *certFile)
+int G::TCPServer::setCert(const char *certFile)
 {
     if (nullptr == certFile)
     {
@@ -25,7 +25,7 @@ int TCPServer::setCert(const char *certFile)
     return 0;
 }
 
-int TCPServer::setKey(const char *keyFile)
+int G::TCPServer::setKey(const char *keyFile)
 {
     if (nullptr == keyFile)
     {
@@ -34,13 +34,13 @@ int TCPServer::setKey(const char *keyFile)
     return 0;
 }
 
-int TCPServer::setPort(int port)
+int G::TCPServer::setPort(unsigned short port)
 {
     this->port = port;
     return port;
 }
 
-SOCKET TCPServer::initSocket()
+SOCKET G::TCPServer::initSocket()
 {
     // 创建socket
     return TCPsetup(this->port);

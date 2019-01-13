@@ -61,7 +61,7 @@ int ThreadPool::init(ThreadPool &self, int max)
         #else
             tid ^= tid;
         #endif
-        if(0 != pthread_create(&tid, nullptr, self.thFunction, &self)) {
+        if(0 != pthread_create(&tid, nullptr, ThreadPool::thFunction, &self)) {
             perror("create a work thread faild");
             return -1;
         }

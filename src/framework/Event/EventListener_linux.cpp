@@ -26,13 +26,14 @@ G::EventListener::EventListener()
     this->epfd = -1;
 }
 
-int G::EventListener::init(EventListener &self, ThreadPool * tpool)
+int G::EventListener::init(EventListener &self, ThreadPool * tpool, int max)
 {
     if (nullptr == tpool) {
         perror("Can't no thread pool");
         return -1;
     }
     self.tpool = tpool;
+    self.max = max;
 
     // 准备注册内核事件
     self.epfd = epoll_create1(EPOLL_CLOEXEC);
@@ -53,17 +54,21 @@ int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
     return epoll_ctl(this->epfd, opt, eventData->ident, &ev);
 }
 
-void G::EventListener::listen(int fd_num)
+void* G::EventListener::listener(void *that)
 {
+    G::EventListener *self;
     struct epoll_event *eventList, *event_ptr;
-    int i, nEvent;
+    int i, nEvent, max;
     register int event_types;
     G::Event *edata;
     ThreadPool *tpool;
-    tpool = this->tpool;
+
+    self = (G::EventListener *)that;
+    tpool = self->tpool;
+    max = self->max;
 
     // 可用事件列表
-    eventList = (struct epoll_event *)malloc(sizeof(struct epoll_event) * fd_num);
+    eventList = (struct epoll_event *)malloc(sizeof(struct epoll_event) * max);
     if (nullptr == eventList) {
         perror("Can't create event list");
         exit(1);
@@ -72,7 +77,11 @@ void G::EventListener::listen(int fd_num)
     while (1)
     {
         // 获取可用事件
-        nEvent = epoll_wait(this->epfd, eventList, fd_num, -1);
+        nEvent = epoll_wait(self->epfd, eventList, max, -1);
+        if (-1 == nEvent) {
+            perror("wait event faild");
+            exit(1);
+        }
         for (i = 0; i < nEvent; i++)
         {
             event_ptr = eventList + i;
@@ -93,7 +102,8 @@ void G::EventListener::listen(int fd_num)
         }
     }
 
-    return;
+    free(eventList);
+    return nullptr;
 }
 
 #endif

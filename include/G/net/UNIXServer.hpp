@@ -2,11 +2,11 @@
 #define _GUNIXSERVER_HPP_
 
 #include <string>
-#include "G/net/Server.hpp"
+#include "G/net/StreamServer.hpp"
 
 namespace G {
 
-    class UNIXServer: public G::Server
+    class UNIXServer: public G::StreamServer
     {
         std::string path;
     public:
