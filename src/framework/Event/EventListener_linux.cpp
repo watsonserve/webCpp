@@ -42,7 +42,17 @@ int G::EventListener::init(EventListener &self, ThreadPool * tpool, int max)
 int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
 {
     struct epoll_event ev;
-    ev.events = (unsigned int)(eventData->event_type);
+
+    // EV_ETC 扩展事件立即执行
+    if (eventData->event_type >> 63)
+    {
+        if (-1 == tpool->call(*eventData)) {
+            perror("request thread pool");
+            exit(1);
+        }
+        return 0;
+    }
+    ev.events = (uint32_t)(eventData->event_type);
     ev.data.ptr = (void*)eventData;
 
     return epoll_ctl(this->epfd, opt, eventData->ident, &ev);

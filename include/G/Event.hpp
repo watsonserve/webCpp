@@ -24,7 +24,7 @@ namespace G {
     {
         public:
             unsigned long ident;
-            int event_type;
+            uint64_t event_type;
     };
 }
 

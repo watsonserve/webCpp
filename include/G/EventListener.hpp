@@ -41,6 +41,7 @@ namespace G {
         OPT_MOD = EPOLL_CTL_MOD
     } event_opt_t;
 
+    // EPOLL只占用低32位！
     typedef enum
     {
         EV_IN = EPOLLIN,
@@ -50,7 +51,8 @@ namespace G {
         EV_ET = EPOLLET,
         EV_ONESHOT = EPOLLONESHOT,
         EV_WAKEUP = EPOLLWAKEUP,
-        EV_EXCLUSIVE = EPOLLEXCLUSIVE
+        EV_EXCLUSIVE = EPOLLEXCLUSIVE,
+        EV_ETC = 1u << 63    // 扩展事件
     } event_type_t;
 
 #endif
@@ -58,6 +60,7 @@ namespace G {
 #ifdef __BSD__
     typedef enum
     {
+        EV_ETC = 1u << 63    // 扩展事件
     } event_type_t;
 #endif
 
