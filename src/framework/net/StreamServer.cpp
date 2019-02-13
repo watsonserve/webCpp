@@ -18,20 +18,19 @@ int G::StreamServer::service(IOEvents *dispatcher, int max)
     SOCKET sockfd, clientFd;
     struct sockaddr addr;
     socklen_t len;
-    StreamIO *ioHandles;
-    char *mem;
 
+    max &= 0x7FFFFFFF;
     sockfd = this->initSocket();
-    if(-1 == sockfd) {
+    if (-1 == sockfd) {
         perror("Can't create socket");
         return -1;
     }
 
     // 监听循环
-    while(1)
+    while (1)
     {
         clientFd = accept(sockfd, &addr, &len);
-        if(-1 == clientFd) {
+        if (-1 == clientFd) {
             // 系统层错误
             errorNo = errno;
             perror("accept");
@@ -42,7 +41,7 @@ int G::StreamServer::service(IOEvents *dispatcher, int max)
         }
 
         // 用户层错误
-        if(max <= clientFd)
+        if (max <= clientFd)
         {
             close(clientFd);
             fprintf(stderr, "Too many connect, denial of service");
@@ -50,9 +49,8 @@ int G::StreamServer::service(IOEvents *dispatcher, int max)
         }
 
         // 正常情况
-        ioHandles[clientFd].setFd(clientFd, NET_SOCKET);
-        ioHandles[clientFd].cleanCache();
-        ioHandles[clientFd].listen();
+        dispatcher->setFd(clientFd);
+
     }
     return 0;
 }
