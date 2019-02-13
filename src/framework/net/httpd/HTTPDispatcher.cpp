@@ -31,6 +31,16 @@ int HTTPDispatcher::init(int max)
     return 0;
 }
 
+void setFd(int fd)
+{
+    /*
+        aio(fd)
+        thread_pool
+    *//*
+        eventListener.emit(fd)
+    */
+}
+
 void HTTPDispatcher::onClose(StreamIO *fh)
 {
     printf("on %d close\n", fh->getFd());
