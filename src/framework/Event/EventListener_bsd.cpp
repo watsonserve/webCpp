@@ -22,12 +22,6 @@
 
 using namespace G;
 
-EventListener::EventListener()
-{
-    this->isA = "EventListener";
-    this->epfd = -1;
-}
-
 int EventListener::init(EventListener &self, ThreadPool * tpool, int max)
 {
     if (nullptr == tpool) {

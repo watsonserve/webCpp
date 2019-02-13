@@ -15,7 +15,6 @@ G::TCPServer::TCPServer() {
 
 G::TCPServer::~TCPServer() {}
 
-
 int G::TCPServer::setCert(const char *certFile)
 {
     if (nullptr == certFile)

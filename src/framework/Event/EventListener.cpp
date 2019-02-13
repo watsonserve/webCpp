@@ -19,6 +19,12 @@
 
 #include "G/EventListener.hpp"
 
+G::EventListener::EventListener()
+{
+    this->isA = "EventListener";
+    this->epfd = -1;
+}
+
 void G::EventListener::listen()
 {
     pthread_t tid;

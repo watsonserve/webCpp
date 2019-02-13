@@ -34,13 +34,15 @@
 namespace G {
 
 #ifdef __LINUX__
-    typedef enum {
+    typedef enum
+    {
         OPT_ADD = EPOLL_CTL_ADD,
         OPT_DEL = EPOLL_CTL_DEL,
         OPT_MOD = EPOLL_CTL_MOD
     } event_opt_t;
 
-    typedef enum {
+    typedef enum
+    {
         EV_IN = EPOLLIN,
         EV_OUT = EPOLLOUT,
         EV_RDHUP = EPOLLRDHUP,
@@ -54,7 +56,8 @@ namespace G {
 #endif
 
 #ifdef __BSD__
-    typedef enum {
+    typedef enum
+    {
     } event_type_t;
 #endif
 
@@ -68,6 +71,7 @@ namespace G {
     public:
         static int init(G::EventListener &, G::ThreadPool *, int);
         void listen();
+        // 第二个产生一定是堆上的内存地址!
         int emit(G::event_opt_t, G::Event *);
         virtual ~EventListener() {};
     };

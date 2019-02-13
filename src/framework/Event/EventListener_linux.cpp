@@ -20,12 +20,6 @@
 #include "G/EventListener.hpp"
 #ifdef __LINUX__
 
-G::EventListener::EventListener()
-{
-    this->isA = "EventListener";
-    this->epfd = -1;
-}
-
 int G::EventListener::init(EventListener &self, ThreadPool * tpool, int max)
 {
     if (nullptr == tpool) {
@@ -48,7 +42,7 @@ int G::EventListener::init(EventListener &self, ThreadPool * tpool, int max)
 int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
 {
     struct epoll_event ev;
-    ev.events = eventData->event_type;
+    ev.events = (unsigned int)(eventData->event_type);
     ev.data.ptr = (void*)eventData;
 
     return epoll_ctl(this->epfd, opt, eventData->ident, &ev);
