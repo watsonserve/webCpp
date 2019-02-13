@@ -19,6 +19,7 @@ namespace G {
     {
     public:
         IOEvents() {};
+        virtual void setFd(int fd) =0;
         virtual void onConnect(StreamIO *) =0;
         virtual void onData(StreamIO *) =0;
         virtual void onError(StreamIO *) =0;
