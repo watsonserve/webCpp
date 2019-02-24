@@ -74,7 +74,7 @@ namespace G {
     public:
         static int init(G::EventListener &, G::ThreadPool *, int);
         void listen();
-        // 第二个产生一定是堆上的内存地址!
+        // 第二个参数一定是堆上的内存地址!
         int emit(G::event_opt_t, G::Event *);
         virtual ~EventListener() {};
     };
