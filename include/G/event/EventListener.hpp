@@ -52,7 +52,7 @@ namespace G {
         EV_ONESHOT = EPOLLONESHOT,
         EV_WAKEUP = EPOLLWAKEUP,
         EV_EXCLUSIVE = EPOLLEXCLUSIVE,
-        EV_ETC = 1u << 63    // 扩展事件
+        EV_ETC = 0x8000000000000000    // 扩展事件
     } event_type_t;
 
 #endif
@@ -70,6 +70,7 @@ namespace G {
         int max;
         G::ThreadPool * tpool;
         EventListener();
+        // pthread_create中必须使用静态方法，所以要将类实例传入
         static void* listener(void *);
     public:
         static int init(G::EventListener &, G::ThreadPool *, int);

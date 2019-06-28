@@ -17,7 +17,7 @@ extern "C"
 #include "G/Object.hpp"
 #include "G/Number.hpp"
 #include "G/MQ.hpp"
-#include "G/Event.hpp"
+#include "G/event/Event.hpp"
 #ifdef __LINUX__
 #include <pthread.h>
 #endif

@@ -17,7 +17,7 @@ extern "C" {
 }
 #include <string>
 #include "G/GUtil.hpp"
-#include "G/StreamIO.hpp"
+#include "G/io/StreamIO.hpp"
 
 using namespace G;
 

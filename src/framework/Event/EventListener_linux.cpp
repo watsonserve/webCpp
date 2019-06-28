@@ -17,7 +17,7 @@
 //     epoll_data_t data;      /* User data variable */
 // };
 
-#include "G/EventListener.hpp"
+#include "G/event/EventListener.hpp"
 #ifdef __LINUX__
 
 int G::EventListener::init(EventListener &self, ThreadPool * tpool, int max)
@@ -55,6 +55,7 @@ int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
     ev.events = (uint32_t)(eventData->event_type);
     ev.data.ptr = (void*)eventData;
 
+    // 等待硬中断
     return epoll_ctl(this->epfd, opt, eventData->ident, &ev);
 }
 

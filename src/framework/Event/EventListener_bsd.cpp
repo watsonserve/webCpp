@@ -17,7 +17,7 @@
 //     void            *udata;         /* opaque user data identifier */
 // };
 
-#include "G/EventListener.hpp"
+#include "G/event/EventListener.hpp"
 #ifdef __BSD__
 
 using namespace G;

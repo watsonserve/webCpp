@@ -15,8 +15,8 @@ extern "C" {
     #include <fcntl.h>
 }
 #include <string>
-#include "G/StreamIO.hpp"
-#include "G/Output.hpp"
+#include "G/io/StreamIO.hpp"
+#include "G/io/Output.hpp"
 
 using namespace G;
 

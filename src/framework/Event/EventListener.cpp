@@ -17,7 +17,7 @@
 //     epoll_data_t data;      /* User data variable */
 // };
 
-#include "G/EventListener.hpp"
+#include "G/event/EventListener.hpp"
 
 G::EventListener::EventListener()
 {

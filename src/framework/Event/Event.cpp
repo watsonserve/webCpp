@@ -6,7 +6,7 @@
 //  Copyright © 2018年 watsserve. All rights reserved.
 //
 
-#include "G/Event.hpp"
+#include "G/event/Event.hpp"
 
 G::Exeable::Exeable()
 {

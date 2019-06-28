@@ -6,9 +6,9 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
-#include "G/Aio.hpp"
+#include "G/io/Aio.hpp"
 
-#if def __BSD__
+#ifdef __BSD__
 
 #include <stdlib.h>
 #include <unistd.h>

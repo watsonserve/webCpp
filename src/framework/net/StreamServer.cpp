@@ -50,7 +50,6 @@ int G::StreamServer::service(IOEvents *dispatcher, int max)
 
         // 正常情况
         dispatcher->setFd(clientFd);
-
     }
     return 0;
 }

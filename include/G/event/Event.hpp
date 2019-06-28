@@ -18,6 +18,7 @@ namespace G {
         public:
             void *context;
             void (*function)(Exeable *);
+            Exeable();
     };
 
     class Event : public Exeable
@@ -25,6 +26,7 @@ namespace G {
         public:
             unsigned long ident;
             uint64_t event_type;
+            Event();
     };
 }
 
