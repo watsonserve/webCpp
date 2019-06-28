@@ -13,6 +13,7 @@ namespace G {
     class StreamServer: public G::Server
     {
     public:
+        void init();
         StreamServer();
         virtual ~StreamServer() =0;
         virtual int service(G::IOEvents *, int) override;

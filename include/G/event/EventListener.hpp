@@ -70,12 +70,14 @@ namespace G {
         int max;
         G::ThreadPool * tpool;
         EventListener();
+        static G::EventListener _instance;
         // pthread_create中必须使用静态方法，所以要将类实例传入
         static void* listener(void *);
     public:
+        static G::EventListener& getInstance();
         static int init(G::EventListener &, G::ThreadPool *, int);
         void listen();
-        // 第二个产生一定是堆上的内存地址!
+        // 第二个参数一定是堆上的内存地址!
         int emit(G::event_opt_t, G::Event *);
         virtual ~EventListener() {};
     };
@@ -83,3 +85,4 @@ namespace G {
 }
 
 #endif /* _EVENT_LISTENER_HPP_ */
+
