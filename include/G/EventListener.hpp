@@ -70,8 +70,10 @@ namespace G {
         int max;
         G::ThreadPool * tpool;
         EventListener();
+        static G::EventListener &;
         static void* listener(void *);
     public:
+        static G::EventListener& getInstance();
         static int init(G::EventListener &, G::ThreadPool *, int);
         void listen();
         // 第二个参数一定是堆上的内存地址!
@@ -82,3 +84,4 @@ namespace G {
 }
 
 #endif /* _EVENT_LISTENER_HPP_ */
+

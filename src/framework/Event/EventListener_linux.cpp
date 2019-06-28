@@ -20,6 +20,16 @@
 #include "G/EventListener.hpp"
 #ifdef __LINUX__
 
+G::EventListener::getInstance()
+{
+    if (G::EventListener::_instance)
+    {
+        return G::EventListener::_instance;
+    }
+    G::EventListener::_instance = new G::EventListener();
+    G::EventListener::init(G::EventListener::_instance, tpool, max);
+}
+
 int G::EventListener::init(EventListener &self, ThreadPool * tpool, int max)
 {
     if (nullptr == tpool) {
