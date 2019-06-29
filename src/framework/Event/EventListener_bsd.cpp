@@ -22,7 +22,7 @@
 
 using namespace G;
 
-int EventListener::init(EventListener &self, ThreadPool * tpool, int max)
+int EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
 {
     if (nullptr == tpool) {
         perror("Can't no thread pool");
@@ -40,7 +40,7 @@ int EventListener::init(EventListener &self, ThreadPool * tpool, int max)
     return 0;
 }
 
-void* G::EventListener::listener(void *that)
+void* G::EventListener::_listener(void *that)
 {
     G::EventListener *self;
     struct kevent *eventList;

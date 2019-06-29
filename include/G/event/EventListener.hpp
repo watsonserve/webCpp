@@ -73,15 +73,19 @@ namespace G {
         int max;
         G::ThreadPool * tpool;
 
+        // 没有实际作用的构造函数
         EventListener();
+        // 不可调用的拷贝和赋值
         EventListener(EventListener &);
         virtual EventListener& operator= (EventListener &);
 
+        // 实际的初始化
+        static int _init(G::EventListener &, G::ThreadPool *, int);
+
         // pthread_create中必须使用静态方法，所以要将类实例传入
-        static void* listener(void *);
+        static void* _listener(void *);
     public:
         static G::EventListener& getInstance(G::ThreadPool *, int);
-        static int init(G::EventListener &, G::ThreadPool *, int);
         void listen();
         // 第二个参数一定是堆上的内存地址!
         int emit(G::event_opt_t, G::Event *);

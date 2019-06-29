@@ -24,6 +24,7 @@ G::EventListener::EventListener(EventListener &nextListener)
 // 赋值操作符
 G::EventListener& G::EventListener::operator = (EventListener &nextListener)
 {
+    throw new G::Exception("Can't operation G::EventListener =", 0);
     return nextListener;
 }
 
@@ -31,7 +32,7 @@ G::EventListener& G::EventListener::operator = (EventListener &nextListener)
 G::EventListener& G::EventListener::getInstance(G::ThreadPool *tpool, int max)
 {
     static G::EventListener listener;
-    G::EventListener::init(listener, tpool, max);
+    G::EventListener::_init(listener, tpool, max);
     return listener;
 }
 
@@ -55,7 +56,7 @@ void G::EventListener::listen()
         tid ^= tid;
     #endif
 
-    if(0 != pthread_create(&tid, nullptr, G::EventListener::listener, this)) {
+    if(0 != pthread_create(&tid, nullptr, G::EventListener::_listener, this)) {
         perror("create a listen thread faild");
         exit(1);
     }
