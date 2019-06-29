@@ -9,13 +9,12 @@
 #ifndef _EVENT_LISTENER_HPP_
 #define _EVENT_LISTENER_HPP_
 
-#include "G/ThreadPool.hpp"
-#include <string>
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
+// 这里定义编译环境
+#include "G/stdafx.h"
 
 #ifdef __LINUX__
 
@@ -30,6 +29,10 @@
 #include <sys/time.h>
 
 #endif
+
+#include <string>
+#include "G/ThreadPool.hpp"
+#include "G/Exception.hpp"
 
 namespace G {
 
@@ -69,12 +72,15 @@ namespace G {
         int epfd;
         int max;
         G::ThreadPool * tpool;
+
         EventListener();
-        static G::EventListener _instance;
+        EventListener(EventListener &);
+        virtual EventListener& operator= (EventListener &);
+
         // pthread_create中必须使用静态方法，所以要将类实例传入
         static void* listener(void *);
     public:
-        static G::EventListener& getInstance();
+        static G::EventListener& getInstance(G::ThreadPool *, int);
         static int init(G::EventListener &, G::ThreadPool *, int);
         void listen();
         // 第二个参数一定是堆上的内存地址!
@@ -85,4 +91,3 @@ namespace G {
 }
 
 #endif /* _EVENT_LISTENER_HPP_ */
-

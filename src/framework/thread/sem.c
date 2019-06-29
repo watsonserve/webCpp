@@ -7,6 +7,8 @@
 //
 #include "G/sem.h"
 
+#ifdef __BSD__
+
 int init_sem(sem_t *sem, int pshared, int value)
 {
     if (pshared)
@@ -39,3 +41,5 @@ int destroy_sem(sem_t *sem)
     dispatch_release(*sem);
     return 0;
 }
+
+#endif
