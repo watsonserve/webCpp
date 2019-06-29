@@ -23,58 +23,92 @@ namespace G {
     template <typename T>
     class MQ : public Object
     {
+        // std::queue是值拷贝, push进去的变量和front出来的引用，地址不一样
         std::queue<T> mQueue;
         sem_t p_sem;
+        pthread_rwlock_t lock;
 
     public:
         MQ() {
             memset(&this->p_sem, 0, sizeof(sem_t));
+            memset(&this->lock, 0, sizeof(pthread_rwlock_t));
         };
         virtual ~MQ()
         {
             destroy_sem(&this->p_sem);
+            pthread_rwlock_destroy(&this->lock);
         };
 
         static int init(MQ *self)
         {
             // 初始化信号量
             if (0 != init_sem(&self->p_sem, 0, 0)) {
-                perror("init named sem faild");
+                perror("MQ init sem faild");
                 return -1;
             }
+            if (0 != pthread_rwlock_init(&self->lock, NULL)) {
+                destroy_sem(&self->p_sem);
+                perror("MQ init lock faild");
+                return -1;
+            }
+            
             return 0;
         };
 
-        int push(const T ele)
+        int push(const T &ele)
         {
             sem_t *p_sem;
+            pthread_rwlock_t *p_lock;
 
             p_sem = &this->p_sem;
+            p_lock = &this->lock;
+
+            // 上锁
+            if (0 != pthread_rwlock_wrlock(p_lock)) {
+                perror("MQ push lock");
+                exit(1);
+            }
             mQueue.push(ele);
 
-            // 等待信号量
-            return post_sem(p_sem);
+            // 发射信号量
+            if(0 != post_sem(p_sem)) {
+                perror("MQ post sem");
+                exit(1);
+            }
+            // 解锁
+            pthread_rwlock_unlock(p_lock);
+            return 0;
         };
 
-        T front()
+        T& front()
         {
             sem_t *p_sem;
-            T ret;
+            pthread_rwlock_t *p_lock;
+            T *ret;
 
             p_sem = &this->p_sem;
+            p_lock = &this->lock;
 
             // 等待信号量
             if(0 != wait_sem(p_sem)) {
                 perror("wait a sem");
                 exit(1);
             }
-            if (!mQueue.empty()) {
-                ret = mQueue.front();
-                mQueue.pop();
+            // 上锁
+            if (0 != pthread_rwlock_wrlock(p_lock)) {
+                perror("MQ pop lock");
+                exit(1);
             }
 
+            if (!mQueue.empty()) {
+                ret = &(mQueue.front());
+                mQueue.pop();
+            }
+            // 解锁
+            pthread_rwlock_unlock(p_lock);
+
             // throw exception
-            return ret;
+            return *ret;
         };
     };
 
