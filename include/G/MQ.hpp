@@ -26,17 +26,17 @@ namespace G {
         // std::queue是值拷贝, push进去的变量和front出来的引用，地址不一样
         std::queue<T> mQueue;
         sem_t p_sem;
-        pthread_rwlock_t lock;
+        pthread_mutex_t lock;
 
     public:
         MQ() {
             memset(&this->p_sem, 0, sizeof(sem_t));
-            memset(&this->lock, 0, sizeof(pthread_rwlock_t));
+            memset(&this->lock, 0, sizeof(pthread_mutex_t));
         };
         virtual ~MQ()
         {
             destroy_sem(&this->p_sem);
-            pthread_rwlock_destroy(&this->lock);
+            pthread_mutex_destroy(&this->lock);
         };
 
         static int init(MQ *self)
@@ -46,7 +46,7 @@ namespace G {
                 perror("MQ init sem faild");
                 return -1;
             }
-            if (0 != pthread_rwlock_init(&self->lock, NULL)) {
+            if (0 != pthread_mutex_init(&self->lock, NULL)) {
                 destroy_sem(&self->p_sem);
                 perror("MQ init lock faild");
                 return -1;
@@ -58,13 +58,13 @@ namespace G {
         int push(const T &ele)
         {
             sem_t *p_sem;
-            pthread_rwlock_t *p_lock;
+            pthread_mutex_t *p_lock;
 
             p_sem = &this->p_sem;
             p_lock = &this->lock;
 
             // 上锁
-            if (0 != pthread_rwlock_wrlock(p_lock)) {
+            if (0 != pthread_mutex_lock(p_lock)) {
                 perror("MQ push lock");
                 exit(1);
             }
@@ -76,14 +76,14 @@ namespace G {
                 exit(1);
             }
             // 解锁
-            pthread_rwlock_unlock(p_lock);
+            pthread_mutex_unlock(p_lock);
             return 0;
         };
 
         T& front()
         {
             sem_t *p_sem;
-            pthread_rwlock_t *p_lock;
+            pthread_mutex_t *p_lock;
             T *ret;
 
             p_sem = &this->p_sem;
@@ -95,7 +95,7 @@ namespace G {
                 exit(1);
             }
             // 上锁
-            if (0 != pthread_rwlock_wrlock(p_lock)) {
+            if (0 != pthread_mutex_lock(p_lock)) {
                 perror("MQ pop lock");
                 exit(1);
             }
@@ -105,7 +105,7 @@ namespace G {
                 mQueue.pop();
             }
             // 解锁
-            pthread_rwlock_unlock(p_lock);
+            pthread_mutex_unlock(p_lock);
 
             // throw exception
             return *ret;
