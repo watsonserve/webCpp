@@ -7,6 +7,11 @@
 //
 #include "G/net/StreamServer.hpp"
 
+G::StreamServer::init(G::EventListener &listener)
+{
+    this->listener = listener;
+}
+
 G::StreamServer::StreamServer()
 {
     this->isA = "StreamServer";

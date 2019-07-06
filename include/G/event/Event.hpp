@@ -13,20 +13,13 @@
 
 namespace G {
 
-    class Exeable : public Object
-    {
-        public:
-            void *context;
-            void (*function)(Exeable *);
-            Exeable();
-    };
-
-    class Event : public Exeable
+    class Event : public Object
     {
         public:
             unsigned long ident;
             uint64_t event_type;
             Event();
+            virtual ~Event() {};
     };
 }
 

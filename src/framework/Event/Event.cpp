@@ -8,11 +8,6 @@
 
 #include "G/event/Event.hpp"
 
-G::Exeable::Exeable()
-{
-    this->isA = "Exeable";
-}
-
 G::Event::Event()
 {
     this->isA = "Event";

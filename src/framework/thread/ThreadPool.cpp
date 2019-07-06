@@ -14,6 +14,17 @@ using namespace G;
 #include <pthread.h>
 #include <errno.h>
 
+G::Exeable::Exeable()
+{
+    this->isA = "Exeable";
+}
+
+G::Exeable::~Exeable()
+{
+    int *p = (int *)(this->context);
+    printf("Exeable ~ %d\n", *p);
+}
+
 ThreadPool::ThreadPool()
 {
     this->isA = "ThreadPool";

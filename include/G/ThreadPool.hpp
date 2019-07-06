@@ -24,6 +24,15 @@ extern "C"
 
 namespace G {
 
+    class Exeable : public Object
+    {
+        public:
+            void *context;
+            void (*function)(Exeable *);
+            Exeable();
+            virtual ~Exeable();
+    };
+
     class ThreadPool : public Object
     {
         int size;
