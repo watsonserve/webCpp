@@ -77,7 +77,6 @@ namespace G {
             return ret;
         };
     };
-
 }
 
 #endif /* MQ_h */
