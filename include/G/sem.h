@@ -22,7 +22,9 @@ int wait_sem(sem_t*);
 int post_sem(sem_t*);
 int destroy_sem(sem_t*);
 
-#else
+#endif
+
+#ifdef __LINUX__
 #include <semaphore.h>
 
 #define    init_sem    sem_init

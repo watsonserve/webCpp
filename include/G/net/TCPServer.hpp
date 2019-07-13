@@ -8,13 +8,14 @@ namespace G {
     class TCPServer: public G::StreamServer
     {
         unsigned short port;
+    protected:
+        SOCKET initSocket() override;
     public:
         TCPServer();
         virtual ~TCPServer() override;
         int setPort(unsigned short);
         int setCert(const char *);
         int setKey(const char *);
-        SOCKET initSocket() override;
     };
 
 }

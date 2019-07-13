@@ -9,6 +9,8 @@ namespace G {
     class UNIXServer: public G::StreamServer
     {
         std::string path;
+    protected:
+        SOCKET initSocket() override;
     public:
         UNIXServer();
         UNIXServer(const char *path);
@@ -16,7 +18,6 @@ namespace G {
         virtual ~UNIXServer() override;
         int setPath(const char *);
         int setPath(std::string&);
-        SOCKET initSocket() override;
     };
 
 }

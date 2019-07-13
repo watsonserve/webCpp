@@ -19,11 +19,13 @@ namespace G {
     protected:
         std::string msg;
     public:
-        Exception();
-        virtual ~Exception() {};
-        Exception(const char *, size_t);
+        // 构造函数
         Exception(std::string &);
+        Exception(const char *, size_t);
+        // 拷贝构造函数
         Exception(Exception &);
+        // 析构函数
+        virtual ~Exception() {};
         virtual const char *operator = (const char *);
         virtual std::string &operator = (std::string &);
         virtual Exception &operator = (Exception &);

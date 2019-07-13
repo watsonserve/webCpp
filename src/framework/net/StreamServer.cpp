@@ -7,6 +7,11 @@
 //
 #include "G/net/StreamServer.hpp"
 
+G::StreamServer::init(G::EventListener &listener)
+{
+    this->listener = listener;
+}
+
 G::StreamServer::StreamServer()
 {
     this->isA = "StreamServer";
@@ -50,7 +55,6 @@ int G::StreamServer::service(IOEvents *dispatcher, int max)
 
         // 正常情况
         dispatcher->setFd(clientFd);
-
     }
     return 0;
 }

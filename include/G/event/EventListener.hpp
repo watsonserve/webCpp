@@ -9,13 +9,12 @@
 #ifndef _EVENT_LISTENER_HPP_
 #define _EVENT_LISTENER_HPP_
 
-#include "G/ThreadPool.hpp"
-#include <string>
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
 #include <errno.h>
+// 这里定义编译环境
+#include "G/stdafx.h"
 
 #ifdef __LINUX__
 
@@ -30,6 +29,10 @@
 #include <sys/time.h>
 
 #endif
+
+#include <string>
+#include "G/ThreadPool.hpp"
+#include "G/Exception.hpp"
 
 namespace G {
 
@@ -52,7 +55,7 @@ namespace G {
         EV_ONESHOT = EPOLLONESHOT,
         EV_WAKEUP = EPOLLWAKEUP,
         EV_EXCLUSIVE = EPOLLEXCLUSIVE,
-        EV_ETC = 1u << 63    // 扩展事件
+        EV_ETC = 0x8000000000000000    // 扩展事件
     } event_type_t;
 
 #endif
@@ -69,10 +72,20 @@ namespace G {
         int epfd;
         int max;
         G::ThreadPool * tpool;
+
+        // 没有实际作用的构造函数
         EventListener();
-        static void* listener(void *);
+        // 不可调用的拷贝和赋值
+        EventListener(EventListener &);
+        virtual EventListener& operator= (EventListener &);
+
+        // 实际的初始化
+        static int _init(G::EventListener &, G::ThreadPool *, int);
+
+        // pthread_create中必须使用静态方法，所以要将类实例传入
+        static void* _listener(void *);
     public:
-        static int init(G::EventListener &, G::ThreadPool *, int);
+        static G::EventListener& getInstance(G::ThreadPool *, int);
         void listen();
         // 第二个参数一定是堆上的内存地址!
         int emit(G::event_opt_t, G::Event *);

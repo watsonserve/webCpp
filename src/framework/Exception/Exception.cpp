@@ -12,13 +12,7 @@ using namespace G;
 
 void Exception::constructor()
 {
-    Exception::isA = "Exception";
-}
-
-Exception::Exception()
-{
-    this->constructor();
-    this->msg = "success";
+    this->isA = "Exception";
 }
 
 Exception::Exception(std::string &msg)

@@ -15,15 +15,16 @@ extern "C"
 }
 
 #include "G/Object.hpp"
-#include "G/StreamIO.hpp"
+#include "G/io/StreamIO.hpp"
 
 namespace G {
     class Server : public G::Object
     {
+    protected:
+        virtual SOCKET initSocket() =0;
     public:
         Server() {};
         virtual ~Server() =0;
-        virtual SOCKET initSocket() =0;
         virtual int service(G::IOEvents *, int) =0;
     };
 }

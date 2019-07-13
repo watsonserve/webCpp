@@ -14,6 +14,17 @@ using namespace G;
 #include <pthread.h>
 #include <errno.h>
 
+G::Exeable::Exeable()
+{
+    this->isA = "Exeable";
+}
+
+G::Exeable::~Exeable()
+{
+    int *p = (int *)(this->context);
+    printf("Exeable ~ %d\n", *p);
+}
+
 ThreadPool::ThreadPool()
 {
     this->isA = "ThreadPool";
@@ -22,13 +33,13 @@ ThreadPool::ThreadPool()
 // 默认线程
 void* ThreadPool::thFunction(void* that)
 {
-    G::Exeable event;
+    // G::Exeable &event;
     MQ<G::Exeable> &mq = ((ThreadPool *)that)->mq;
 
     while (1)
     {
         // 读消息队列
-        event = (G::Exeable)(mq.front());
+        G::Exeable &event = (G::Exeable &)(mq.front());
         if(nullptr == event.function) {
             continue;
         }

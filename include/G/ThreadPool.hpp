@@ -17,12 +17,21 @@ extern "C"
 #include "G/Object.hpp"
 #include "G/Number.hpp"
 #include "G/MQ.hpp"
-#include "G/Event.hpp"
+#include "G/event/Event.hpp"
 #ifdef __LINUX__
 #include <pthread.h>
 #endif
 
 namespace G {
+
+    class Exeable : public Object
+    {
+        public:
+            void *context;
+            void (*function)(Exeable *);
+            Exeable();
+            virtual ~Exeable();
+    };
 
     class ThreadPool : public Object
     {

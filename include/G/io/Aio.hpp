@@ -11,9 +11,9 @@
 
 #include "G/stdafx.h"
 
-extern "C" {
+extern "C" (
     #include <aio.h>
-}
+)
 
 #include "G/Object.hpp"
 /**
@@ -56,7 +56,6 @@ typedef struct aio_back
 /**
  *  all system not windows
  */
-
 namespace G {
     class Aio : public Object {
         
@@ -88,6 +87,6 @@ namespace G {
         static int aioError(const struct aiocb *);
         static int aioCancel(int, struct aiocb *);
     };
-}
+};
 
 #endif /* Aio_h */
