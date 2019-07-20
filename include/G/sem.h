@@ -10,6 +10,7 @@
 #define _SEM_H_
 
 #include "G/stdafx.h"
+
 #ifdef __BSD__
 
 #include <errno.h>

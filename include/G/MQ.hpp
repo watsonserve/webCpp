@@ -13,7 +13,7 @@ extern "C" {
     #include <string.h>
     #include <stdlib.h>
     #include <pthread.h>
-    #include "sem.h"
+    #include "G/sem.h"
 }
 #include <queue>
 #include "G/Object.hpp"

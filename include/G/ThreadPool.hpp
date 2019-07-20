@@ -23,27 +23,17 @@ extern "C"
 #endif
 
 namespace G {
-
-    class Exeable : public Object
-    {
-        public:
-            void *context;
-            void (*function)(Exeable *);
-            Exeable();
-            virtual ~Exeable();
-    };
-
     class ThreadPool : public Object
     {
         int size;
         static void* thFunction(void *);
     protected:
-        MQ<G::Exeable> mq;
+        MQ<G::Event> mq;
     public:
         ThreadPool();
         virtual ~ThreadPool() {};
         static int init(ThreadPool &, int);
-        int call(G::Exeable &);
+        int call(G::Event &);
     };
 }
 

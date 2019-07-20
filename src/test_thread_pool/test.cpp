@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <queue>
 #include "G/ThreadPool.hpp"
+#include "G/event/Event.hpp"
 
 struct context_t
 {
@@ -9,64 +10,24 @@ struct context_t
     int *intp;
 };
 
-class Exe : public G::Exeable
+void func(G::Event *args)
 {
-    public:
-        int id;
-
-        Exe() {};
-        Exe(const Exe &);
-        virtual ~Exe();
-};
-
-Exe::Exe(const Exe &exe)
-{
-    struct context_t *ctx = (struct context_t *)exe.context;
-    printf("copy & %d\n", ctx->no);
-    this->id = exe.id;
-    this->context = exe.context;
-    this->function = exe.function;
-}
-
-Exe::~Exe()
-{
-    struct context_t *ctx = (struct context_t *)this->context;
-    printf("~ %d\n", ctx->no);
-}
-
-void func(G::Exeable *args)
-{
-    Exe *exe = (Exe *)args;
     struct context_t *ctx;
     ctx = (struct context_t *)args->context;
-    printf("addr: %lX, id: %d, no: %d, i: %d\n", (int64_t)args, exe->id, ctx->no, *(ctx->intp));
+    printf("addr: %llX, id: %llu, no: %d, intp: %d\n", (int64_t)args, args->ident, ctx->no, *(ctx->intp));
     sleep(1);
 }
 
-void testQueue()
-{
-    struct context_t ctx;
-    Exe task;
-    std::queue<Exe> mq;
-
-    ctx.no = -1;
-    task.context = &ctx;
-    printf("task addr: %lX\n", (int64_t)&task);
-    mq.push(task);
-    Exe &front = mq.front();
-    printf("task addr: %lX\n", (int64_t)&front);
-}
-
-void main1()
+int main()
 {
     int i;
     G::ThreadPool tpool;
-    Exe task;
+    G::Event task;
     struct context_t ctx[4];
 
     i = G::ThreadPool::init(tpool, 2);
     if (i) {
-        return;
+        return 1;
     }
 
     task.function = func;
@@ -74,18 +35,11 @@ void main1()
     {
         ctx[i].no = i;
         ctx[i].intp = &i;
-        task.id = i + 10;
+        task.ident = 1 << i;
 
         task.context = ctx + i;
         tpool.call(task);
     }
     sleep(3);
-}
-
-int main()
-{
-    // testQueue();
-    main1();
-    sleep(2);
     return 0;
 }

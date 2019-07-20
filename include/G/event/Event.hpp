@@ -16,8 +16,10 @@ namespace G {
     class Event : public Object
     {
         public:
-            unsigned long ident;
+            uint64_t ident;
             uint64_t event_type;
+            void *context;
+            void (*function)(Event *);
             Event();
             virtual ~Event() {};
     };

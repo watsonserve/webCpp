@@ -63,6 +63,12 @@ namespace G {
 #ifdef __BSD__
     typedef enum
     {
+        OPT_ADD = EV_ADD,
+        OPT_DEL = EV_DELETE
+    } event_opt_t;
+
+    typedef enum
+    {
         EV_ETC = 1u << 63    // 扩展事件
     } event_type_t;
 #endif
