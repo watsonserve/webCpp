@@ -28,7 +28,7 @@ namespace G {
         int size;
         static void* thFunction(void *);
     protected:
-        MQ<G::Event> mq;
+        G::MQ<G::Event> mq;
     public:
         ThreadPool();
         virtual ~ThreadPool() {};

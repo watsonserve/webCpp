@@ -13,9 +13,9 @@ namespace G {
 
     class StreamServer: public G::Server
     {
-        G::EventListener &listener;
+        G::EventListener *listener;
     public:
-        void init(G::EventListener &listener);
+        void init(G::EventListener *listener);
         StreamServer();
         virtual ~StreamServer() =0;
         virtual int service(G::IOEvents *, int) override;

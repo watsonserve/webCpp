@@ -69,6 +69,8 @@ namespace G {
 
     typedef enum
     {
+        EV_IN = EVFILT_READ,
+        EV_OUT = EVFILT_WRITE,
         EV_ETC = 1u << 63    // 扩展事件
     } event_type_t;
 #endif
