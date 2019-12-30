@@ -7,7 +7,7 @@
 //
 #include "G/net/StreamServer.hpp"
 
-G::StreamServer::init(G::EventListener &listener)
+void G::StreamServer::init(G::EventListener* listener)
 {
     this->listener = listener;
 }
@@ -17,12 +17,13 @@ G::StreamServer::StreamServer()
     this->isA = "StreamServer";
 }
 
-int G::StreamServer::service(IOEvents *dispatcher, int max)
+int G::StreamServer::service(int max)
 {
     int i, errorNo;
     SOCKET sockfd, clientFd;
     struct sockaddr addr;
     socklen_t len;
+    G::Event event;
 
     max &= 0x7FFFFFFF;
     sockfd = this->initSocket();
@@ -54,7 +55,8 @@ int G::StreamServer::service(IOEvents *dispatcher, int max)
         }
 
         // 正常情况
-        dispatcher->setFd(clientFd);
+        // @TODO
+        listener->emit(OPT_ADD, event);
     }
     return 0;
 }
