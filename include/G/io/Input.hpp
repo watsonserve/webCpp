@@ -17,7 +17,7 @@ namespace G {
 
     class IOEvents;
 
-    class Input : public Object
+    class Input : virtual public Object
     {
     protected:
         struct aiocb rd_acb;

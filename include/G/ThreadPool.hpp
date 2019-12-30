@@ -24,7 +24,7 @@ extern "C"
 
 namespace G {
 
-    class Exeable : public Object
+    class Exeable : virtual public Object
     {
         public:
             void *context;
@@ -33,7 +33,7 @@ namespace G {
             virtual ~Exeable();
     };
 
-    class ThreadPool : public Object
+    class ThreadPool : virtual public Object
     {
         int size;
         static void* thFunction(void *);

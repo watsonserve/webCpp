@@ -23,7 +23,7 @@ typedef union {
 } var_t;
 
 namespace G {
-    class Var : public Object
+    class Var : virtual public Object
     {
         var_type_t type;
         var_t data;

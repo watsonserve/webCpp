@@ -8,7 +8,7 @@
 
 namespace G {
 
-    class HTTPDispatcher : public IOEvents
+    class HTTPDispatcher : virtual public IOEvents
     {
         std::list<G::MiddleHandle> process;
         HTTPRequest *requests;

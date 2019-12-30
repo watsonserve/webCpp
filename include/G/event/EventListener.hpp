@@ -31,6 +31,7 @@
 #endif
 
 #include <string>
+#include <map>
 #include "G/ThreadPool.hpp"
 #include "G/Exception.hpp"
 
@@ -67,11 +68,12 @@ namespace G {
     } event_type_t;
 #endif
 
-    class EventListener : Object
+    class EventListener : virtual Object
     {
         int epfd;
         int max;
         G::ThreadPool * tpool;
+        std::map<int, G::Event> eventPool;
 
         // 没有实际作用的构造函数
         EventListener();

@@ -8,7 +8,7 @@
 
 namespace G {
 
-    class HTTPResponse : public G::HTTPGram
+    class HTTPResponse : virtual public G::HTTPGram
     {
         std::string content;
         static std::map<int, std::string> statMessage;

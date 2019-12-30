@@ -18,14 +18,14 @@ extern "C"
 #include "G/io/StreamIO.hpp"
 
 namespace G {
-    class Server : public G::Object
+    class Server : virtual public G::Object
     {
     protected:
         virtual SOCKET initSocket() =0;
     public:
         Server() {};
         virtual ~Server() =0;
-        virtual int service(G::IOEvents *, int) =0;
+        virtual int service(int) =0;
     };
 }
 #endif

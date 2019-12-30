@@ -18,7 +18,7 @@ namespace G {
     class Output;
     class IOEvents;
 
-    class Output : public Object
+    class Output : virtual public Object
     {
     protected:
         struct aiocb wr_acb;

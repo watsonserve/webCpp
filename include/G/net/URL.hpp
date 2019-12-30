@@ -15,7 +15,7 @@
 
 namespace G {
 
-    class URL : public Object {
+    class URL : virtual public Object {
         std::string scheme;
         std::string user;
         std::string password;

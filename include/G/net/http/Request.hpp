@@ -8,7 +8,7 @@
 
 namespace G {
 
-    class HTTPRequest : public HTTPGram
+    class HTTPRequest : virtual public HTTPGram
     {
         IOHandle *fh;
         void* session;

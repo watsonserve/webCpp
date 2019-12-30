@@ -13,7 +13,7 @@
 
 namespace G {
 
-    class Exception : public Object
+    class Exception : virtual public Object
     {
         void constructor();
     protected:

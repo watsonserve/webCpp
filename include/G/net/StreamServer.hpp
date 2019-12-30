@@ -11,14 +11,18 @@ extern "C"
 
 namespace G {
 
-    class StreamServer: public G::Server
+    class StreamServer: virtual public G::Server
     {
-        G::EventListener &listener;
+        G::EventListener * listener;
+    // parent protected:
+    //     virtual SOCKET initSocket() =0;
     public:
-        void init(G::EventListener &listener);
+    // parent public:
+    //     virtual int service(G::IOEvents *, int) =0;
+        void init(G::EventListener *);
         StreamServer();
         virtual ~StreamServer() =0;
-        virtual int service(G::IOEvents *, int) override;
+        virtual int service(int) override;
     };
 
 }

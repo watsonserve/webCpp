@@ -17,7 +17,7 @@ namespace G {
     } MiddleHandle;
 
     typedef int (*MiddleWareFunc)(G::HTTPRequest *req, G::HTTPResponse *res);
-    class MiddleWare : public G::Object
+    class MiddleWare : virtual public G::Object
     {
     public:
         MiddleWare() {};

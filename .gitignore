@@ -2,6 +2,7 @@
 GHTTPd.xcodeproj
 bin
 makefile
+dist
 .DS_Store
 .vs
 .vscode

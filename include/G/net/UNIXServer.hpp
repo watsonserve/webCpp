@@ -6,7 +6,7 @@
 
 namespace G {
 
-    class UNIXServer: public G::StreamServer
+    class UNIXServer: virtual public G::StreamServer
     {
         std::string path;
     protected:

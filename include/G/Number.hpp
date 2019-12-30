@@ -13,7 +13,7 @@
 
 namespace G
 {
-    class Number : public Object
+    class Number : virtual public Object
     {
     public:
         static long parseInt(const char *);

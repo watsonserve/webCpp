@@ -15,7 +15,7 @@ namespace G {
 
     class StreamIO;
 
-    class IOEvents : public Object
+    class IOEvents : virtual public Object
     {
     public:
         IOEvents() {};

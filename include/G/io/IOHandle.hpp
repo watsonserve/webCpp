@@ -24,7 +24,7 @@ namespace G {
 
     // interface
 
-    class IOHandle: public Object
+    class IOHandle: virtual public Object
     {
         void *context;
     protected:

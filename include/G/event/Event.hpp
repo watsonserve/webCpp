@@ -13,7 +13,7 @@
 
 namespace G {
 
-    class Event : public Object
+    class Event : virtual public Object
     {
         public:
             unsigned long ident;

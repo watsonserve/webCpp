@@ -21,7 +21,7 @@ extern "C" {
 namespace G {
 
     template <typename T>
-    class MQ : public Object
+    class MQ : virtual public Object
     {
         // std::queue是值拷贝, push进去的变量和front出来的引用，地址不一样
         std::queue<T> mQueue;

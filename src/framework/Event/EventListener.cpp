@@ -56,11 +56,11 @@ void G::EventListener::listen()
         tid ^= tid;
     #endif
 
-    if(0 != pthread_create(&tid, nullptr, G::EventListener::_listener, this)) {
+    if (0 != pthread_create(&tid, nullptr, G::EventListener::_listener, this)) {
         perror("create a listen thread faild");
         exit(1);
     }
-    if(0 != pthread_detach(tid)) {
+    if (0 != pthread_detach(tid)) {
         perror("detach a listen thread faild");
         exit(1);
     }

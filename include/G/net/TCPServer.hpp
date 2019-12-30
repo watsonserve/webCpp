@@ -5,7 +5,7 @@
 
 namespace G {
 
-    class TCPServer: public G::StreamServer
+    class TCPServer: virtual public G::StreamServer
     {
         unsigned short port;
     protected:
