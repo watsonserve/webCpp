@@ -13,11 +13,36 @@
 
 namespace G {
 
+#ifdef __LINUX__
+    // EPOLL只占用低32位！
+    typedef enum
+    {
+        EV_IN = EPOLLIN,
+        EV_OUT = EPOLLOUT,
+        EV_RDHUP = EPOLLRDHUP,
+        EV_PRI = EPOLLPRI,
+        EV_ET = EPOLLET,
+        EV_ONESHOT = EPOLLONESHOT,
+        EV_WAKEUP = EPOLLWAKEUP,
+        EV_EXCLUSIVE = EPOLLEXCLUSIVE,
+        EV_ETC = 0x8000000000000000    // 扩展事件
+    } event_type_t;
+#endif
+
+#ifdef __BSD__
+    typedef enum
+    {
+        EV_IN = EVFILT_READ,
+        EV_OUT = EVFILT_WRITE,
+        EV_ETC = 1u << 63    // 扩展事件
+    } event_type_t;
+#endif
+
     class Event : virtual public Object
     {
         public:
             uint64_t ident;
-            uint64_t event_type;
+            event_type_t event_type;
             void *context;
             void (*function)(Event *);
             Event();

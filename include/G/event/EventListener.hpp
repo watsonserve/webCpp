@@ -44,21 +44,6 @@ namespace G {
         OPT_DEL = EPOLL_CTL_DEL,
         OPT_MOD = EPOLL_CTL_MOD
     } event_opt_t;
-
-    // EPOLL只占用低32位！
-    typedef enum
-    {
-        EV_IN = EPOLLIN,
-        EV_OUT = EPOLLOUT,
-        EV_RDHUP = EPOLLRDHUP,
-        EV_PRI = EPOLLPRI,
-        EV_ET = EPOLLET,
-        EV_ONESHOT = EPOLLONESHOT,
-        EV_WAKEUP = EPOLLWAKEUP,
-        EV_EXCLUSIVE = EPOLLEXCLUSIVE,
-        EV_ETC = 0x8000000000000000    // 扩展事件
-    } event_type_t;
-
 #endif
 
 #ifdef __BSD__
@@ -67,13 +52,6 @@ namespace G {
         OPT_ADD = EV_ADD,
         OPT_DEL = EV_DELETE
     } event_opt_t;
-
-    typedef enum
-    {
-        EV_IN = EVFILT_READ,
-        EV_OUT = EVFILT_WRITE,
-        EV_ETC = 1u << 63    // 扩展事件
-    } event_type_t;
 #endif
 
     class EventListener : virtual Object

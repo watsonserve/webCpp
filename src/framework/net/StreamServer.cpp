@@ -56,6 +56,10 @@ int G::StreamServer::service(int max)
 
         // 正常情况
         // @TODO
+        event.ident = clientFd;
+        event.event_type = EV_IN;
+        // event.context = ;
+        // event.function = ;
         listener->emit(OPT_ADD, event);
     }
     return 0;
