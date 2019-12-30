@@ -14,17 +14,6 @@ using namespace G;
 #include <pthread.h>
 #include <errno.h>
 
-G::Exeable::Exeable()
-{
-    this->isA = "Exeable";
-}
-
-G::Exeable::~Exeable()
-{
-    int *p = (int *)(this->context);
-    printf("Exeable ~ %d\n", *p);
-}
-
 ThreadPool::ThreadPool()
 {
     this->isA = "ThreadPool";
@@ -33,13 +22,13 @@ ThreadPool::ThreadPool()
 // 默认线程
 void* ThreadPool::thFunction(void* that)
 {
-    // G::Exeable &event;
-    MQ<G::Exeable> &mq = ((ThreadPool *)that)->mq;
+    // G::Event &event;
+    MQ<G::Event> &mq = ((ThreadPool *)that)->mq;
 
     while (1)
     {
         // 读消息队列
-        G::Exeable &event = (G::Exeable &)(mq.front());
+        G::Event &event = (G::Event &)(mq.front());
         if(nullptr == event.function) {
             continue;
         }
@@ -59,7 +48,7 @@ int ThreadPool::init(ThreadPool &self, int max)
     self.size = max;
 
     // 初始化消息队列
-    if (0 != MQ<G::Exeable>::init(&(self.mq))) {
+    if (0 != MQ<G::Event>::init(&(self.mq))) {
         perror("init message queue faild");
         return -1;
     }
@@ -85,7 +74,7 @@ int ThreadPool::init(ThreadPool &self, int max)
 }
 
 // 向线程池委托任务
-int ThreadPool::call(G::Exeable &msg)
+int ThreadPool::call(G::Event &msg)
 {
     // 写消息队列
     return this->mq.push(msg);

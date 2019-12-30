@@ -13,12 +13,12 @@ namespace G {
 
     class StreamServer: virtual public G::Server
     {
-        G::EventListener * listener;
     // parent protected:
     //     virtual SOCKET initSocket() =0;
-    public:
     // parent public:
     //     virtual int service(G::IOEvents *, int) =0;
+        G::EventListener *listener;
+    public:
         void init(G::EventListener *);
         StreamServer();
         virtual ~StreamServer() =0;
