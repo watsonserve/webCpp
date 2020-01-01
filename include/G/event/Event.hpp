@@ -11,12 +11,26 @@
 
 #include "G/Object.hpp"
 
+#ifdef __LINUX__
+
+#include <sys/epoll.h>
+
+#endif
+
+#ifdef __BSD__
+
+#include <sys/types.h>
+#include <sys/event.h>
+
+#endif
+
 namespace G {
 
 #ifdef __LINUX__
     // EPOLL只占用低32位！
     typedef enum
     {
+        EV_ERR = EPOLLERR,
         EV_IN = EPOLLIN,
         EV_OUT = EPOLLOUT,
         EV_RDHUP = EPOLLRDHUP,
@@ -32,6 +46,7 @@ namespace G {
 #ifdef __BSD__
     typedef enum
     {
+        EV_ERR = EV_ERROR,
         EV_IN = EVFILT_READ,
         EV_OUT = EVFILT_WRITE,
         EV_ETC = 1u << 63    // 扩展事件
@@ -46,6 +61,7 @@ namespace G {
             void *context;
             void (*function)(Event *);
             Event();
+            Event(G::Event &ev);
             virtual ~Event() {};
     };
 }

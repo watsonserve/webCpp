@@ -12,3 +12,12 @@ G::Event::Event()
 {
     this->isA = "Event";
 }
+
+G::Event::Event(G::Event &ev)
+{
+    this->isA = "Event";
+    this->context = ev.context;
+    this->function = ev.function;
+    this->ident = ev.ident;
+    this->event_type = ev.event_type;
+}
