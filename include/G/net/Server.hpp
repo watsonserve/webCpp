@@ -7,7 +7,6 @@ extern "C"
     #include <stdlib.h>
     #include <unistd.h>
     #include <sys/types.h>
-    #include <thread>
     #include <errno.h>
     #ifdef __BSD__
         #include <sys/event.h>

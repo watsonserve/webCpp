@@ -13,9 +13,9 @@ G::Event::Event()
     this->isA = "Event";
 }
 
-G::Event::Event(G::Event &ev)
+G::Event::Event(const G::Event &ev)
 {
-    this->isA = "Event";
+    this->isA = ev.isA;
     this->context = ev.context;
     this->function = ev.function;
     this->ident = ev.ident;

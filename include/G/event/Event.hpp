@@ -61,7 +61,7 @@ namespace G {
             void *context;
             void (*function)(Event *);
             Event();
-            Event(G::Event &ev);
+            Event(const G::Event &ev);
             virtual ~Event() {};
     };
 }
