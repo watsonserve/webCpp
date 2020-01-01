@@ -59,7 +59,6 @@ namespace G {
         int epfd;
         int max;
         G::ThreadPool * tpool;
-        std::map<int, G::Event> eventPool;
 
         // 没有实际作用的构造函数
         EventListener();
@@ -76,7 +75,6 @@ namespace G {
         static G::EventListener& getInstance(G::ThreadPool *, int);
         void listen();
         // 第二个参数一定是堆上的内存地址!
-        int emit(G::event_opt_t, G::Event *);
         int emit(G::event_opt_t, G::Event &);
         virtual ~EventListener() {};
     };

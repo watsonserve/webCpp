@@ -39,11 +39,6 @@ int G::EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
     return 0;
 }
 
-int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
-{
-    this->emit(opt, *eventData);
-}
-
 int G::EventListener::emit(G::event_opt_t opt, G::Event &eventData)
 {
     struct epoll_event ev;
@@ -58,7 +53,7 @@ int G::EventListener::emit(G::event_opt_t opt, G::Event &eventData)
         return 0;
     }
     ev.events = (uint32_t)(eventData.event_type);
-    ev.data.ptr = &eventData;
+    ev.data.ptr = new G::Event(eventData);
 
     // 等待硬中断
     return epoll_ctl(this->epfd, opt, eventData.ident, &ev);
@@ -97,18 +92,18 @@ void* G::EventListener::_listener(void *that)
             event_ptr = eventList + i;
             edata = (G::Event*)(event_ptr->data.ptr);
             event_types = event_ptr->events;
-            // TODO
+            edata->event_type = (G::event_type_t)event_types;
+
             if (event_types & EPOLLERR)  // 出错
             {
                 close(edata->ident);
-                continue;
+                edata->event_type = EV_ERR;
             }
-            edata->event_type = event_types;
-
             if (-1 == tpool->call(*edata)) {
                 perror("request thread pool");
                 exit(1);
             }
+            delete edata;
         }
     }
 

@@ -40,14 +40,14 @@ int EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
     return 0;
 }
 
-int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
+int G::EventListener::emit(G::event_opt_t opt, G::Event &eventData)
 {
     struct kevent ev;
 
     // EV_ETC 扩展事件立即执行
-    if (eventData->event_type >> 63)
+    if (eventData.event_type >> 63)
     {
-        if (-1 == tpool->call(*eventData)) {
+        if (-1 == tpool->call(eventData)) {
             perror("request thread pool");
             exit(1);
         }
@@ -56,12 +56,12 @@ int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
 
     EV_SET(
         &ev,
-        eventData->ident,
-        (uint32_t)(eventData->event_type),
+        eventData.ident,
+        (uint32_t)(eventData.event_type),
         opt,
         0,
         NULL,
-        (void*)eventData
+        (void*)new G::Event(eventData)
     );
     return kevent(this->epfd, &ev, 1, nullptr, 0, nullptr);
 }
@@ -71,6 +71,7 @@ void* G::EventListener::_listener(void *that)
     G::EventListener *self;
     struct kevent *eventList, *event_ptr;
     int i, nEvent, max;
+    register int event_types;
     G::Event *udata;
     ThreadPool *tpool;
 
@@ -96,17 +97,22 @@ void* G::EventListener::_listener(void *that)
         for(i = 0; i < nEvent; i++)
         {
             event_ptr = eventList + i;
-            if (event_ptr->flags & EV_ERROR)  // 出错
+            udata = (G::Event *)(event_ptr->udata);
+
+            event_types = event_ptr->flags;
+            udata->event_type = (G::event_type_t)event_types;
+
+            if (event_types & EV_ERROR)  // 出错
             {
                 close((int)(event_ptr->ident));
-                continue;
+                udata->event_type = EV_ERR;
             }
 
-            udata = (G::Event *)(event_ptr->udata);
             if (-1 == tpool->call(*udata)) {
                 perror("request thread pool");
                 exit(1);
             }
+            delete udata;
         }
     }
 
