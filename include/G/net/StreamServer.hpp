@@ -18,11 +18,13 @@ namespace G {
     // parent public:
     //     virtual int service(G::IOEvents *, int) =0;
         G::EventListener *listener;
+        static void onData(Event *);
+    protected:
+        virtual int _service(G::Protocoler *, int) override;
     public:
         void init(G::EventListener *);
         StreamServer();
         virtual ~StreamServer() =0;
-        virtual int service(int) override;
     };
 
 }

@@ -15,17 +15,17 @@ extern "C"
 }
 
 #include "G/Object.hpp"
-#include "G/io/StreamIO.hpp"
+#include "G/net/Protocoler.hpp"
 
 namespace G {
     class Server : virtual public G::Object
     {
     protected:
         virtual SOCKET initSocket() =0;
+        virtual int _service(G::Protocoler *, int) =0;
     public:
         Server() {};
         virtual ~Server() =0;
-        virtual int service(int) =0;
     };
 }
 #endif

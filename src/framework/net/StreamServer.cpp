@@ -17,7 +17,17 @@ G::StreamServer::StreamServer()
     this->isA = "StreamServer";
 }
 
-int G::StreamServer::service(int max)
+// 静态
+void G::StreamServer::onData(G::Event *ev)
+{
+    G::Protocoler *protocoler = (G::Protocoler *)(ev->context);
+    const int fd = ev->ident;
+    G::event_type_t event_type = ev->event_type;
+    // @TODO
+    return protocoler->onData(fd, event_type);
+}
+
+int G::StreamServer::_service(G::Protocoler *protocoler, int max)
 {
     int i, errorNo;
     SOCKET sockfd, clientFd;
@@ -55,11 +65,10 @@ int G::StreamServer::service(int max)
         }
 
         // 正常情况
-        // @TODO
         event.ident = clientFd;
         event.event_type = EV_IN;
-        // event.context = ;
-        // event.function = ;
+        event.context = protocoler;
+        event.function = G::StreamServer::onData;
         listener->emit(OPT_ADD, event);
     }
     return 0;
