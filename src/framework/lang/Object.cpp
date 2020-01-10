@@ -21,9 +21,9 @@ void Object::init(Object &obj, char *a)
     obj.isA = a;
 }
 
-void Object::getIsA(std::string &a)
+void Object::setIsA(std::string &a)
 {
-    a = this->isA;
+    this->isA = a;
     return;
 }
 

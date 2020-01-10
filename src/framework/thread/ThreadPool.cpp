@@ -33,7 +33,7 @@ void* ThreadPool::thFunction(void* that)
             continue;
         }
         // 调用业务函数
-        event.function(&event);
+        event.function(event);
     }
 
     return nullptr;

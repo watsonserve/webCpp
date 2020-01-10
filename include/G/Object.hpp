@@ -20,7 +20,7 @@ namespace G {
     public:
         static void init(Object &, std::string &a);
         static void init(Object &, char *a);
-        void getIsA(std::string &a);
+        void setIsA(std::string &a);
         std::string getIsA();
     };
 

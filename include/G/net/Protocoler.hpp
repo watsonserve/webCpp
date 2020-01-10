@@ -4,11 +4,9 @@
 #include "G/event/Event.hpp"
 
 namespace G {
-    class Protocoler : virtual public G::Object
+    class Protocoler
     {
     public:
-        Protocoler() {};
-        virtual ~Protocoler() =0;
         virtual void onData(int, G::event_type_t) =0;
     };
 }

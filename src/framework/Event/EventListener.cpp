@@ -15,6 +15,12 @@ G::EventListener::EventListener()
     this->epfd = -1;
 }
 
+// 构造函数
+G::EventListener::~EventListener()
+{
+    printf("G::EventListener::~EventListener\n");
+}
+
 // 拷贝构造函数
 G::EventListener::EventListener(EventListener &nextListener)
 {

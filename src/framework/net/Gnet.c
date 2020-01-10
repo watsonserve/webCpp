@@ -21,10 +21,10 @@ SOCKET UDPsetup(const unsigned short port)
     memset(my_addr.sin_zero, 0, 8);
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if( -1 == sockfd )
+    if (-1 == sockfd)
         return -1;
 /*绑定IP地址及端口*/
-    if(-1 == bind(sockfd, (struct sockaddr *)&my_addr, sizeof(struct sockaddr)) ) {
+    if (-1 == bind(sockfd, (struct sockaddr *)&my_addr, sizeof(struct sockaddr))) {
         eno = errno;
         closesocket(sockfd);
         errno = eno;
@@ -50,7 +50,7 @@ SOCKET TCPsetup(const unsigned short port)
         return -1;
 
     //绑定IP地址及端口
-    if (-1 == bind(sockfd, (struct sockaddr *) &my_addr, sizeof(struct sockaddr)))
+    if (-1 == bind(sockfd, (struct sockaddr*)&my_addr, sizeof(struct sockaddr)))
         goto EXIT_ERR;
     
     //开始监听本机port端口
@@ -96,7 +96,7 @@ SOCKET UNIXsetup(const char *path)
     unlink(path);
 
     // 绑定路径
-    if (-1 == bind(sockfd, (struct sockaddr *) &my_addr, (unsigned int)SUN_LEN(&my_addr)))
+    if (-1 == bind(sockfd, (struct sockaddr *)&my_addr, sizeof(struct sockaddr_un)))
 		goto EXIT_ERR;
 
     // 开始监听本机port端口
@@ -118,7 +118,7 @@ SOCKET TCPsetCli( char* HostAddr, unsigned short port )
     SOCKET sockfd;
 //-------------------------------------
     sockfd = socket(AF_INET, SOCK_STREAM, 6);
-    if ( -1 == sockfd ) {
+    if (-1 == sockfd) {
         perror("TCPsetCli socket socket_create ");
         return -1;
     }
@@ -128,14 +128,14 @@ SOCKET TCPsetCli( char* HostAddr, unsigned short port )
     memcpy( (char*)&serv_addr.sin_addr, HostAddr, 4);
     memset(serv_addr.sin_zero, 0, 8);
 //填表
-    if ( -1 == connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(struct sockaddr)) ) {
+    if (-1 == connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(struct sockaddr))) {
 		perror("TCP host connect ");
         return -1;
 	}
     return sockfd;
 }
 
-short clean( SOCKET clinet_fd )
+short clean(SOCKET clinet_fd)
 {
     shutdown(clinet_fd, 2);        /*0 ReadOver; 1 WriteOver; 2 RW over*/
     return closesocket(clinet_fd);
@@ -143,11 +143,11 @@ short clean( SOCKET clinet_fd )
 
 void killwaitcd(SOCKET cd, char *msg, unsigned long len)
 {
-    if( 0 == len )
+    if(0 == len)
         len = strlen(msg);
-    send( cd, msg, len, 0 );
-    shutdown( cd, 2 );
-    closesocket( cd );
+    send(cd, msg, len, 0);
+    shutdown(cd, 2);
+    closesocket(cd);
     puts("\a\a\a");
     /*thread wair*/
     return;
@@ -157,6 +157,6 @@ unsigned short getIP4addr(char *readdr, struct sockaddr addr)
 {
     unsigned char *p = (unsigned char *)&addr;
     unsigned short port = ((unsigned short*)&addr)[1];
-    sprintf( readdr, "%d.%d.%d.%d", p[4], p[5], p[6], p[7] );
+    sprintf(readdr, "%d.%d.%d.%d", p[4], p[5], p[6], p[7]);
     return port;
 }

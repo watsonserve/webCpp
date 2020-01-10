@@ -11,8 +11,7 @@ namespace G {
     protected:
         SOCKET initSocket() override;
     public:
-        TCPServer();
-        virtual ~TCPServer() override;
+        TCPServer(G::EventListener *);
         int setPort(unsigned short);
         int setCert(const char *);
         int setKey(const char *);

@@ -2,33 +2,30 @@
 
 using namespace G;
 
-UNIXServer::UNIXServer()
+UNIXServer::UNIXServer(G::EventListener *listener, const char *path)
 {
-	this->isA = "UNIXServer";
+    this->initStreamServer(listener);
+    this->isA = "UNIXServer";
+    this->setPath(path);
 }
 
-UNIXServer::UNIXServer(const char *path)
+UNIXServer::UNIXServer(G::EventListener *listener, std::string &path)
 {
-	this->setPath(path);
+    this->initStreamServer(listener);
+    this->isA = "UNIXServer";
+    this->setPath(path);
 }
-
-UNIXServer::UNIXServer(std::string &path)
-{
-	this->setPath(path);
-}
-
-UNIXServer::~UNIXServer() {}
 
 int UNIXServer::setPath(const char *str)
 {
-	this->path = str;
-	return 0;
+    this->path = str;
+    return 0;
 }
 
 int UNIXServer::setPath(std::string &str)
 {
-	this->path = str;
-	return 0;
+    this->path = str;
+    return 0;
 }
 
 SOCKET UNIXServer::initSocket()

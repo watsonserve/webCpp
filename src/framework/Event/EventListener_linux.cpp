@@ -41,6 +41,7 @@ int G::EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
 
 int G::EventListener::emit(G::event_opt_t opt, G::Event &eventData)
 {
+    int err;
     struct epoll_event ev;
 
     // EV_ETC 扩展事件立即执行
@@ -52,11 +53,16 @@ int G::EventListener::emit(G::event_opt_t opt, G::Event &eventData)
         }
         return 0;
     }
-    ev.events = (uint32_t)(eventData.event_type);
+    ev.events = (uint32_t)(eventData.event_type) | EPOLLET;
     ev.data.ptr = new G::Event(eventData);
 
+    printf("emit %lX, %ld\n", (int64_t)(ev.data.ptr), (int64_t)(eventData.ident));
     // 等待硬中断
-    return epoll_ctl(this->epfd, opt, eventData.ident, &ev);
+    err = epoll_ctl(epfd, opt, eventData.ident, &ev);
+    if(-1 == err) {
+        perror("G::EventListener::emit");
+    }
+    return err;
 }
 
 void* G::EventListener::_listener(void *that)
@@ -101,6 +107,11 @@ void* G::EventListener::_listener(void *that)
             }
             if (-1 == tpool->call(*edata)) {
                 perror("request thread pool");
+                exit(1);
+            }
+            printf("delete %lX\n", (int64_t)edata);
+            if(-1 == epoll_ctl(self->epfd, OPT_DEL, edata->ident, NULL)) {
+                perror("G::EventListener::remove");
                 exit(1);
             }
             delete edata;

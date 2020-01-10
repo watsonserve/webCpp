@@ -13,18 +13,14 @@ extern "C"
     #endif
 }
 
-#include "G/Object.hpp"
 #include "G/net/Protocoler.hpp"
 
 namespace G {
-    class Server : virtual public G::Object
+    class Server
     {
     protected:
         virtual SOCKET initSocket() =0;
         virtual int _service(G::Protocoler *, int) =0;
-    public:
-        Server() {};
-        virtual ~Server() =0;
     };
 }
 #endif

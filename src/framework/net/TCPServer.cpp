@@ -9,11 +9,11 @@
 #include "openssl/err.h"
 */
 
-G::TCPServer::TCPServer() {
+G::TCPServer::TCPServer(G::EventListener* listener)
+{
+    this->initStreamServer(listener);
     this->isA = "TCPServer";
 }
-
-G::TCPServer::~TCPServer() {}
 
 int G::TCPServer::setCert(const char *certFile)
 {

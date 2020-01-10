@@ -76,7 +76,7 @@ namespace G {
         void listen();
         // 第二个参数一定是堆上的内存地址!
         int emit(G::event_opt_t, G::Event &);
-        virtual ~EventListener() {};
+        virtual ~EventListener();
     };
 
 }

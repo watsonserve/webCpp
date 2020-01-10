@@ -13,11 +13,12 @@ G::Event::Event()
     this->isA = "Event";
 }
 
-G::Event::Event(const G::Event &ev)
+G::Event::Event(const G::Event &ev) : Event()
 {
-    this->isA = ev.isA;
     this->context = ev.context;
     this->function = ev.function;
     this->ident = ev.ident;
     this->event_type = ev.event_type;
 }
+
+G::Event::~Event() {}

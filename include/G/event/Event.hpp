@@ -53,16 +53,17 @@ namespace G {
     } event_type_t;
 #endif
 
-    class Event : virtual public Object
+    class Event : public Object
     {
         public:
             uint64_t ident;
             event_type_t event_type;
             void *context;
-            void (*function)(Event *);
+            void (*function)(Event &);
+
             Event();
             Event(const G::Event &ev);
-            virtual ~Event() {};
+            virtual ~Event();
     };
 }
 

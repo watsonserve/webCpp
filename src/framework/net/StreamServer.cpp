@@ -7,29 +7,29 @@
 //
 #include "G/net/StreamServer.hpp"
 
-void G::StreamServer::init(G::EventListener* listener)
-{
-    this->listener = listener;
-}
-
 G::StreamServer::StreamServer()
 {
     this->isA = "StreamServer";
 }
 
-// 静态
-void G::StreamServer::onData(G::Event *ev)
+void G::StreamServer::initStreamServer(G::EventListener *listener)
 {
-    G::Protocoler *protocoler = (G::Protocoler *)(ev->context);
-    const int fd = ev->ident;
-    G::event_type_t event_type = ev->event_type;
+    this->listener = listener;
+}
+
+// 静态
+void G::StreamServer::onData(G::Event &ev)
+{
+    G::Protocoler *protocoler = (G::Protocoler *)(ev.context);
+    const int fd = ev.ident;
+    G::event_type_t event_type = ev.event_type;
     // @TODO
     return protocoler->onData(fd, event_type);
 }
 
 int G::StreamServer::_service(G::Protocoler *protocoler, int max)
 {
-    int i, errorNo;
+    int errorNo;
     SOCKET sockfd, clientFd;
     struct sockaddr addr;
     socklen_t len;

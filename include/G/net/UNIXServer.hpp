@@ -12,12 +12,10 @@ namespace G {
     protected:
         SOCKET initSocket() override;
     public:
-        UNIXServer();
-        UNIXServer(const char *path);
-        UNIXServer(std::string &path);
-        virtual ~UNIXServer() override;
+        UNIXServer(G::EventListener *, const char *);
+        UNIXServer(G::EventListener *, std::string &);
         int setPath(const char *);
-        int setPath(std::string&);
+        int setPath(std::string &);
     };
 
 }
