@@ -53,7 +53,7 @@ namespace G {
     } event_type_t;
 #endif
 
-    class Event : public Object
+    class Event : virtual public Object
     {
         public:
             uint64_t ident;

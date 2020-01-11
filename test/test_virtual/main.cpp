@@ -1,32 +1,41 @@
 #include <stdio.h>
 
-class Base {
-public:
-    virtual void foo() =0;
-};
-
-class Foo : virtual public Base
+class Foo
 {
 public:
-    Foo();
-    virtual ~Foo();
-    virtual void foo() override;
+    Foo(int);
 };
 
-Foo::Foo()
-{}
-
-Foo::~Foo()
-{}
-
-void Foo::foo()
+class Bar: virtual public Foo
 {
-    printf("foo\n");
+public:
+    Bar(int);
+};
+
+class Baz: virtual public Bar
+{
+public:
+    Baz(int, int);
+};
+
+Foo::Foo(int i)
+{
+    printf("Foo: %d\n", i);
+}
+
+Bar::Bar(int i) : Foo(i)
+{
+    printf("Bar: %d\n", i);
+}
+
+// Class Foo 不存在默认构造函数
+Baz::Baz(int i, int j) : Bar(i)
+{
+    printf("Baz: %d, %d\n", i, j);
 }
 
 int main()
 {
-    Foo foo;
-    foo.foo();
+    Baz Baz(1, 2);
     return 0;
 }
