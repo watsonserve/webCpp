@@ -69,6 +69,7 @@ int G::StreamServer::_service(G::Protocoler *protocoler, int max)
         event.event_type = EV_IN;
         event.context = protocoler;
         event.function = G::StreamServer::onData;
+        // onData
         listener->emit(OPT_ADD, event);
     }
     return 0;

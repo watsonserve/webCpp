@@ -6,6 +6,7 @@ extern "C"
     #include "G/net/Gnet.h"
 }
 
+#include "G/event/Event.hpp"
 #include "G/net/Server.hpp"
 #include "G/event/EventListener.hpp"
 

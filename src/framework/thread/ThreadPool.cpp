@@ -74,7 +74,7 @@ int ThreadPool::init(ThreadPool &self, int max)
 }
 
 // 向线程池委托任务
-int ThreadPool::call(G::Event &msg)
+int ThreadPool::call(const G::Event &msg)
 {
     // 写消息队列
     return this->mq.push(msg);

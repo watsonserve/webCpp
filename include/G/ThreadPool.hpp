@@ -33,7 +33,7 @@ namespace G {
         ThreadPool();
         virtual ~ThreadPool() {};
         static int init(ThreadPool &, int);
-        int call(G::Event &);
+        int call(const G::Event &);
     };
 }
 

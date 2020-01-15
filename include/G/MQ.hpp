@@ -84,7 +84,6 @@ namespace G {
         {
             sem_t *p_sem;
             pthread_mutex_t *p_lock;
-            T *ret;
 
             p_sem = &this->p_sem;
             p_lock = &this->lock;
@@ -100,15 +99,15 @@ namespace G {
                 exit(1);
             }
 
+            T &ret = mQueue.front();
             if (!mQueue.empty()) {
-                ret = &(mQueue.front());
                 mQueue.pop();
             }
             // 解锁
             pthread_mutex_unlock(p_lock);
 
             // throw exception
-            return *ret;
+            return ret;
         };
     };
 }
