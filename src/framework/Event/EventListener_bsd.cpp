@@ -70,8 +70,7 @@ void* G::EventListener::_listener(void *that)
 {
     G::EventListener *self;
     struct kevent *eventList, *event_ptr;
-    int i, nEvent, max;
-    register int event_types;
+    int i, nEvent, max, event_types;
     G::Event *udata;
     ThreadPool *tpool;
 
@@ -116,7 +115,7 @@ void* G::EventListener::_listener(void *that)
         }
     }
 
-    return;
+    return nullptr;
 }
 
 #endif
