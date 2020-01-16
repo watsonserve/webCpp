@@ -80,7 +80,7 @@ namespace G {
             return 0;
         };
 
-        T& front()
+        T front()
         {
             sem_t *p_sem;
             pthread_mutex_t *p_lock;
@@ -99,10 +99,8 @@ namespace G {
                 exit(1);
             }
 
-            T &ret = mQueue.front();
-            if (!mQueue.empty()) {
-                mQueue.pop();
-            }
+            T ret = mQueue.front();
+            mQueue.pop();
             // 解锁
             pthread_mutex_unlock(p_lock);
 
