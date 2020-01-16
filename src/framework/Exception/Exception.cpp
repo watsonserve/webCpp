@@ -10,10 +10,7 @@
 
 using namespace G;
 
-void Exception::constructor()
-{
-    this->isA = "Exception";
-}
+void Exception::constructor() {}
 
 Exception::Exception(std::string &msg)
 {

@@ -49,9 +49,8 @@ Input* Input::init(Input *inHandle, G::IOEvents *ioEvents, void* mem, size_t mem
     return inHandle;
 }
 
-Input::Input()
-{
-    this->isA = "Input";
+Input::Input(int fd, InputHandler &handler) : IO(fd) {
+    this->handler = handler;
 }
 
 void Input::callback(union sigval inHandle)

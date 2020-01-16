@@ -8,10 +8,7 @@
 
 #include "G/event/Event.hpp"
 
-G::Event::Event()
-{
-    this->isA = "Event";
-}
+G::Event::Event() {}
 
 G::Event::Event(const G::Event &ev) : Event()
 {

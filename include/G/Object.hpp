@@ -15,13 +15,6 @@ namespace G {
 
     class Object
     {
-    protected:
-        std::string isA;
-    public:
-        static void init(Object &, std::string &a);
-        static void init(Object &, char *a);
-        void setIsA(std::string &a);
-        std::string getIsA();
     };
 
     typedef void* (*Func)(void *);

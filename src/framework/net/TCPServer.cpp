@@ -12,7 +12,6 @@
 G::TCPServer::TCPServer(G::EventListener* listener)
 {
     this->initStreamServer(listener);
-    this->isA = "TCPServer";
 }
 
 int G::TCPServer::setCert(const char *certFile)

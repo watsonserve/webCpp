@@ -11,7 +11,6 @@
 // 构造函数
 G::EventListener::EventListener()
 {
-    this->isA = "EventListener";
     this->epfd = -1;
 }
 

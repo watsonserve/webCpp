@@ -5,14 +5,12 @@ using namespace G;
 UNIXServer::UNIXServer(G::EventListener *listener, const char *path)
 {
     this->initStreamServer(listener);
-    this->isA = "UNIXServer";
     this->setPath(path);
 }
 
 UNIXServer::UNIXServer(G::EventListener *listener, std::string &path)
 {
     this->initStreamServer(listener);
-    this->isA = "UNIXServer";
     this->setPath(path);
 }
 
