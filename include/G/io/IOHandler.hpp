@@ -19,21 +19,21 @@ namespace G
     class FDHandler
     {
     public:
-        virtual void onOpen(int fd) =0;
-        virtual void onError(Exception &err) =0;
-        virtual void onClose() =0;
+        virtual void onOpen(IOStream *) =0;
+        virtual void onError(IOStream *, int) =0;
+        virtual void onClose(IOStream *) =0;
     };
 
     class InputHandler : public virtual FDHandler
     {
     public:
-        virtual void onData(IOStream &) =0;
+        virtual void onData(IOStream *) =0;
     };
 
     class OutputHandler : public virtual FDHandler
     {
     public:
-        virtual void onWritten(ssize_t) =0;
+        virtual void onWritten(IOStream *, ssize_t) =0;
     };
 
     class IOHandler : virtual public InputHandler, virtual public OutputHandler

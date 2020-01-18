@@ -1,4 +1,8 @@
-#include <sys/socket.h>
+extern "C"
+{
+    #include <errno.h>
+    #include <sys/socket.h>
+}
 #include "G/io/IOStream.hpp"
 
 static ssize_t putout(int fd, G::FdType type, const char *buf, ssize_t len)
@@ -49,6 +53,17 @@ void G::IOStream::setFd(int fd, G::FdType type)
     listener->emit(OPT_ADD, &i_event);
 }
 
+ssize_t G::IOStream::read(char *buf, ssize_t size)
+{
+    switch (type)
+    {
+        case G::FdType::FD_SOCKET:
+            return recv(i_event.ident, buf, size, 0);
+        default:
+            return ::read(i_event.ident, buf, size);
+    }
+}
+
 void G::IOStream::write(std::string &str)
 {
     this->writeBuf = str;
@@ -75,20 +90,20 @@ void G::IOStream::onData(G::Event &ev)
     switch (ev.event_type)
     {
         case EV_ERR:
-            ioStream->handler->onError(fd, event_type);
+            ioStream->handler->onError(ioStream, 0);
             break;
         case EV_IN:
-            ioStream->handler->onData(fd, event_type);
+            ioStream->handler->onData(ioStream);
             break;
         case EV_OUT:
             len = putout(fd, ioStream->type, ioStream->writeBuf.c_str(), ioStream->writeBuf.length());
             if (-1 == len)
             {
-                ioStream->handler->onError(errno);
+                ioStream->handler->onError(ioStream, errno);
                 break;
             }
             // @TODO: len < ioStream->writeBuf.length()
-            ioStream->handler->onWritten(len);
+            ioStream->handler->onWritten(ioStream, len);
             break;
         default:
             break;

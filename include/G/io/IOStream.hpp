@@ -16,7 +16,6 @@ namespace G
     {
         enum fd_type type;
 
-        std::string readBuf;
         std::string writeBuf;
 
         G::Event i_event;
@@ -29,7 +28,8 @@ namespace G
         IOStream(G::EventListener *, IOHandler *);
         virtual ~IOStream();
         void setFd(int, enum fd_type);
-        void write(std::string &str);
+        ssize_t read(char *, ssize_t);
+        void write(std::string &);
     };
 }
 
