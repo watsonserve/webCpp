@@ -5,7 +5,6 @@ extern "C"
 {
     #include <stdio.h>
     #include <stdlib.h>
-    #include <unistd.h>
     #include <sys/types.h>
     #include <errno.h>
     #ifdef __BSD__
@@ -13,14 +12,15 @@ extern "C"
     #endif
 }
 
-#include "G/net/Protocoler.hpp"
+#include "G/net/Socket.hpp"
+#include "G/io/IOHandler.hpp"
 
-namespace G {
-    class Server
+namespace G
+{
+    class Server : public virtual Socket
     {
     protected:
-        virtual SOCKET initSocket() =0;
-        virtual int _service(G::Protocoler *, int) =0;
+        virtual int _service(G::IOHandler *, int) =0;
     };
 }
 #endif

@@ -1,5 +1,5 @@
 //
-//  Event.cpp
+//  EventListener.cpp
 //  GHTTPd
 //
 //  Created by 王兴卓 on 16/6/11.
@@ -39,26 +39,26 @@ int G::EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
     return 0;
 }
 
-int G::EventListener::emit(G::event_opt_t opt, G::Event &eventData)
+int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
 {
     int err;
     struct epoll_event ev;
 
     // EV_ETC 扩展事件立即执行
-    if (eventData.event_type >> 63)
+    if (eventData->event_type >> 63)
     {
-        if (-1 == tpool->call(eventData)) {
+        if (-1 == tpool->call(*eventData)) {
             perror("request thread pool");
             exit(1);
         }
         return 0;
     }
-    ev.events = (uint32_t)(eventData.event_type) | EPOLLET;
-    ev.data.ptr = new G::Event(eventData);
+    ev.events = (uint32_t)(eventData->event_type) | EPOLLET;
+    ev.data.ptr = eventData;
 
-    printf("emit %lX, %ld\n", (int64_t)(ev.data.ptr), (int64_t)(eventData.ident));
+    printf("emit %lX, %ld\n", (int64_t)(ev.data.ptr), (int64_t)(eventData->ident));
     // 等待硬中断
-    err = epoll_ctl(epfd, opt, eventData.ident, &ev);
+    err = epoll_ctl(epfd, opt, eventData->ident, &ev);
     if(-1 == err) {
         perror("G::EventListener::emit");
     }
@@ -114,7 +114,6 @@ void* G::EventListener::_listener(void *that)
                 perror("G::EventListener::remove");
                 exit(1);
             }
-            delete edata;
         }
     }
 

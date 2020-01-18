@@ -1,5 +1,5 @@
 //
-//  Event.hpp
+//  EventListener.hpp
 //  GHTTPd
 //
 //  Created by 王兴卓 on 18/10/12.
@@ -35,7 +35,8 @@
 #include "G/ThreadPool.hpp"
 #include "G/Exception.hpp"
 
-namespace G {
+namespace G
+{
 
 #ifdef __LINUX__
     typedef enum
@@ -75,7 +76,7 @@ namespace G {
         static G::EventListener& getInstance(G::ThreadPool *, int);
         void listen();
         // 第二个参数一定是堆上的内存地址!
-        int emit(G::event_opt_t, G::Event &);
+        int emit(G::event_opt_t, G::Event *);
         virtual ~EventListener();
     };
 

@@ -1,4 +1,4 @@
-#include "G/net/TCPServer.hpp"
+#include "G/net/TCPSocket.hpp"
 
 /*
 #include "openssl/rsa.h"
@@ -9,12 +9,18 @@
 #include "openssl/err.h"
 */
 
-G::TCPServer::TCPServer(G::EventListener* listener)
+G::TCPSocket::TCPSocket()
 {
-    this->initStreamServer(listener);
+    this->sockfd = -1;
 }
 
-int G::TCPServer::setCert(const char *certFile)
+G::TCPSocket::~TCPSocket()
+{
+    if (-1 == this->sockfd) return;
+    close(this->sockfd);
+}
+
+int G::TCPSocket::setCert(const char *certFile)
 {
     if (nullptr == certFile)
     {
@@ -23,7 +29,7 @@ int G::TCPServer::setCert(const char *certFile)
     return 0;
 }
 
-int G::TCPServer::setKey(const char *keyFile)
+int G::TCPSocket::setKey(const char *keyFile)
 {
     if (nullptr == keyFile)
     {
@@ -32,14 +38,14 @@ int G::TCPServer::setKey(const char *keyFile)
     return 0;
 }
 
-int G::TCPServer::setPort(unsigned short port)
+int G::TCPSocket::setPort(unsigned short port)
 {
     this->port = port;
     return port;
 }
 
-SOCKET G::TCPServer::initSocket()
+void G::TCPSocket::initSocket()
 {
     // 创建socket
-    return TCPsetup(this->port);
+    this->sockfd = TCPsetup(this->port);
 }

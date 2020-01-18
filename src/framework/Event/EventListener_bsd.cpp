@@ -1,5 +1,5 @@
 //
-//  Event.cpp
+//  EventListener.cpp
 //  GHTTPd
 //
 //  Created by 王兴卓 on 16/6/11.
@@ -40,14 +40,14 @@ int EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
     return 0;
 }
 
-int G::EventListener::emit(G::event_opt_t opt, G::Event &eventData)
+int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
 {
     struct kevent ev;
 
     // EV_ETC 扩展事件立即执行
-    if (eventData.event_type >> 63)
+    if (eventData->event_type >> 63)
     {
-        if (-1 == tpool->call(eventData)) {
+        if (-1 == tpool->call(*eventData)) {
             perror("request thread pool");
             exit(1);
         }
@@ -56,12 +56,12 @@ int G::EventListener::emit(G::event_opt_t opt, G::Event &eventData)
 
     EV_SET(
         &ev,
-        eventData.ident,
-        (uint32_t)(eventData.event_type),
+        eventData->ident,
+        (uint32_t)(eventData->event_type),
         opt,
         0,
         NULL,
-        (void*)new G::Event(eventData)
+        (void*)eventData
     );
     return kevent(this->epfd, &ev, 1, nullptr, 0, nullptr);
 }
@@ -111,7 +111,6 @@ void* G::EventListener::_listener(void *that)
                 perror("request thread pool");
                 exit(1);
             }
-            delete udata;
         }
     }
 

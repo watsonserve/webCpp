@@ -7,33 +7,26 @@
 //
 #include "G/net/StreamServer.hpp"
 
-G::StreamServer::StreamServer() {}
+G::StreamServer::StreamServer(G::EventListener *listener) : StreamServer(-1, listener) {}
 
-void G::StreamServer::initStreamServer(G::EventListener *listener)
+G::StreamServer::StreamServer(SOCKET sockfd, G::EventListener *listener) : IOHub(listener)
 {
-    this->listener = listener;
+    this->sockfd = sockfd;
 }
 
-// 静态
-void G::StreamServer::onData(G::Event &ev)
+void G::StreamServer::setSocket(SOCKET sockfd)
 {
-    G::Protocoler *protocoler = (G::Protocoler *)(ev.context);
-    const int fd = ev.ident;
-    G::event_type_t event_type = ev.event_type;
-    // @TODO
-    return protocoler->onData(fd, event_type);
+    this->sockfd = sockfd;
 }
 
-int G::StreamServer::_service(G::Protocoler *protocoler, int max)
+int G::StreamServer::_service(G::IOHandler *ioHandler, int max)
 {
     int errorNo;
-    SOCKET sockfd, clientFd;
+    SOCKET clientFd;
     struct sockaddr addr;
     socklen_t len;
-    G::Event event;
 
     max &= 0x7FFFFFFF;
-    sockfd = this->initSocket();
     if (-1 == sockfd) {
         perror("Can't create socket");
         return -1;
@@ -61,13 +54,7 @@ int G::StreamServer::_service(G::Protocoler *protocoler, int max)
             continue;
         }
 
-        // 正常情况
-        event.ident = clientFd;
-        event.event_type = EV_IN;
-        event.context = protocoler;
-        event.function = G::StreamServer::onData;
-        // onData
-        listener->emit(OPT_ADD, event);
+        this->listen(clientFd, ioHandler);
     }
     return 0;
 }

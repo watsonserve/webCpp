@@ -1,30 +1,25 @@
 #ifndef _STREAMSERVER_HPP_
 #define _STREAMSERVER_HPP_
 
-extern "C"
-{
-    #include "G/net/Gnet.h"
-}
-
 #include "G/event/Event.hpp"
 #include "G/net/Server.hpp"
 #include "G/event/EventListener.hpp"
+#include "G/io/IOHub.hpp"
 
-namespace G {
+namespace G
+{
 
-    class StreamServer: virtual public G::Object, virtual public G::Server
+    class StreamServer: public Server, private IOHub
     {
     // parent protected:
-    //     virtual SOCKET initSocket() =0;
-    // parent public:
-    //     virtual int _service(G::Protocoler *, int) =0;
-        G::EventListener *listener;
-        static void onData(Event &);
+    //     SOCKET sockfd;
+    //     virtual int _service(G::IOHandler *, int) =0;
     protected:
-        virtual int _service(G::Protocoler *, int) override;
+        virtual int _service(G::IOHandler *, int) override;
+        void setSocket(SOCKET);
     public:
-        StreamServer();
-        void initStreamServer(G::EventListener *);
+        StreamServer(G::EventListener *);
+        StreamServer(SOCKET, G::EventListener *);
     };
 
 }

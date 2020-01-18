@@ -13,7 +13,8 @@
 #include "G/Object.hpp"
 #include "G/Exception.hpp"
 
-namespace G {
+namespace G
+{
 
     class FDHandler
     {
@@ -26,13 +27,13 @@ namespace G {
     class InputHandler : public virtual FDHandler
     {
     public:
-        virtual void onData(Input &) =0;
+        virtual void onData(IOStream &) =0;
     };
 
     class OutputHandler : public virtual FDHandler
     {
     public:
-        virtual void onWritten(Output &, int) =0;
+        virtual void onWritten(ssize_t) =0;
     };
 
     class IOHandler : virtual public InputHandler, virtual public OutputHandler

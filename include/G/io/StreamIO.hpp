@@ -6,8 +6,8 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
-#ifndef _G_IO_HPP_
-#define _G_IO_HPP_
+#ifndef _G_STREAMIO_HPP_
+#define _G_STREAMIO_HPP_
 
 #include <string>
 #include "G/io/Aio.hpp"
@@ -16,7 +16,8 @@
 #include "G/io/Input.hpp"
 #include "G/io/Output.hpp"
 
-namespace G {
+namespace G
+{
 
     class IOEvents;
 
@@ -27,7 +28,7 @@ namespace G {
         CRLF
     } LineEndFlag;
 
-    class StreamIO : public Input, public Output, public IOHandle
+    class StreamIO : virtual public Input, virtual public Output, virtual public IOHandle
     {
         std::string cache;
         int closed;
@@ -57,4 +58,4 @@ namespace G {
 
 }
 
-#endif /* _G_IO_HPP_ */
+#endif /* _G_STREAMIO_HPP_ */

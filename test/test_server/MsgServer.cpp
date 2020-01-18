@@ -2,7 +2,7 @@
 
 using namespace G;
 
-void MsgServer::onData(int fd, event_type_t event_type)
+void MsgServer::onData(IOStream &stream)
 {
     char buf[BUFSIZ];
     int len;
@@ -22,16 +22,13 @@ void MsgServer::onData(int fd, event_type_t event_type)
     close(fd);
 }
 
-MsgServer::MsgServer(EventListener* listener, unsigned int port) : TCPServer(listener)
+MsgServer::MsgServer(EventListener* listener, unsigned short port) : StreamServer(listener)
 {
-    listener->listen();
     this->setPort(port);
+    this->initSocket();
 }
 
-MsgServer::~MsgServer()
-{
-
-}
+MsgServer::~MsgServer() {}
 
 int MsgServer::service(int max)
 {
