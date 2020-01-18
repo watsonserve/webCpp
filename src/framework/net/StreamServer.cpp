@@ -9,14 +9,34 @@
 
 G::StreamServer::StreamServer(G::EventListener *listener) : StreamServer(-1, listener) {}
 
-G::StreamServer::StreamServer(SOCKET sockfd, G::EventListener *listener) : IOHub(listener)
+G::StreamServer::StreamServer(SOCKET sockfd, G::EventListener *listener)
 {
     this->sockfd = sockfd;
+    this->listener = listener;
 }
 
-void G::StreamServer::setSocket(SOCKET sockfd)
+G::StreamServer::~StreamServer()
 {
-    this->sockfd = sockfd;
+    size_t i, siz;
+    std::map<int, G::IOStream *>::iterator it = streams.begin();
+    siz = streams.size();
+    for(i = 0; i < siz; i++)
+    {
+        delete it->second;
+        streams[it->first] = nullptr;
+        it++;
+    }
+}
+
+void G::StreamServer::listen(int fd, G::IOHandler *handler)
+{
+    G::IOStream *stream = streams[fd];
+    if (nullptr == stream)
+    {
+        stream = new G::IOStream(listener, handler);
+        streams[fd] = stream;
+    }
+    stream->setFd(fd, FD_SOCKET);
 }
 
 int G::StreamServer::_service(G::IOHandler *ioHandler, int max)
