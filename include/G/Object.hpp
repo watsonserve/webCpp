@@ -11,7 +11,8 @@
 #include "stdafx.h"
 #include <string>
 
-namespace G {
+namespace G
+{
 
     class Object
     {

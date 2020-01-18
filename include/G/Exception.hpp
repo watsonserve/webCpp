@@ -11,7 +11,8 @@
 
 #include "G/Object.hpp"
 
-namespace G {
+namespace G
+{
 
     class Exception : virtual public Object
     {

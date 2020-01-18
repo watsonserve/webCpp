@@ -4,7 +4,8 @@
 #include "G/net/http/Request.hpp"
 #include "G/net/http/Response.hpp"
 
-namespace G {
+namespace G
+{
 
     typedef enum middle_type {
         MID_CLASS,

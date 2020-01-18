@@ -6,7 +6,8 @@
 #include "G/net/http/Gram.hpp"
 #include "G/StreamIO.hpp"
 
-namespace G {
+namespace G
+{
 
     class HTTPRequest : virtual public HTTPGram
     {

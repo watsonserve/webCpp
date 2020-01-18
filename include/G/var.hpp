@@ -22,7 +22,8 @@ typedef union {
     bool              v_bool;
 } var_t;
 
-namespace G {
+namespace G
+{
     class Var : virtual public Object
     {
         var_type_t type;

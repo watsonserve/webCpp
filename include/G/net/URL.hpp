@@ -13,7 +13,8 @@
 #include <map>
 #include "G/Object.hpp"
 
-namespace G {
+namespace G
+{
 
     class URL : virtual public Object {
         std::string scheme;

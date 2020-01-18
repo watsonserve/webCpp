@@ -13,7 +13,8 @@
 #include "G/io/Aio.hpp"
 #include "G/io/IOEvents.hpp"
 
-namespace G {
+namespace G
+{
 
     class Output;
     class IOEvents;

@@ -18,7 +18,8 @@ extern "C" {
 #include <queue>
 #include "G/Object.hpp"
 
-namespace G {
+namespace G
+{
 
     template <typename T>
     class MQ : virtual public Object

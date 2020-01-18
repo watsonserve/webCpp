@@ -10,7 +10,8 @@
 
 #include "G/Object.hpp"
 
-namespace G {
+namespace G
+{
 
     class IO : public virtual Object
     {

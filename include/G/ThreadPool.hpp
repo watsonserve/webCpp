@@ -22,7 +22,8 @@ extern "C"
 #include <pthread.h>
 #endif
 
-namespace G {
+namespace G
+{
     class ThreadPool : virtual public Object
     {
         int size;

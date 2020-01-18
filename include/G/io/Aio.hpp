@@ -11,9 +11,9 @@
 
 #include "G/stdafx.h"
 
-extern "C" (
+extern "C" {
     #include <aio.h>
-)
+}
 
 #include "G/Object.hpp"
 /**
@@ -56,7 +56,8 @@ typedef struct aio_back
 /**
  *  all system not windows
  */
-namespace G {
+namespace G
+{
     class Aio : public Object {
         
     public:

@@ -3,7 +3,8 @@
 
 #include "G/event/Event.hpp"
 
-namespace G {
+namespace G
+{
     class Protocoler
     {
     public:

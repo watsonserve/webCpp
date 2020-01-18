@@ -6,7 +6,8 @@
 #include "G/IOEvents.hpp"
 #include "G/net/http/MiddleWare.hpp"
 
-namespace G {
+namespace G
+{
 
     class HTTPDispatcher : virtual public IOEvents
     {

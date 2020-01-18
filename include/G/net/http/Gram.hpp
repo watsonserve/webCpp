@@ -5,7 +5,8 @@
 #include <map>
 #include "G/Object.hpp"
 
-namespace G {
+namespace G
+{
 
     class HTTPGram : virtual Object
     {

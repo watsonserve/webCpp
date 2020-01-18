@@ -24,7 +24,8 @@
 
 #endif
 
-namespace G {
+namespace G
+{
 
 #ifdef __LINUX__
     // EPOLL只占用低32位！
@@ -47,13 +48,13 @@ namespace G {
     typedef enum
     {
         EV_ERR = EV_ERROR,
-        EV_IN = EVFILT_READ,
-        EV_OUT = EVFILT_WRITE,
-        EV_ETC = 1u << 63    // 扩展事件
+        EV_IN = (uint32_t)EVFILT_READ,
+        EV_OUT = (uint32_t)EVFILT_WRITE,
+        EV_ETC = 0x8000000000000000    // 扩展事件
     } event_type_t;
 #endif
 
-    class Event : virtual public Object
+    class Event final : virtual public Object
     {
         public:
             uint64_t ident;
