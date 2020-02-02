@@ -4,6 +4,7 @@ extern "C"
     #include <sys/socket.h>
 }
 #include "G/io/IOStream.hpp"
+#ifdef __LINUX__
 
 static ssize_t putout(int fd, G::FdType type, const char *buf, ssize_t len)
 {
@@ -68,12 +69,7 @@ void G::IOStream::write(std::string &str)
 {
     this->writeBuf = str;
     o_event.event_type = EV_OUT;
-#ifdef __LINUX__
     listener->emit(OPT_ADD, &o_event);
-#endif
-#ifdef __BSD__
-    listener->emit(OPT_ADD, &o_event);
-#endif
 }
 
 // 静态
@@ -96,16 +92,30 @@ void G::IOStream::onData(G::Event &ev)
             ioStream->handler->onData(ioStream);
             break;
         case EV_OUT:
+            // 可写数据量
+            // 写入
             len = putout(fd, ioStream->type, ioStream->writeBuf.c_str(), ioStream->writeBuf.length());
+            // 写失败
             if (-1 == len)
             {
                 ioStream->handler->onError(ioStream, errno);
                 break;
             }
-            // @TODO: len < ioStream->writeBuf.length()
-            ioStream->handler->onWritten(ioStream, len);
+            // 没写完
+            if (len < ioStream->writeBuf.length())
+            {
+                ioStream->writeBuf.erase(0, len);
+            }
+            // 全部完成
+            else
+            {
+                ioStream->listener->emit(OPT_DEL, &ioStream->o_event);
+                ioStream->handler->onWritten(ioStream);
+            }
             break;
         default:
             break;
     }
 }
+
+#endif

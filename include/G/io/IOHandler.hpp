@@ -33,7 +33,7 @@ namespace G
     class OutputHandler : public virtual FDHandler
     {
     public:
-        virtual void onWritten(IOStream *, ssize_t) =0;
+        virtual void onWritten(IOStream *) =0;
     };
 
     class IOHandler : virtual public InputHandler, virtual public OutputHandler

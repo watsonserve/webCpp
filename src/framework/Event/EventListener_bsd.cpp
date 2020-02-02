@@ -29,6 +29,7 @@ int EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
         return -1;
     }
     self.tpool = tpool;
+    self.max = max << 1;
 
     // 准备注册内核事件
     self.epfd = kqueue();
@@ -106,6 +107,7 @@ void* G::EventListener::_listener(void *that)
                 close((int)(event_ptr->ident));
                 udata->event_type = EV_ERR;
             }
+            udata->buf_size = event_ptr->data;
 
             if (-1 == tpool->call(*udata)) {
                 perror("request thread pool");

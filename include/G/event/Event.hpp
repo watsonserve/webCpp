@@ -61,6 +61,7 @@ namespace G
             event_type_t event_type;
             void *context;
             void (*function)(Event &);
+            int buf_size;
 
             Event();
             Event(const G::Event &ev);

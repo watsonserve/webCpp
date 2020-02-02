@@ -105,6 +105,7 @@ void* G::EventListener::_listener(void *that)
                 close(edata->ident);
                 edata->event_type = EV_ERR;
             }
+
             if (-1 == tpool->call(*edata)) {
                 perror("request thread pool");
                 exit(1);
