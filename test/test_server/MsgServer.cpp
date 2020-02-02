@@ -45,12 +45,13 @@ void MsgServer::onData(IOStream *stream)
         return;
     }
     buf[len] = 0;
-    printf("%s\n--------\nover\n", buf);
+    printf("%s-------- over\n", buf);
     strcpy(buf, "HTTP/1.1 200 OK\r\nContent-Length: 53\r\n\r\n<!DOCTYPE html><html><body>Hello world!</body></html>\0");
     stream->write(buf, 94);
 }
 
 void MsgServer::onWritten(IOStream *stream)
 {
+    printf("close!!\n");
     stream->close();
 }

@@ -113,7 +113,7 @@ void G::IOStream::onData(G::Event &ev)
     switch ((uint32_t)ev.event_type)
     {
         case EV_ERR:
-            ioStream->handler->onError(ioStream, 0);
+            ioStream->handler->onError(ioStream, ioStream->i_event.buf_size);
             return;
         case EV_IN:
             if (0 < ioStream->i_event.buf_size)
