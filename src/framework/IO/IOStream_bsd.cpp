@@ -75,10 +75,16 @@ ssize_t G::IOStream::read(char *buf, ssize_t size)
     switch (type)
     {
         case G::FdType::FD_SOCKET:
-            return recv(i_event.ident, buf, siz, 0);
+            siz = recv(i_event.ident, buf, siz, 0);
+            break;
         default:
-            return ::read(i_event.ident, buf, siz);
+            siz = ::read(i_event.ident, buf, siz);
     }
+    if (-1 == siz)
+    {
+        if (EAGAIN == errno) return 0;
+    }
+    return siz;
 }
 
 void G::IOStream::write(std::string &str)
@@ -104,38 +110,38 @@ void G::IOStream::onData(G::Event &ev)
     ioStream = (G::IOStream *)(ev.context);
     fd = ev.ident;
 
-    switch (ev.event_type)
+    switch ((uint32_t)ev.event_type)
     {
         case EV_ERR:
             ioStream->handler->onError(ioStream, 0);
-            break;
+            return;
         case EV_IN:
-            ioStream->handler->onData(ioStream);
-            break;
+            if (0 < ioStream->i_event.buf_size)
+            {
+                ioStream->handler->onData(ioStream);
+            }
+            return;
         case EV_OUT:
             // 可写数据量
             siz = min(ioStream->writeBuf.length(), ev.buf_size);
+            if (!siz) return;
             // 写入
             len = putout(fd, ioStream->type, ioStream->writeBuf.c_str(), siz);
             // 写失败
             if (-1 == len)
             {
                 ioStream->handler->onError(ioStream, errno);
-                break;
+                return;
             }
-            // 没写完
-            if (len < ioStream->writeBuf.length())
-            {
-                ioStream->writeBuf.erase(0, len);
-            }
-            // 全部完成
-            else
+            ioStream->writeBuf.erase(0, len);
+            // 写完
+            if (!ioStream->writeBuf.length())
             {
                 ioStream->listener->emit(OPT_DEL, &ioStream->o_event);
                 ioStream->o_event.ident = -1;
                 ioStream->handler->onWritten(ioStream);
             }
-            break;
+            return;
         default:
             break;
     }

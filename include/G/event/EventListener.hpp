@@ -50,7 +50,7 @@ namespace G
 #ifdef __BSD__
     typedef enum
     {
-        OPT_ADD = EV_ADD,
+        OPT_ADD = EV_ADD | EV_ONESHOT,
         OPT_DEL = EV_DELETE
     } event_opt_t;
 #endif

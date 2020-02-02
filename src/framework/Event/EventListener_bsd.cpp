@@ -98,11 +98,10 @@ void* G::EventListener::_listener(void *that)
         {
             event_ptr = eventList + i;
             udata = (G::Event *)(event_ptr->udata);
-
-            event_types = event_ptr->flags;
+            event_types = event_ptr->filter;
             udata->event_type = (G::event_type_t)event_types;
 
-            if (event_types & EV_ERROR)  // 出错
+            if (event_ptr->flags & EV_ERROR)  // 出错
             {
                 close((int)(event_ptr->ident));
                 udata->event_type = EV_ERR;

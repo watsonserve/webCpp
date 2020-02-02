@@ -54,6 +54,21 @@ void G::IOStream::setFd(int fd, G::FdType type)
     listener->emit(OPT_ADD, &i_event);
 }
 
+void G::IOStream::close()
+{
+    if (-1 != o_event.ident)
+    {
+        listener->emit(OPT_DEL, &o_event);
+    }
+    if (-1 != i_event.ident)
+    {
+        listener->emit(OPT_DEL, &i_event);
+        ::close(i_event.ident);
+    }
+    i_event.ident = -1;
+    o_event.ident = -1;
+}
+
 ssize_t G::IOStream::read(char *buf, ssize_t size)
 {
     switch (type)

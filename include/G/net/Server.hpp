@@ -10,16 +10,17 @@ extern "C"
     #ifdef __BSD__
         #include <sys/event.h>
     #endif
+    #include "G/net/Gnet.h"
 }
 
-#include "G/net/Socket.hpp"
 #include "G/io/IOHandler.hpp"
 
 namespace G
 {
-    class Server : public virtual Socket
+    class Server
     {
     protected:
+        SOCKET sockfd;
         virtual int _service(G::IOHandler *, int) =0;
     };
 }
