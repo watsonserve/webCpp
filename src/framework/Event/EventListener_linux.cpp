@@ -53,7 +53,7 @@ int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
         }
         return 0;
     }
-    ev.events = (uint32_t)(eventData->event_type) | EPOLLET;
+    ev.events = (uint32_t)(eventData->event_type);
     ev.data.ptr = eventData;
 
     printf("emit %lX, %ld\n", (int64_t)(ev.data.ptr), (int64_t)(eventData->ident));

@@ -25,7 +25,7 @@ void* ThreadPool::thFunction(void* that)
     while (1)
     {
         // 读消息队列
-        G::Event &event = (G::Event &)(mq.front());
+        G::Event event = mq.front();
         if(nullptr == event.function) {
             continue;
         }

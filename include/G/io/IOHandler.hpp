@@ -16,6 +16,8 @@
 namespace G
 {
 
+    class IOStream;
+
     class FDHandler
     {
     public:
@@ -41,4 +43,4 @@ namespace G
     };
 }
 
-#endif /* _IOHandle_h_ */
+#endif /* _IOHANDLE_HPP_ */

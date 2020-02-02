@@ -10,6 +10,7 @@ int main()
     eventListener.listen();
     MsgServer msgServer(&eventListener, 7070);
 
+    pid_t pid = fork();
     msgServer.service(8);
     return 0;
 }

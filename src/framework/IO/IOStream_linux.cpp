@@ -1,9 +1,5 @@
-extern "C"
-{
-    #include <errno.h>
-    #include <sys/socket.h>
-}
 #include "G/io/IOStream.hpp"
+
 #ifdef __LINUX__
 
 static ssize_t putout(int fd, G::FdType type, const char *buf, ssize_t len)
@@ -39,7 +35,11 @@ G::IOStream::~IOStream()
 
 void G::IOStream::setFd(int fd, G::FdType type)
 {
+    int fl;
+
     this->type = type;
+    fl = fcntl(fd, F_GETFL, 0);
+    fcntl(fd, F_SETFL, fl | O_NONBLOCK);
 
     i_event.ident = fd;
     i_event.event_type = EV_IN;
@@ -67,7 +67,12 @@ ssize_t G::IOStream::read(char *buf, ssize_t size)
 
 void G::IOStream::write(std::string &str)
 {
-    this->writeBuf = str;
+    this->write(str.c_str(), str.length());
+}
+
+void G::IOStream::write(const char *str, size_t len)
+{
+    this->writeBuf.append(str, len);
     o_event.event_type = EV_OUT;
     listener->emit(OPT_ADD, &o_event);
 }

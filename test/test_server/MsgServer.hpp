@@ -13,11 +13,11 @@ class MsgServer: virtual public TCPSocket, virtual public StreamServer, virtual 
 {
     char buf[BUFSIZ];
 
-    virtual void onOpen(int fd) override;
-    virtual void onError(Exception &err) override;
-    virtual void onClose() override;
-    virtual void onData(IOStream &) override;
-    virtual void onWritten(ssize_t) override;
+    virtual void onOpen(IOStream *) override;
+    virtual void onError(IOStream *, int) override;
+    virtual void onClose(IOStream *) override;
+    virtual void onData(IOStream *) override;
+    virtual void onWritten(IOStream *) override;
 public:
     MsgServer(EventListener *, unsigned short);
     virtual ~MsgServer();

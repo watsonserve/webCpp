@@ -1,9 +1,5 @@
-extern "C"
-{
-    #include <errno.h>
-    #include <sys/socket.h>
-}
 #include "G/io/IOStream.hpp"
+
 #ifdef __BSD__
 
 static ssize_t putout(int fd, G::FdType type, const char *buf, ssize_t len)
@@ -32,19 +28,16 @@ G::IOStream::IOStream(G::EventListener *listener, G::IOHandler *handler)
 
 G::IOStream::~IOStream()
 {
-    if (-1 != i_event.ident)
-    {
-        listener->emit(OPT_DEL, &i_event);
-    }
-    if (-1 != o_event.ident)
-    {
-        listener->emit(OPT_DEL, &o_event);
-    }
+    this->close();
 }
 
 void G::IOStream::setFd(int fd, G::FdType type)
 {
+    int fl;
+
     this->type = type;
+    fl = fcntl(fd, F_GETFL, 0);
+    fcntl(fd, F_SETFL, fl | O_NONBLOCK);
 
     i_event.ident = fd;
     i_event.event_type = EV_IN;
@@ -57,6 +50,21 @@ void G::IOStream::setFd(int fd, G::FdType type)
     o_event.function = G::IOStream::onData;
 
     listener->emit(OPT_ADD, &i_event);
+}
+
+void G::IOStream::close()
+{
+    if (-1 != o_event.ident)
+    {
+        listener->emit(OPT_DEL, &o_event);
+    }
+    if (-1 != i_event.ident)
+    {
+        listener->emit(OPT_DEL, &i_event);
+        ::close(i_event.ident);
+    }
+    i_event.ident = -1;
+    o_event.ident = -1;
 }
 
 ssize_t G::IOStream::read(char *buf, ssize_t size)
@@ -75,8 +83,13 @@ ssize_t G::IOStream::read(char *buf, ssize_t size)
 
 void G::IOStream::write(std::string &str)
 {
-    this->writeBuf = str;
-    o_event.event_type = EV_OUT;
+    this->write(str.c_str(), str.length());
+}
+
+void G::IOStream::write(const char *str, size_t len)
+{
+    this->writeBuf.append(str, len);
+    o_event.ident = i_event.ident;
     listener->emit(OPT_ADD, &o_event);
 }
 
@@ -119,6 +132,7 @@ void G::IOStream::onData(G::Event &ev)
             else
             {
                 ioStream->listener->emit(OPT_DEL, &ioStream->o_event);
+                ioStream->o_event.ident = -1;
                 ioStream->handler->onWritten(ioStream);
             }
             break;

@@ -24,6 +24,7 @@ namespace G
     public:
         StreamServer(G::EventListener *);
         StreamServer(SOCKET, G::EventListener *);
+        virtual ~StreamServer();
     };
 
 }
