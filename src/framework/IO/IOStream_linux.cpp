@@ -2,17 +2,6 @@
 
 #ifdef __LINUX__
 
-static ssize_t putout(int fd, G::FdType type, const char *buf, ssize_t len)
-{
-    switch (type)
-    {
-        case G::FdType::FD_SOCKET:
-            return send(fd, buf, len, 0);
-        default:
-            return write(fd, buf, len);
-    }
-}
-
 G::IOStream::IOStream(G::EventListener *listener, G::IOHandler *handler)
 {
     this->listener = listener;

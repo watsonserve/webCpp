@@ -57,7 +57,7 @@ namespace G
     class Event final : virtual public Object
     {
         public:
-            uint64_t ident;
+            int64_t ident;
             event_type_t event_type;
             void *context;
             void (*function)(Event &);

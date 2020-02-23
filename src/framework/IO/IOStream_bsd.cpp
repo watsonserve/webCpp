@@ -2,22 +2,6 @@
 
 #ifdef __BSD__
 
-static ssize_t putout(int fd, G::FdType type, const char *buf, ssize_t len)
-{
-    switch (type)
-    {
-        case G::FdType::FD_SOCKET:
-            return send(fd, buf, len, 0);
-        default:
-            return write(fd, buf, len);
-    }
-}
-
-inline int min(int foo, int bar)
-{
-    return foo < bar ? foo : bar;
-}
-
 G::IOStream::IOStream(G::EventListener *listener, G::IOHandler *handler)
 {
     this->listener = listener;
@@ -31,7 +15,7 @@ G::IOStream::~IOStream()
     this->close();
 }
 
-void G::IOStream::setFd(int fd, G::FdType type)
+void G::IOStream::setFd(int fd, FdType type)
 {
     int fl;
 
@@ -43,8 +27,8 @@ void G::IOStream::setFd(int fd, G::FdType type)
     i_event.event_type = EV_IN;
     i_event.context = this;
     i_event.function = G::IOStream::onData;
+    this->setCacheFd(fd, type);
 
-    o_event.ident = fd;
     o_event.event_type = EV_OUT;
     o_event.context = this;
     o_event.function = G::IOStream::onData;
@@ -63,28 +47,9 @@ void G::IOStream::close()
         listener->emit(OPT_DEL, &i_event);
         ::close(i_event.ident);
     }
+    printf("!!IOStream::close!!\n");
     i_event.ident = -1;
     o_event.ident = -1;
-}
-
-ssize_t G::IOStream::read(char *buf, ssize_t size)
-{
-    ssize_t siz;
-
-    siz = min(i_event.buf_size, size);
-    switch (type)
-    {
-        case G::FdType::FD_SOCKET:
-            siz = recv(i_event.ident, buf, siz, 0);
-            break;
-        default:
-            siz = ::read(i_event.ident, buf, siz);
-    }
-    if (-1 == siz)
-    {
-        if (EAGAIN == errno) return 0;
-    }
-    return siz;
 }
 
 void G::IOStream::write(std::string &str)
@@ -94,21 +59,97 @@ void G::IOStream::write(std::string &str)
 
 void G::IOStream::write(const char *str, size_t len)
 {
-    this->writeBuf.append(str, len);
-    o_event.ident = i_event.ident;
-    listener->emit(OPT_ADD, &o_event);
+    int fd, written_len;
+
+    written_len = 0;
+    fd = i_event.ident;
+
+    // 缓存区是空的
+    if (!writeBuf.length())
+    {
+        // 尝试写
+        written_len = putout(fd, this->type, str, len);
+    }
+    // 没写完
+    if (written_len < len)
+    {
+        // 放入缓存区
+        this->writeBuf.append(str + written_len, len - written_len);
+        o_event.ident = fd;
+        // 等待可写事件
+        listener->emit(OPT_ADD, &o_event);
+        return;
+    }
+    // 提醒已写完
+    // listener->emit(OPT_ADD, &o_event);
 }
 
-// 静态
-void G::IOStream::onData(G::Event &ev)
+/**** 静态 ****/
+
+void G::IOStream::onWrittable(G::IOStream *ioStream, G::Event &ev)
 {
     int fd;
     ssize_t siz, len;
-    G::event_type_t event_type;
-    G::IOStream *ioStream;
 
-    ioStream = (G::IOStream *)(ev.context);
     fd = ev.ident;
+    // 可写数据量
+    siz = min(ioStream->writeBuf.length(), ev.buf_size);
+    if (!siz) return;
+    // 写入
+    len = putout(fd, ioStream->type, ioStream->writeBuf.c_str(), siz);
+    // 写失败
+    if (-1 == len)
+    {
+        ioStream->handler->onError(ioStream, errno);
+        return;
+    }
+    ioStream->writeBuf.erase(0, len);
+    // 写完
+    if (!ioStream->writeBuf.length())
+    {
+        ioStream->o_event.ident = -1;
+        ioStream->handler->onWritten(ioStream);
+        return;
+    }
+    // 等待下次可写入事件
+    ioStream->listener->emit(OPT_ADD, &ioStream->o_event);
+}
+
+void G::IOStream::onIn(G::IOStream *ioStream)
+{
+    int err;
+    // 可读数据量为0异常
+    if (ioStream->i_event.buf_size < 1)
+    {
+        ioStream->close();
+        return;
+    }
+    err = ioStream->in_cache(ioStream->i_event.buf_size);
+    switch (err)
+    {
+        case 0:
+            ioStream->handler->onData(ioStream);
+            break;
+        case EBADF:
+        case ECONNRESET:
+            // The argument socket is an invalid descriptor.
+            // The connection is closed by the peer during a receive attempt on a socket.
+            ioStream->handler->onClose(ioStream);
+            ioStream->close();
+            break;
+        default:
+            ioStream->handler->onError(ioStream, err);
+    }
+    // 等下次
+    if (0 <= ioStream->i_event.ident)
+    {
+        ioStream->listener->emit(OPT_ADD, &ioStream->i_event);
+    }
+}
+
+void G::IOStream::onData(G::Event &ev)
+{
+    G::IOStream *ioStream = (G::IOStream *)(ev.context);
 
     switch ((uint32_t)ev.event_type)
     {
@@ -116,31 +157,9 @@ void G::IOStream::onData(G::Event &ev)
             ioStream->handler->onError(ioStream, ioStream->i_event.buf_size);
             return;
         case EV_IN:
-            if (0 < ioStream->i_event.buf_size)
-            {
-                ioStream->handler->onData(ioStream);
-            }
+            G::IOStream::onIn(ioStream);
             return;
         case EV_OUT:
-            // 可写数据量
-            siz = min(ioStream->writeBuf.length(), ev.buf_size);
-            if (!siz) return;
-            // 写入
-            len = putout(fd, ioStream->type, ioStream->writeBuf.c_str(), siz);
-            // 写失败
-            if (-1 == len)
-            {
-                ioStream->handler->onError(ioStream, errno);
-                return;
-            }
-            ioStream->writeBuf.erase(0, len);
-            // 写完
-            if (!ioStream->writeBuf.length())
-            {
-                ioStream->listener->emit(OPT_DEL, &ioStream->o_event);
-                ioStream->o_event.ident = -1;
-                ioStream->handler->onWritten(ioStream);
-            }
             return;
         default:
             break;

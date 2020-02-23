@@ -70,7 +70,7 @@ int G::StreamServer::_service(G::IOHandler *ioHandler, int max)
         if (max <= clientFd)
         {
             close(clientFd);
-            fprintf(stderr, "Too many connect, denial of service");
+            fprintf(stderr, "Too many connect, denial of service\n");
             continue;
         }
 
