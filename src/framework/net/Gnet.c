@@ -112,24 +112,22 @@ EXIT_ERR:
     return -1;
 }
 
-SOCKET TCPsetCli( char* HostAddr, unsigned short port )
+SOCKET TCPsetCli(char * hostAddr, unsigned short port)
 {
     struct sockaddr_in serv_addr;
     SOCKET sockfd;
 //-------------------------------------
     sockfd = socket(AF_INET, SOCK_STREAM, 6);
     if (-1 == sockfd) {
-        perror("TCPsetCli socket socket_create ");
         return -1;
     }
 //创建套接字
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
-    memcpy( (char*)&serv_addr.sin_addr, HostAddr, 4);
+    memcpy((unsigned char *)&serv_addr.sin_addr, hostAddr, 4);
     memset(serv_addr.sin_zero, 0, 8);
 //填表
     if (-1 == connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(struct sockaddr))) {
-		perror("TCP host connect ");
         return -1;
 	}
     return sockfd;

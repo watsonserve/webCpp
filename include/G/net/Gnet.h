@@ -9,18 +9,18 @@ typedef int SOCKET;
 
 #define closesocket(fd) close(fd)
 
-SOCKET UDPsetup(const unsigned short port);
+SOCKET UDPsetup(const unsigned short);
 
-SOCKET TCPsetup(const unsigned short port);
+SOCKET TCPsetup(const unsigned short);
 
-SOCKET UNIXsetup(const char *path);
+SOCKET UNIXsetup(const char *);
 
-SOCKET TCPsetCli(char* HostAddr, unsigned short port);
+SOCKET TCPsetCli(char *, unsigned short);
 
-short clean(SOCKET clinet_fd);
+short clean(SOCKET);
 
-void killwaitcd(SOCKET cd, char *msg, unsigned long len);
+void killwaitcd(SOCKET, char *, unsigned long);
 
-unsigned short getIP4addr(char *readdr, struct sockaddr addr);
+unsigned short getIP4addr(char *, struct sockaddr);
 
 #endif
