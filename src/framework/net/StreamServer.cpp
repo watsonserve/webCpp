@@ -15,28 +15,8 @@ G::StreamServer::StreamServer(SOCKET sockfd, G::EventListener *listener)
     this->listener = listener;
 }
 
-G::StreamServer::~StreamServer()
-{
-    size_t i, siz;
-    std::map<int, G::IOStream *>::iterator it = streams.begin();
-    siz = streams.size();
-    for(i = 0; i < siz; i++)
-    {
-        delete it->second;
-        streams[it->first] = nullptr;
-        it++;
-    }
-}
-
-void G::StreamServer::listen(int fd, G::IOHandler *handler)
-{
-    G::IOStream *stream = streams[fd];
-    if (nullptr == stream)
-    {
-        stream = new G::IOStream(listener, handler);
-        streams[fd] = stream;
-    }
-    stream->setFd(fd, FD_SOCKET);
+G::StreamServer::~StreamServer() {
+    G::IOStream::clean();
 }
 
 int G::StreamServer::_service(G::IOHandler *ioHandler, int max)
@@ -74,7 +54,7 @@ int G::StreamServer::_service(G::IOHandler *ioHandler, int max)
             continue;
         }
 
-        this->listen(clientFd, ioHandler);
+        G::IOStream::newInstance(listener, clientFd, FD_SOCKET, ioHandler);
     }
     return 0;
 }

@@ -17,7 +17,6 @@ namespace G
     //     SOCKET sockfd;
     //     virtual int _service(G::IOHandler *, int) =0;
         G::EventListener *listener;
-        std::map<int, G::IOStream *> streams;
         void listen(int, IOHandler *);
     protected:
         virtual int _service(G::IOHandler *, int) override;
