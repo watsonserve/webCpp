@@ -10,7 +10,7 @@ void G::StreamCache::setCacheFd(int fd, FdType type)
 
 int G::StreamCache::in_cache(ssize_t recv_siz)
 {
-    ssize_t len, siz, end_off, space_siz;
+    ssize_t len, end_off, space_siz;
     if (recv_siz < 1)
         return 0;
 

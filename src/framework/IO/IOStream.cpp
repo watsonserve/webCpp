@@ -5,7 +5,7 @@
 // 销毁一个stream，被异步调用
 void G::IOStream::destroy(G::Event &ev)
 {
-    delete ev.context;
+    delete (G::IOStream *)(ev.context);
     G::IOStream::streams.erase(ev.context);
 }
 
