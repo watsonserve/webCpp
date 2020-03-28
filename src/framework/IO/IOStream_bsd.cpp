@@ -2,56 +2,6 @@
 
 #ifdef __BSD__
 
-G::IOStream::IOStream(G::EventListener *listener, G::IOHandler *handler)
-{
-    this->listener = listener;
-    this->handler = handler;
-    i_event.ident = -1;
-    o_event.ident = -1;
-}
-
-G::IOStream::~IOStream()
-{
-    this->close();
-}
-
-void G::IOStream::setFd(int fd, FdType type)
-{
-    int fl;
-
-    this->type = type;
-    fl = fcntl(fd, F_GETFL, 0);
-    fcntl(fd, F_SETFL, fl | O_NONBLOCK);
-
-    i_event.ident = fd;
-    i_event.event_type = EV_IN;
-    i_event.context = this;
-    i_event.function = G::IOStream::onData;
-    this->setCacheFd(fd, type);
-
-    o_event.event_type = EV_OUT;
-    o_event.context = this;
-    o_event.function = G::IOStream::onData;
-
-    listener->emit(OPT_ADD, &i_event);
-}
-
-void G::IOStream::close()
-{
-    if (-1 != o_event.ident)
-    {
-        listener->emit(OPT_DEL, &o_event);
-    }
-    if (-1 != i_event.ident)
-    {
-        listener->emit(OPT_DEL, &i_event);
-        ::close(i_event.ident);
-    }
-    printf("!!IOStream::close!!\n");
-    i_event.ident = -1;
-    o_event.ident = -1;
-}
-
 void G::IOStream::write(std::string &str)
 {
     this->write(str.c_str(), str.length());

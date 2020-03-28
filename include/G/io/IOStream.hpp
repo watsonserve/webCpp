@@ -15,9 +15,11 @@ extern "C"
 
 namespace G
 {
-    class IOStream : protected StreamCache
+    class IOStream : public StreamCache
     {
         enum fd_type type;
+        // lowest 1 closed
+        int flag;
 
         std::string writeBuf;
 
@@ -26,13 +28,19 @@ namespace G
         G::IOHandler *handler;
         G::EventListener *listener;
 
+        static std::map<void *, G::IOStream *> streams;
+
         static void onWrittable(G::IOStream *, G::Event &);
         static void onData(G::Event &);
         static void onIn(G::IOStream *);
+        static void destroy(G::Event &);
+        IOStream(G::EventListener *, int, FdType, G::IOHandler *);
+
+        void _close();
     public:
-        IOStream(G::EventListener *, IOHandler *);
         virtual ~IOStream();
-        void setFd(int, enum fd_type);
+        static void newInstance(G::EventListener *, int, FdType, G::IOHandler *);
+        static void clean();
         void close();
         // ssize_t read(char *, ssize_t) override;
         void write(std::string &);
