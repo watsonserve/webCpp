@@ -45,7 +45,7 @@ int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
     struct epoll_event ev;
 
     // EV_ETC 扩展事件立即执行
-    if (eventData->event_type >> 63)
+    if (opt == OPT_EXE && eventData->event_type >> 63)
     {
         if (-1 == tpool->call(*eventData)) {
             perror("request thread pool");

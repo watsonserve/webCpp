@@ -41,6 +41,7 @@ namespace G
 #ifdef __LINUX__
     typedef enum
     {
+        OPT_EXE = 0,
         OPT_ADD = EPOLL_CTL_ADD,
         OPT_DEL = EPOLL_CTL_DEL,
         OPT_MOD = EPOLL_CTL_MOD
@@ -50,6 +51,7 @@ namespace G
 #ifdef __BSD__
     typedef enum
     {
+        OPT_EXE = 0,
         OPT_ADD = EV_ADD | EV_CLEAR | EV_ONESHOT,
         OPT_DEL = EV_DELETE
     } event_opt_t;
