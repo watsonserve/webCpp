@@ -1,10 +1,14 @@
 #ifndef _MSGSERVER_HPP_
 #define _MSGSERVER_HPP_
 
+extern "C"
+{
+    #include "G/net/Gnet.h"
+}
+
 #include "G/ThreadPool.hpp"
 #include "G/event/EventListener.hpp"
 #include "G/net/StreamServer.hpp"
-#include "G/net/Gnet.h"
 #include "G/io/IOHandler.hpp"
 
 using namespace G;

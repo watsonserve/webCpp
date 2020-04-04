@@ -48,8 +48,8 @@ namespace G
     typedef enum
     {
         EV_ERR = EV_ERROR,
-        EV_IN = (uint32_t)EVFILT_READ,
-        EV_OUT = (uint32_t)EVFILT_WRITE,
+        EV_IN = (uint16_t)EVFILT_READ,
+        EV_OUT = (uint16_t)EVFILT_WRITE,
         EV_ETC = 0x8000000000000000    // 扩展事件
     } event_type_t;
 #endif

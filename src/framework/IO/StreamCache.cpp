@@ -31,6 +31,7 @@ int G::StreamCache::in_cache(ssize_t recv_siz)
     len = block_read(this->fd, this->type, this->buf + end_off, space_siz);
     if (-1 != len)
         this->unread_size += recv_siz - len;
+    this->length = len;
     return errno;
 }
 

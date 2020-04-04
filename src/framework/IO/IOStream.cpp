@@ -1,5 +1,6 @@
 #include "G/io/IOStream.hpp"
 
+std::map<void *, G::IOStream *> G::IOStream::streams;
 /**** 私有静态方法 ****/
 
 // 销毁一个stream，被异步调用
