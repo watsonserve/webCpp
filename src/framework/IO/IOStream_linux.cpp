@@ -101,13 +101,13 @@ void G::IOStream::onData(G::Event &ev)
         case EV_ERR:
             ioStream->handler->onError(ioStream, ioStream->i_event.magic);
             return;
-        case EV_IN:
+        case EPOLLIN:
             G::IOStream::onIn(ioStream);
             return;
-        case EV_OUT:
+        case EPOLLOUT:
             return;
         default:
-            printf("ERROR: event unknow: %X\n", ev.event_type);
+            printf("ERROR: event unknow: %lX\n", ev.event_type);
             break;
     }
 }
