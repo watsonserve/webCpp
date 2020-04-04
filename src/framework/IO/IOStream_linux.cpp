@@ -7,7 +7,7 @@ void G::IOStream::write(std::string &str)
     this->write(str.c_str(), str.length());
 }
 
-void G::IOStream::write(const char *str, size_t len)
+void G::IOStream::write(const char *str, ssize_t len)
 {
     int fd, written_len;
 

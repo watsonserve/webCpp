@@ -70,7 +70,7 @@ void* G::EventListener::_listener(void *that)
     G::EventListener *self;
     struct epoll_event *eventList, *event_ptr;
     int i, nEvent, max;
-    register int event_types;
+    int event_types;
     G::Event *edata;
     ThreadPool *tpool;
 

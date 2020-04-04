@@ -44,7 +44,7 @@ namespace G
         void close();
         // ssize_t read(char *, ssize_t) override;
         void write(std::string &);
-        void write(const char *, size_t);
+        void write(const char *, ssize_t);
     };
 }
 
