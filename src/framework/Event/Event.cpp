@@ -16,7 +16,7 @@ G::Event::Event(const G::Event &ev) : Event()
     this->function = ev.function;
     this->ident = ev.ident;
     this->event_type = ev.event_type;
-    this->buf_size = ev.buf_size;
+    this->magic = ev.magic;
 }
 
 G::Event::~Event() {}

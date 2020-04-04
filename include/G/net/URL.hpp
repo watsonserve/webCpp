@@ -6,8 +6,8 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
-#ifndef URL_h
-#define URL_h
+#ifndef _URL_H_
+#define _URL_H_
 
 #include <string>
 #include <map>
@@ -42,4 +42,4 @@ namespace G
     
 }
 
-#endif /* URL_h */
+#endif /* _URL_H_ */

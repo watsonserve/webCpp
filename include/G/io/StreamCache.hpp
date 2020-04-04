@@ -7,6 +7,7 @@ extern "C"
     #include <string.h>
     #include <errno.h>
     #include <sys/socket.h>
+    #include "G/stdafx.h"
     #include "G/io/io.h"
 }
 

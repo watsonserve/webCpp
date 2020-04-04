@@ -43,7 +43,7 @@ void G::IOStream::onWrittable(G::IOStream *ioStream, G::Event &ev)
 
     fd = ev.ident;
     // 可写数据量
-    siz = min(ioStream->writeBuf.length(), ev.buf_size);
+    siz = min(ioStream->writeBuf.length(), ev.magic);
     if (!siz) return;
     // 写入
     len = putout(fd, ioStream->type, ioStream->writeBuf.c_str(), siz);
@@ -69,12 +69,12 @@ void G::IOStream::onIn(G::IOStream *ioStream)
 {
     int err;
     // 可读数据量为0异常
-    if (ioStream->i_event.buf_size < 1)
+    if (ioStream->i_event.magic < 1)
     {
         ioStream->close();
         return;
     }
-    err = ioStream->in_cache(ioStream->i_event.buf_size);
+    err = ioStream->in_cache(ioStream->i_event.magic);
     switch (err)
     {
         case 0:
@@ -104,7 +104,7 @@ void G::IOStream::onData(G::Event &ev)
     switch ((uint32_t)ev.event_type)
     {
         case EV_ERR:
-            ioStream->handler->onError(ioStream, ioStream->i_event.buf_size);
+            ioStream->handler->onError(ioStream, ioStream->i_event.magic);
             return;
         case EV_IN:
             G::IOStream::onIn(ioStream);
@@ -112,6 +112,7 @@ void G::IOStream::onData(G::Event &ev)
         case EV_OUT:
             return;
         default:
+            printf("ERROR: event unknow: %X\n", ev.event_type);
             break;
     }
 }

@@ -6,8 +6,8 @@
 //  Copyright © 2016年 watsserve. All rights reserved.
 //
 
-#ifndef Number_h
-#define Number_h
+#ifndef _NUMBER_H_
+#define _NUMBER_H_
 
 #include "G/Object.hpp"
 
@@ -23,4 +23,4 @@ namespace G
     };
 }
 
-#endif /* Number_h */
+#endif /* _NUMBER_H_ */

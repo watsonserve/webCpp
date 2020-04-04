@@ -20,8 +20,6 @@
 #include "G/event/EventListener.hpp"
 #ifdef __BSD__
 
-using namespace G;
-
 int EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
 {
     if (nullptr == tpool) {
@@ -64,7 +62,7 @@ int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
         NULL,
         (void*)eventData
     );
-    return kevent(this->epfd, &ev, 1, nullptr, 0, nullptr);
+    return kevent(epfd, &ev, 1, nullptr, 0, nullptr);
 }
 
 void* G::EventListener::_listener(void *that)
@@ -73,8 +71,8 @@ void* G::EventListener::_listener(void *that)
     struct kevent *eventList, *event_ptr;
     int i, nEvent, max;
     uint16_t event_types;
-    G::Event *udata;
     ThreadPool *tpool;
+    G::Event *udata;
 
     self = (G::EventListener *)that;
     tpool = self->tpool;
@@ -107,7 +105,8 @@ void* G::EventListener::_listener(void *that)
                 close((int)(event_ptr->ident));
                 udata->event_type = EV_ERR;
             }
-            udata->buf_size = event_ptr->data;
+            // errno or data_length
+            udata->magic = event_ptr->data;
 
             if (-1 == tpool->call(*udata)) {
                 perror("request thread pool");
@@ -116,6 +115,7 @@ void* G::EventListener::_listener(void *that)
         }
     }
 
+    free(eventList);
     return nullptr;
 }
 

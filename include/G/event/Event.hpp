@@ -32,12 +32,11 @@ namespace G
     typedef enum
     {
         EV_ERR = EPOLLERR,
-        EV_IN = EPOLLIN,
-        EV_OUT = EPOLLOUT,
+        EV_IN = EPOLLIN | EPOLLET,
+        EV_OUT = EPOLLOUT | EPOLLONESHOT,
         EV_RDHUP = EPOLLRDHUP,
         EV_PRI = EPOLLPRI,
         EV_ET = EPOLLET,
-        EV_ONESHOT = EPOLLONESHOT,
         EV_WAKEUP = EPOLLWAKEUP,
         EV_EXCLUSIVE = EPOLLEXCLUSIVE,
         EV_ETC = 0x8000000000000000    // 扩展事件
@@ -45,6 +44,7 @@ namespace G
 #endif
 
 #ifdef __BSD__
+    // kevent只占用低16位！
     typedef enum
     {
         EV_ERR = EV_ERROR,
@@ -61,7 +61,7 @@ namespace G
             event_type_t event_type;
             void *context;
             void (*function)(Event &);
-            int buf_size;
+            int magic;
 
             Event();
             Event(const G::Event &ev);
