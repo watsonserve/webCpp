@@ -4,6 +4,7 @@
 extern "C"
 {
     #include "G/net/Gnet.h"
+    #include "G/kit.h"
 }
 
 #include "G/ThreadPool.hpp"
@@ -11,20 +12,17 @@ extern "C"
 #include "G/net/StreamServer.hpp"
 #include "G/io/IOHandler.hpp"
 
-using namespace G;
-
-class MsgServer: virtual public StreamServer, virtual public IOHandler
+class PresentationLayer: virtual public G::IOHandler
 {
 public:
-    MsgServer(EventListener *, unsigned short);
-    virtual ~MsgServer();
-    int service(int);
+    PresentationLayer(struct sockaddr, socklen_t);
+    virtual ~PresentationLayer();
 
-    virtual void onOpen(IOStream *) override;
-    virtual void onError(IOStream *, int) override;
-    virtual void onClose(IOStream *) override;
-    virtual void onData(IOStream *) override;
-    virtual void onWritten(IOStream *) override;
+    virtual void onOpen(G::IOStream *) override;
+    virtual void onError(G::IOStream *, int) override;
+    virtual void onClose(G::IOStream *) override;
+    virtual void onData(G::IOStream *) override;
+    virtual void onWritten(G::IOStream *) override;
 };
 
 #endif

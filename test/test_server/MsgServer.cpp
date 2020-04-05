@@ -1,35 +1,21 @@
 #include "MsgServer.hpp"
 
-using namespace G;
-
-MsgServer::MsgServer(EventListener* listener, unsigned short port) : StreamServer(listener)
-{
-    this->sockfd = TCPsetup(port);
-}
-
-MsgServer::~MsgServer() {}
-
-int MsgServer::service(int max)
-{
-    return this->_service(this, max);
-}
-
-void MsgServer::onOpen(IOStream *stream)
+void PresentationLayer::onOpen(G::IOStream *stream)
 {
     printf("onOpen\n");
 }
 
-void MsgServer::onError(IOStream *s, int e)
+void PresentationLayer::onError(G::IOStream *s, int e)
 {
     printf("onError: %s\n", strerror(e));
 }
 
-void MsgServer::onClose(IOStream *stream)
+void PresentationLayer::onClose(G::IOStream *stream)
 {
     printf("onClose\n");
 }
 
-void MsgServer::onData(IOStream *stream)
+void PresentationLayer::onData(G::IOStream *stream)
 {
     char buf[BUFSIZ];
     int len;
@@ -51,7 +37,7 @@ void MsgServer::onData(IOStream *stream)
     stream->write(buf, 101);
 }
 
-void MsgServer::onWritten(IOStream *stream)
+void PresentationLayer::onWritten(G::IOStream *stream)
 {
     printf("written\n");
     char buf[BUFSIZ];
