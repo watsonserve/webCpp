@@ -6,6 +6,10 @@
  *  Copyright © 2016 watsserve. All rights reserved.
  */
 
+extern "C"
+{
+    #include "G/kit.h"
+}
 #include "G/event/EventListener.hpp"
 
 // 构造函数
@@ -41,17 +45,6 @@ G::EventListener& G::EventListener::getInstance(G::ThreadPool *tpool, int max)
     return listener;
 }
 
-// typedef union epoll_data {
-//     void    *ptr;
-//     int      fd;
-//     uint32_t u32;
-//     uint64_t u64;
-// } epoll_data_t;
-
-// struct epoll_event {
-//     uint32_t     events;    /* Epoll events */
-//     epoll_data_t data;      /* User data variable */
-// };
 void G::EventListener::listen()
 {
     pthread_t tid;
@@ -69,4 +62,10 @@ void G::EventListener::listen()
         perror("detach a listen thread faild");
         exit(1);
     }
+}
+
+void listen_event(void* listener)
+{
+    G::EventListener* l = (G::EventListener *)listener;
+    l->listen();
 }

@@ -133,11 +133,11 @@ SOCKET TCPsetCli(char * hostAddr, unsigned short port)
     return sockfd;
 }
 
-int acceptor(SOCKET sockfd, int max, connect_callback on_conn)
+int acceptor(SOCKET sockfd, int max, connect_callback on_conn, void* context)
 {
     int errorNo;
     SOCKET clientFd;
-    struct sockaddr addr;
+    sock_addr_t addr;
     socklen_t len;
 
     max &= 0x7FFFFFFF;
@@ -149,7 +149,7 @@ int acceptor(SOCKET sockfd, int max, connect_callback on_conn)
     // 监听循环
     while (1)
     {
-        clientFd = accept(sockfd, &addr, &len);
+        clientFd = accept(sockfd, &addr.addr, &addr.len);
         if (-1 == clientFd) {
             // 系统层错误
             errorNo = errno;
@@ -168,7 +168,7 @@ int acceptor(SOCKET sockfd, int max, connect_callback on_conn)
             continue;
         }
 
-        on_conn(clientFd, addr, len);
+        on_conn(context, clientFd, &addr);
     }
     return 0;
 }
