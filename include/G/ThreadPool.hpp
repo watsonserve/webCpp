@@ -3,7 +3,7 @@
 //  GHTTPd
 //
 //  Created by wangxingzhuo on 2016/10/26.
-//  Copyright © 2016年 watsserve. All rights reserved.
+//  Copyright © 2016 watsserve. All rights reserved.
 //
 
 #ifndef _ThreadPool_HPP_

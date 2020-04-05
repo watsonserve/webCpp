@@ -3,7 +3,7 @@
 //  GHTTPd
 //
 //  Created by JamesWatson on 16/5/9.
-//  Copyright © 2016年 watsserve. All rights reserved.
+//  Copyright © 2016 watsserve. All rights reserved.
 //
 
 #ifndef _IOHANDLE_HPP_

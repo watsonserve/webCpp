@@ -1,8 +1,8 @@
 //
 //  ThreadPool.cpp
 //
-//  Created by 王兴卓 on 16/10/26.
-//  Copyright © 2016年 watsserve. All rights reserved.
+//  Created by James on 16/10/26.
+//  Copyright © 2016 watsserve. All rights reserved.
 //
 
 #include "G/ThreadPool.hpp"

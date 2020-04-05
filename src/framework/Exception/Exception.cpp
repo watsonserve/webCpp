@@ -2,8 +2,8 @@
 //  Exception.cpp
 //  GHTTPd
 //
-//  Created by 王兴卓 on 2017/3/19.
-//  Copyright © 2017年 watsserve. All rights reserved.
+//  Created by James on 2017/3/19.
+//  Copyright © 2017 watsserve. All rights reserved.
 //
 
 #include "G/Exception.hpp"
