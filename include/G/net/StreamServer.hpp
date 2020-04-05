@@ -13,16 +13,14 @@ namespace G
 
     class StreamServer: public Server
     {
-    // parent protected:
-    //     SOCKET sockfd;
-    //     virtual int _service(G::IOHandler *, int) =0;
         G::EventListener *listener;
-        void listen(int, IOHandler *);
+        void onConnect(SOCKET, struct sockaddr, socklen_t);
     protected:
-        virtual int _service(G::IOHandler *, int) override;
+        virtual G::IOHandler* handleGenerator(struct sockaddr, socklen_t) =0;
     public:
         StreamServer(G::EventListener *);
         StreamServer(SOCKET, G::EventListener *);
+        virtual int service(int) override;
         virtual ~StreamServer();
     };
 

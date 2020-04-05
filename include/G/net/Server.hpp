@@ -21,7 +21,8 @@ namespace G
     {
     protected:
         SOCKET sockfd;
-        virtual int _service(G::IOHandler *, int) =0;
+    public:
+        virtual int service(int) =0;
     };
 }
 #endif

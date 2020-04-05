@@ -133,6 +133,46 @@ SOCKET TCPsetCli(char * hostAddr, unsigned short port)
     return sockfd;
 }
 
+int acceptor(SOCKET sockfd, int max, connect_callback on_conn)
+{
+    int errorNo;
+    SOCKET clientFd;
+    struct sockaddr addr;
+    socklen_t len;
+
+    max &= 0x7FFFFFFF;
+    if (-1 == sockfd) {
+        perror("Can't create socket");
+        return -1;
+    }
+
+    // 监听循环
+    while (1)
+    {
+        clientFd = accept(sockfd, &addr, &len);
+        if (-1 == clientFd) {
+            // 系统层错误
+            errorNo = errno;
+            perror("accept");
+            // TODO
+            if (EBADF == errorNo || EINVAL == errorNo)
+                return -1;
+            continue;
+        }
+
+        // 用户层错误
+        if (max <= clientFd)
+        {
+            close(clientFd);
+            fprintf(stderr, "Too many connect, denial of service\n");
+            continue;
+        }
+
+        on_conn(clientFd, addr, len);
+    }
+    return 0;
+}
+
 short clean(SOCKET clinet_fd)
 {
     shutdown(clinet_fd, 2);        /*0 ReadOver; 1 WriteOver; 2 RW over*/

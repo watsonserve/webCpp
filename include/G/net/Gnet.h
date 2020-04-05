@@ -7,6 +7,8 @@
 
 typedef int SOCKET;
 
+typedef void (*connect_callback)(SOCKET, struct sockaddr, socklen_t);
+
 #define closesocket(fd) close(fd)
 
 SOCKET UDPsetup(const unsigned short);
@@ -16,6 +18,8 @@ SOCKET TCPsetup(const unsigned short);
 SOCKET UNIXsetup(const char *);
 
 SOCKET TCPsetCli(char *, unsigned short);
+
+int acceptor(SOCKET, int, connect_callback);
 
 short clean(SOCKET);
 
