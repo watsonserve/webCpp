@@ -19,11 +19,11 @@ typedef void (*connect_callback)(void *, SOCKET, sock_addr_t *);
 
 SOCKET UDPsetup(const unsigned short);
 
-SOCKET UNIXsetup(const char *);
-
 SOCKET TCPsetCli(char *, unsigned short);
 
-int tcp_service(const unsigned short port, int limit, connect_callback on_conn, void* context);
+int tcp_service(const unsigned short, int, connect_callback, void*);
+
+int unix_service(const char *, int, connect_callback, void*);
 
 short clean(SOCKET);
 
