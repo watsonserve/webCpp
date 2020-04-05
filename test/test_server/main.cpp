@@ -17,13 +17,15 @@ void onConnect(void* ctx, SOCKET fd, sock_addr_t *addr)
 
 int main()
 {
+    int err;
     ThreadPool tpool;
     ThreadPool::init(tpool, THREAD_POOL_SIZ);
     EventListener &eventListener = EventListener::getInstance(&tpool, EVENT_LIST_LENGTH);
     listen_event(&eventListener);
 
-    SOCKET sockfd = TCPsetup(PORT);
-    acceptor(sockfd, FD_LIMIT, onConnect, &eventListener);
+    err = tcp_service(PORT, FD_LIMIT, onConnect, &eventListener);
+    if (err)
+        perror("tcp service error");
     G::IOStream::clean();
 
     return 0;

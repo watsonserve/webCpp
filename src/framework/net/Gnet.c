@@ -33,7 +33,7 @@ SOCKET UDPsetup(const unsigned short port)
     return sockfd;
 }
 
-SOCKET TCPsetup(const unsigned short port)
+SOCKET tcp_setup(const unsigned short port)
 {
     int eno;
     SOCKET sockfd;
@@ -135,16 +135,11 @@ SOCKET TCPsetCli(char * hostAddr, unsigned short port)
 
 int acceptor(SOCKET sockfd, int max, connect_callback on_conn, void* context)
 {
-    int errorNo;
     SOCKET clientFd;
     sock_addr_t addr;
     socklen_t len;
 
     max &= 0x7FFFFFFF;
-    if (-1 == sockfd) {
-        perror("Can't create socket");
-        return -1;
-    }
 
     // 监听循环
     while (1)
@@ -152,11 +147,9 @@ int acceptor(SOCKET sockfd, int max, connect_callback on_conn, void* context)
         clientFd = accept(sockfd, &addr.addr, &addr.len);
         if (-1 == clientFd) {
             // 系统层错误
-            errorNo = errno;
-            perror("accept");
             // TODO
-            if (EBADF == errorNo || EINVAL == errorNo)
-                return -1;
+            if (EBADF == errno || EINVAL == errno)
+                return errno;
             continue;
         }
 
@@ -197,4 +190,13 @@ unsigned short getIP4addr(char *readdr, struct sockaddr addr)
     unsigned short port = ((unsigned short*)&addr)[1];
     sprintf(readdr, "%d.%d.%d.%d", p[4], p[5], p[6], p[7]);
     return port;
+}
+
+int tcp_service(const unsigned short port, int limit, connect_callback on_conn, void* context)
+{
+    SOCKET sockfd = tcp_setup(port);
+    if (-1 == sockfd) {
+        return errno;
+    }
+    return acceptor(sockfd, limit, on_conn, context);
 }
