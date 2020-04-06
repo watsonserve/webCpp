@@ -5,25 +5,30 @@
 #define EVENT_LIST_LENGTH 1019
 #define PORT 7070
 
-using namespace G;
+void transition(const int fd, enum fd_type type, G::EventListener *listener, void *ioHandler)
+{
+    G::IOStream::newInstance(listener, fd, FD_SOCKET, (G::IOHandler*)ioHandler);
+}
 
 void onConnect(void* ctx, SOCKET fd, sock_addr_t *addr)
 {
     PresentationLayer *ioHandler;
     G::EventListener *listener = (G::EventListener *)ctx;
     ioHandler = new PresentationLayer(addr->addr, addr->len);
-    G::IOStream::newInstance(listener, fd, FD_SOCKET, (G::IOHandler*)ioHandler);
+    transition(fd, FD_SOCKET, listener, (G::IOHandler*)ioHandler);
 }
 
 int main()
 {
     int err;
-    ThreadPool tpool;
-    ThreadPool::init(tpool, THREAD_POOL_SIZ);
-    EventListener &eventListener = EventListener::getInstance(&tpool, EVENT_LIST_LENGTH);
-    listen_event(&eventListener);
+    thread_pool_t tpool;
+    event_listener_t eventListener;
 
-    err = tcp_service(PORT, FD_LIMIT, onConnect, &eventListener);
+    tpool = thread_pool_create(THREAD_POOL_SIZ);
+    eventListener = event_listener_init(tpool, EVENT_LIST_LENGTH);
+    listen_event(eventListener);
+
+    err = tcp_service(PORT, FD_LIMIT, onConnect, eventListener);
     if (err)
         perror("tcp service error");
     G::IOStream::clean();

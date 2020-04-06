@@ -64,8 +64,14 @@ void G::EventListener::listen()
     }
 }
 
-void listen_event(void* listener)
+void listen_event(event_listener_t listener)
 {
     G::EventListener* l = (G::EventListener *)listener;
     l->listen();
+}
+
+event_listener_t event_listener_init(void* tpool, int max)
+{
+    G::EventListener &retval = G::EventListener::getInstance((G::ThreadPool *)tpool, max);
+    return &retval;
 }

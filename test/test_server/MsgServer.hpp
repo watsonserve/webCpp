@@ -9,16 +9,14 @@ extern "C"
 
 #include "G/ThreadPool.hpp"
 #include "G/event/EventListener.hpp"
-#include "G/net/StreamServer.hpp"
+#include "G/io/IOStream.hpp"
 #include "G/io/IOHandler.hpp"
 
-class PresentationLayer: virtual public G::IOHandler
+class PresentationLayer: public G::IOHandler
 {
 public:
-    PresentationLayer(struct sockaddr, socklen_t);
-    virtual ~PresentationLayer();
+    PresentationLayer(struct sockaddr_in, socklen_t);
 
-    virtual void onOpen(G::IOStream *) override;
     virtual void onError(G::IOStream *, int) override;
     virtual void onClose(G::IOStream *) override;
     virtual void onData(G::IOStream *) override;

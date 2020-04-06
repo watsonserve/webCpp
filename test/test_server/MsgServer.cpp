@@ -1,9 +1,7 @@
 #include "MsgServer.hpp"
 
-void PresentationLayer::onOpen(G::IOStream *stream)
-{
-    printf("onOpen\n");
-}
+PresentationLayer::PresentationLayer(struct sockaddr_in addr, socklen_t len)
+{}
 
 void PresentationLayer::onError(G::IOStream *s, int e)
 {

@@ -9,8 +9,8 @@ typedef int SOCKET;
 
 typedef struct sock_addr
 {
+    struct sockaddr_in addr;
     socklen_t len;
-    struct sockaddr addr;
 } sock_addr_t;
 
 typedef void (*connect_callback)(void *, SOCKET, sock_addr_t *);

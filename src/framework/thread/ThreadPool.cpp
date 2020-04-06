@@ -5,6 +5,10 @@
 //  Copyright © 2016 watsserve. All rights reserved.
 //
 
+extern "C"
+{
+    #include "G/kit.h"
+}
 #include "G/ThreadPool.hpp"
 
 using namespace G;
@@ -75,4 +79,15 @@ int ThreadPool::call(const G::Event &msg)
 {
     // 写消息队列
     return this->mq.push(msg);
+}
+
+thread_pool_t thread_pool_create(int max)
+{
+    ThreadPool *tpool = new ThreadPool();
+    if (!ThreadPool::init(*tpool, max))
+    {
+        return tpool;
+    }
+    delete tpool;
+    return nullptr;
 }

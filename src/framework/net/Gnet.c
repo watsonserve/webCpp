@@ -137,14 +137,13 @@ int acceptor(SOCKET sockfd, int max, connect_callback on_conn, void* context)
 {
     SOCKET clientFd;
     sock_addr_t addr;
-    socklen_t len;
 
     max &= 0x7FFFFFFF;
 
     // 监听循环
     while (1)
     {
-        clientFd = accept(sockfd, &addr.addr, &addr.len);
+        clientFd = accept(sockfd, (struct sockaddr *)&addr.addr, &addr.len);
         if (-1 == clientFd) {
             // 系统层错误
             // TODO
