@@ -9,7 +9,9 @@
 #ifndef _SEM_H_
 #define _SEM_H_
 
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
+#include "G/stdafx.h"
+
+#ifdef __BSD__
 
 #include <errno.h>
 #include <dispatch/dispatch.h>
@@ -21,7 +23,9 @@ int wait_sem(sem_t*);
 int post_sem(sem_t*);
 int destroy_sem(sem_t*);
 
-#else
+#endif
+
+#ifdef __LINUX__
 #include <semaphore.h>
 
 #define    init_sem    sem_init

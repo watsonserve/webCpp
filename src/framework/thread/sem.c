@@ -5,9 +5,9 @@
 //  Created by wangxingzhuo on 09/02/2018.
 //  Copyright © 2018 watsserve. All rights reserved.
 //
+#include "G/sem.h"
 
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
-#include "sem.h"
+#ifdef __BSD__
 
 int init_sem(sem_t *sem, int pshared, int value)
 {

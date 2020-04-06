@@ -3,7 +3,7 @@
 //  GHTTPd
 //
 //  Created by wangxingzhuo on 2016/10/26.
-//  Copyright © 2016年 watsserve. All rights reserved.
+//  Copyright © 2016 watsserve. All rights reserved.
 //
 
 #ifndef _ThreadPool_HPP_
@@ -14,37 +14,27 @@ extern "C"
     #include <fcntl.h>
 }
 
-#if defined(__APPLE__) || defined (__MACOSX__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__)
-
-#else
-#include <pthread.h>
-#endif
-
 #include "G/Object.hpp"
 #include "G/Number.hpp"
 #include "G/MQ.hpp"
+#include "G/event/Event.hpp"
+#ifdef __LINUX__
+#include <pthread.h>
+#endif
 
-namespace G {
-
-    class ThreadPool : public Object
+namespace G
+{
+    class ThreadPool : virtual public Object
     {
         int size;
         static void* thFunction(void *);
+    protected:
+        G::MQ<G::Event> mq;
     public:
-        typedef struct
-        {
-            void * args;
-            Func function;
-        } message_t;
-
         ThreadPool();
         virtual ~ThreadPool() {};
-        static int init(ThreadPool *, int);
-        static int init(ThreadPool *, int, Func);
-        int call(void *);
-        int call(void *, Func);
-    protected:
-        MQ<message_t> mq;
+        static int init(ThreadPool &, int);
+        int call(const G::Event &);
     };
 }
 

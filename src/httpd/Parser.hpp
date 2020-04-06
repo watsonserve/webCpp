@@ -11,7 +11,8 @@
 
 #include "G/net/http/MiddleWare.hpp"
 
-namespace G {
+namespace G
+{
 
     class Parser : public MiddleWare
     {

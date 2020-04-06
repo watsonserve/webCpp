@@ -2,18 +2,18 @@
 //  Number.hpp
 //  GHTTPd
 //
-//  Created by 王兴卓 on 16/9/25.
-//  Copyright © 2016年 watsserve. All rights reserved.
+//  Created by James on 16/9/25.
+//  Copyright © 2016 watsserve. All rights reserved.
 //
 
-#ifndef Number_h
-#define Number_h
+#ifndef _NUMBER_H_
+#define _NUMBER_H_
 
 #include "G/Object.hpp"
 
 namespace G
 {
-    class Number : public Object
+    class Number : virtual public Object
     {
     public:
         static long parseInt(const char *);
@@ -23,4 +23,4 @@ namespace G
     };
 }
 
-#endif /* Number_h */
+#endif /* _NUMBER_H_ */

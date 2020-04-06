@@ -2,6 +2,6 @@
 
 int RedisSession::call(HTTPRequest *req, HTTPResponse *res)
 {
-    req->setSession(NULL);
+    req->setSession(nullptr);
     return 0;
 }

@@ -7,20 +7,28 @@
 
 typedef int SOCKET;
 
+typedef struct sock_addr
+{
+    struct sockaddr_in addr;
+    socklen_t len;
+} sock_addr_t;
+
+typedef void (*connect_callback)(void *, SOCKET, sock_addr_t *);
+
 #define closesocket(fd) close(fd)
 
-SOCKET UDPsetup(const unsigned short port);
+SOCKET UDPsetup(const unsigned short);
 
-SOCKET TCPsetup(const unsigned short port);
+SOCKET TCPsetCli(char *, unsigned short);
 
-SOCKET UNIXsetup(const char *path);
+int tcp_service(const unsigned short, int, connect_callback, void*);
 
-SOCKET TCPsetCli(char* HostAddr, unsigned short port);
+int unix_service(const char *, int, connect_callback, void*);
 
-short clean(SOCKET clinet_fd);
+short clean(SOCKET);
 
-void killwaitcd(SOCKET cd, char *msg, unsigned long len);
+void killwaitcd(SOCKET, char *, unsigned long);
 
-unsigned short getIP4addr(char *readdr, struct sockaddr addr);
+unsigned short getIP4addr(char *, struct sockaddr);
 
 #endif

@@ -2,20 +2,21 @@
 //  URL.hpp
 //  GHTTPd
 //
-//  Created by 王兴卓 on 16/8/31.
-//  Copyright © 2016年 watsserve. All rights reserved.
+//  Created by James on 16/8/31.
+//  Copyright © 2016 watsserve. All rights reserved.
 //
 
-#ifndef URL_h
-#define URL_h
+#ifndef _URL_H_
+#define _URL_H_
 
 #include <string>
 #include <map>
 #include "G/Object.hpp"
 
-namespace G {
+namespace G
+{
 
-    class URL : public Object {
+    class URL : virtual public Object {
         std::string scheme;
         std::string user;
         std::string password;
@@ -41,4 +42,4 @@ namespace G {
     
 }
 
-#endif /* URL_h */
+#endif /* _URL_H_ */

@@ -55,7 +55,6 @@ int main(int argc, char *argv[])
     dispatcher.use(&routes);
     dispatcher.use(except);
 
-    srv.initPool(20, 64, 1);
     srv.setPath("/run/webcpp.sock");
     int ret = srv.service(&dispatcher, max);
     printf("%s\n", strerror(ret));

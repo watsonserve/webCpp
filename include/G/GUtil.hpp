@@ -6,7 +6,8 @@
 
 using namespace std;
 
-namespace G {
+namespace G
+{
     int split(vector<string> &ret, const string &str, const char *sep);
     int split(vector<string> &ret, const string &str, const string &sep);
 }
