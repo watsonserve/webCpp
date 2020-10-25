@@ -36,7 +36,7 @@ void G::IOStream::write(const char *str, ssize_t len)
 
 /**** 静态 ****/
 
-void G::IOStream::onWrittable(G::IOStream *ioStream, G::Event &ev)
+void G::IOStream::onWrittable(G::IOStream *ioStream, struct event_t &ev)
 {
     int fd;
     ssize_t siz, len;
@@ -92,7 +92,7 @@ void G::IOStream::onIn(G::IOStream *ioStream)
     }
 }
 
-void G::IOStream::onData(G::Event &ev)
+void G::IOStream::onData(struct event_t &ev)
 {
     G::IOStream *ioStream = (G::IOStream *)(ev.context);
 

@@ -18,6 +18,7 @@
 // };
 
 #include "G/event/EventListener.hpp"
+
 #ifdef __LINUX__
 
 int G::EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
@@ -39,26 +40,6 @@ int G::EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
     return 0;
 }
 
-int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
-{
-    struct epoll_event ev;
-
-    // EV_ETC 扩展事件立即执行
-    if (opt == OPT_EXE && eventData->event_type >> 63)
-    {
-        if (-1 == tpool->call(*eventData)) {
-            perror("request thread pool");
-            exit(1);
-        }
-        return 0;
-    }
-
-    ev.events = (uint32_t)(eventData->event_type);
-    ev.data.ptr = eventData;
-
-    return epoll_ctl(epfd, opt, eventData->ident, &ev);
-}
-
 void* G::EventListener::_listener(void *that)
 {
     G::EventListener *self;
@@ -66,7 +47,7 @@ void* G::EventListener::_listener(void *that)
     int i, nEvent, max;
     uint32_t event_types;
     ThreadPool *tpool;
-    G::Event *udata;
+    struct event_t *udata;
 
     self = (G::EventListener *)that;
     tpool = self->tpool;
@@ -90,9 +71,9 @@ void* G::EventListener::_listener(void *that)
         for (i = 0; i < nEvent; i++)
         {
             event_ptr = eventList + i;
-            udata = (G::Event*)(event_ptr->data.ptr);
+            udata = (struct event_t *)(event_ptr->data.ptr);
             event_types = event_ptr->events;
-            udata->event_type = (G::event_type_t)event_types;
+            udata->event_type = (event_type_t)event_types;
 
             if (event_types & EPOLLERR)  // 出错
             {
@@ -115,6 +96,26 @@ void* G::EventListener::_listener(void *that)
 
     free(eventList);
     return nullptr;
+}
+
+int G::EventListener::emit(event_opt_t opt, struct event_t *eventData)
+{
+    struct epoll_event ev;
+
+    // EV_ETC 扩展事件立即执行
+    if (opt == OPT_EXE && eventData->event_type >> 63)
+    {
+        if (-1 == tpool->call(*eventData)) {
+            perror("request thread pool");
+            exit(1);
+        }
+        return 0;
+    }
+
+    ev.events = (uint32_t)(eventData->event_type);
+    ev.data.ptr = eventData;
+
+    return epoll_ctl(epfd, opt, eventData->ident, &ev);
 }
 
 #endif

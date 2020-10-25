@@ -6,7 +6,7 @@
 class HTTPServer: public virtual G::UNIXServer, virtual G::Protocoler
 {
 protected:
-    virtual void onData(int fd, G::event_type_t event_type) override;
+    virtual void onData(int fd, event_type_t event_type) override;
 public:
     HTTPServer();
     virtual ~HTTPServer() override;

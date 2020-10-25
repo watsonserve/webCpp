@@ -10,7 +10,7 @@ struct context_t
     int *intp;
 };
 
-void func(G::Event *args)
+void func(struct event_t *args)
 {
     struct context_t *ctx;
     ctx = (struct context_t *)args->context;
@@ -22,7 +22,7 @@ int main()
 {
     int i;
     G::ThreadPool tpool;
-    G::Event task;
+    struct event_t task;
     struct context_t ctx[4];
 
     i = G::ThreadPool::init(tpool, 2);

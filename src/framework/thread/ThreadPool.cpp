@@ -23,13 +23,13 @@ ThreadPool::ThreadPool() {}
 // 默认线程
 void* ThreadPool::thFunction(void* that)
 {
-    // G::Event &event;
-    MQ<G::Event> &mq = ((ThreadPool *)that)->mq;
+    // struct event_t &event;
+    MQ<struct event_t> &mq = ((ThreadPool *)that)->mq;
 
     while (1)
     {
         // 读消息队列
-        G::Event event = mq.front();
+        struct event_t event = mq.front();
         if(nullptr == event.function) {
             continue;
         }
@@ -49,7 +49,7 @@ int ThreadPool::init(ThreadPool &self, int max)
     self.size = max;
 
     // 初始化消息队列
-    if (0 != MQ<G::Event>::init(&(self.mq))) {
+    if (0 != MQ<struct event_t>::init(&(self.mq))) {
         perror("init message queue faild");
         return -1;
     }
@@ -75,7 +75,7 @@ int ThreadPool::init(ThreadPool &self, int max)
 }
 
 // 向线程池委托任务
-int ThreadPool::call(const G::Event &msg)
+int ThreadPool::call(const struct event_t &msg)
 {
     // 写消息队列
     return this->mq.push(msg);

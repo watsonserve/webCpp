@@ -9,26 +9,21 @@
 #ifndef _EVENT_LISTENER_HPP_
 #define _EVENT_LISTENER_HPP_
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <errno.h>
-// 这里定义编译环境
-#include "G/stdafx.h"
+extern "C"
+{
+    #include <stdlib.h>
+    #include <unistd.h>
+    #include <pthread.h>
+    #include <errno.h>
 
-#ifdef __LINUX__
+    #include "G/event/event.h"
 
-#include <sys/epoll.h>
+    #ifdef __BSD__
 
-#endif
+    #include <sys/time.h>
 
-#ifdef __BSD__
-
-#include <sys/types.h>
-#include <sys/event.h>
-#include <sys/time.h>
-
-#endif
+    #endif
+}
 
 #include <string>
 #include <map>
@@ -37,26 +32,6 @@
 
 namespace G
 {
-
-#ifdef __LINUX__
-    typedef enum
-    {
-        OPT_EXE = 0,
-        OPT_ADD = EPOLL_CTL_ADD,
-        OPT_DEL = EPOLL_CTL_DEL,
-        OPT_MOD = EPOLL_CTL_MOD
-    } event_opt_t;
-#endif
-
-#ifdef __BSD__
-    typedef enum
-    {
-        OPT_EXE = 0,
-        OPT_ADD = EV_ADD | EV_CLEAR | EV_ONESHOT,
-        OPT_DEL = EV_DELETE
-    } event_opt_t;
-#endif
-
     class EventListener : virtual Object
     {
         int epfd;
@@ -78,7 +53,7 @@ namespace G
         static G::EventListener& getInstance(G::ThreadPool *, int);
         void listen();
         // 第二个参数一定是堆上的内存地址!
-        int emit(G::event_opt_t, G::Event *);
+        int emit(event_opt_t, struct event_t *);
         virtual ~EventListener();
     };
 

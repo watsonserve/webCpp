@@ -4,7 +4,7 @@ std::map<void *, G::IOStream *> G::IOStream::streams;
 /**** 私有静态方法 ****/
 
 // 销毁一个stream，被异步调用
-void G::IOStream::destroy(G::Event &ev)
+void G::IOStream::destroy(struct event_t &ev)
 {
     delete (G::IOStream *)(ev.context);
     G::IOStream::streams.erase(ev.context);
@@ -86,7 +86,7 @@ G::IOStream::~IOStream()
 
 void G::IOStream::close()
 {
-    G::Event event;
+    struct event_t event;
 
     shutdown(i_event.ident, SHUT_RDWR);
     this->_close();

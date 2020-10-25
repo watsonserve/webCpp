@@ -39,7 +39,7 @@ int EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
     return 0;
 }
 
-int G::EventListener::emit(G::event_opt_t opt, G::Event *eventData)
+int G::EventListener::emit(event_opt_t opt, struct event_t *eventData)
 {
     struct kevent ev;
 
@@ -72,7 +72,7 @@ void* G::EventListener::_listener(void *that)
     int i, nEvent, max;
     uint16_t event_types;
     ThreadPool *tpool;
-    G::Event *udata;
+    struct event_t *udata;
 
     self = (G::EventListener *)that;
     tpool = self->tpool;
@@ -96,9 +96,9 @@ void* G::EventListener::_listener(void *that)
         for(i = 0; i < nEvent; i++)
         {
             event_ptr = eventList + i;
-            udata = (G::Event *)(event_ptr->udata);
+            udata = (struct event_t *)(event_ptr->udata);
             event_types = event_ptr->filter;
-            udata->event_type = (G::event_type_t)event_types;
+            udata->event_type = (event_type_t)event_types;
 
             if (event_ptr->flags & EV_ERROR)  // 出错
             {

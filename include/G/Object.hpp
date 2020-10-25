@@ -16,6 +16,8 @@ namespace G
 
     class Object
     {
+        public:
+            std::string isA;
     };
 
     typedef void* (*Func)(void *);

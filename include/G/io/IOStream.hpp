@@ -23,17 +23,17 @@ namespace G
 
         std::string writeBuf;
 
-        G::Event i_event;
-        G::Event o_event;
+        struct event_t i_event;
+        struct event_t o_event;
         G::IOHandler *handler;
         G::EventListener *listener;
 
         static std::map<void *, G::IOStream *> streams;
 
-        static void onWrittable(G::IOStream *, G::Event &);
-        static void onData(G::Event &);
+        static void onWrittable(G::IOStream *, struct event_t &);
+        static void onData(struct event_t &);
         static void onIn(G::IOStream *);
-        static void destroy(G::Event &);
+        static void destroy(struct event_t &);
         IOStream(G::EventListener *, int, FdType, G::IOHandler *);
 
         void _close();
