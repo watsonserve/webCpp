@@ -7,12 +7,12 @@ void stream_socket_set_listener(event_listener_t *event_listener)
     listener = event_listener;
 }
 
-void _stream_socket_handle(struct stream_socket_t *socket, event_type_t eventType)
+void _stream_socket_handle(struct stream_socket_t *socket, event_type_t event_type)
 {
     struct event_t event;
 
     event.ident = socket->fd;
-    event.event_type = eventType;
+    event.event_type = event_type;
     event.context = socket;
     event.function = socket->onData;
 
@@ -47,6 +47,6 @@ void stream_socket_shutdown(struct stream_socket_t *self, int how)
 
 void stream_socket_close(struct stream_socket_t *self)
 {
-    shutdown(self->fd, SHUT_RDWR);
-    closesocket(self->fd);
+    clean(self->fd);
+    free(self);
 }

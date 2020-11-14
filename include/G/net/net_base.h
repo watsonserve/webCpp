@@ -17,12 +17,11 @@ typedef void (*connect_callback)(void *, SOCKET, sock_addr_t *);
 
 #define closesocket(fd) close(fd)
 
-
-SOCKET tcp_setup(const unsigned short);
-
 SOCKET udp_setup(const unsigned short);
 
-SOCKET TCPsetCli(char *, unsigned short);
+SOCKET tcp_client(char *, unsigned short);
+
+int acceptor(SOCKET, int, connect_callback, void*);
 
 int tcp_service(const unsigned short, int, connect_callback, void*);
 
@@ -32,6 +31,6 @@ short clean(SOCKET);
 
 void killwaitcd(SOCKET, char *, unsigned long);
 
-unsigned short getIP4addr(char *, struct sockaddr);
+unsigned short get_ip4_addr(char *, struct sockaddr);
 
 #endif

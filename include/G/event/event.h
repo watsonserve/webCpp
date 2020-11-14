@@ -54,6 +54,8 @@ typedef enum
 
 #endif
 
+struct event_t;
+
 typedef void (*event_callback)(struct event_t);
 
 struct event_t

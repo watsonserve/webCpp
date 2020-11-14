@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-#include "G/net/Gnet.h"
+#include "G/net/net_base.h"
 
 
 SOCKET udp_setup(const unsigned short port)
@@ -112,7 +112,7 @@ EXIT_ERR:
     return -1;
 }
 
-SOCKET TCPsetCli(char * hostAddr, unsigned short port)
+SOCKET tcp_client(char * hostAddr, unsigned short port)
 {
     struct sockaddr_in serv_addr;
     SOCKET sockfd;
@@ -164,7 +164,7 @@ int acceptor(SOCKET sockfd, int max, connect_callback on_conn, void* context)
 
 short clean(SOCKET clinet_fd)
 {
-    shutdown(clinet_fd, 2);        /*0 ReadOver; 1 WriteOver; 2 RW over*/
+    shutdown(clinet_fd, SHUT_RDWR);        /*0 ReadOver; 1 WriteOver; 2 RW over*/
     return closesocket(clinet_fd);
 }
 
@@ -180,7 +180,7 @@ void killwaitcd(SOCKET cd, char *msg, unsigned long len)
     return;
 }
 
-unsigned short getIP4addr(char *readdr, struct sockaddr addr)
+unsigned short get_ip4_addr(char *readdr, struct sockaddr addr)
 {
     unsigned char *p = (unsigned char *)&addr;
     unsigned short port = ((unsigned short*)&addr)[1];
