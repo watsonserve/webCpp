@@ -80,14 +80,3 @@ int ThreadPool::call(const struct event_t &msg)
     // 写消息队列
     return this->mq.push(msg);
 }
-
-struct thread_pool_t * thread_pool_create(int max)
-{
-    ThreadPool *tpool = new ThreadPool();
-    if (!ThreadPool::init(*tpool, max))
-    {
-        return (struct thread_pool_t *)tpool;
-    }
-    delete tpool;
-    return nullptr;
-}

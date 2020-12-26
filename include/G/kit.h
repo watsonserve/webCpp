@@ -7,7 +7,7 @@ struct event_listener_t {};
 
 struct thread_pool_t {};
 
-struct thread_pool_t * thread_pool_create(int);
+struct thread_pool_t * thread_pool_create(const int);
 
 struct event_listener_t * event_listener_init(struct thread_pool_t *, int);
 

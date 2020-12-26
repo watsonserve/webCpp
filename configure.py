@@ -44,8 +44,8 @@ class Makefile:
             'AR = ar',
             'AS = as',
             'LD = ld',
-            'CFLAGS = -c -O3 -Wall --std=c11',
-            'CXXFLAGS = -c -O3 -Wall --std=c++17',
+            'CFLAGS = -c -O3 -Wall -fPIC --std=c11',
+            'CXXFLAGS = -c -O3 -Wall -fPIC --std=c++17',
             'ARFLAGS = -crsv',
             shareflags,
             '\n'
@@ -55,7 +55,7 @@ class Makefile:
         # 编译framework
         aoRelations = dict()
         osRelations = dict()
-        share_dep = dict()
+        export_share = dict()
 
         for parent, dirnames, filenames in os.walk(self.framework):
             if parent == self.framework:
@@ -68,7 +68,7 @@ class Makefile:
 
                 for filename in filenames:
                     osr = makeout(os.path.join('framework', filename))
-                    share_dep[osr[0]] = osr[1]
+                    export_share[osr[0]] = osr[1]
             else:
 
                 # 分开一级目录和子目录
@@ -83,19 +83,26 @@ class Makefile:
                     aoRelations[aFile].append(osr[0])
                     osRelations[aFile].append(osr[1])
 
-        # for dep in share_dep:
-        #     so += share_dep[dep] + '\n'
+        dllDeps = []
         alibSegment = ''
-        aLibs = []
+
+        # 导出部分
+        for dep in export_share:
+            dllDeps.append(dep)
+            alibSegment += export_share[dep] + '\n'
+
+        alibSegment += '\n'
+
+        # 静态库部分
         for aLib in aoRelations:
             aLibRelations = aoRelations[aLib]
             if 0 == len(aLibRelations):
                 print("WARNING: " + aLib + " has no file.")
                 continue
-            aLibs.append(aLib)
+            dllDeps.append(aLib)
             alibSegment += '%s : %s\n\t$(AR) $(ARFLAGS) $@ $^\n\n%s\n\n' % (aLib, ' '.join(aLibRelations), '\n'.join(osRelations[aLib]))
 
-        so = '$(LIB)/libFramework.so : %s\n\t$(CXX) $(SHAREFLAGS) -o $@ $^\n\n\n' % (' '.join(aLibs)) + alibSegment
+        so = '$(LIB)/libFramework.so : %s\n\t$(CXX) $(SHAREFLAGS) -o $@ $^\n\n\n' % (' '.join(dllDeps)) + alibSegment
         return so
     
     def install(self):
@@ -112,6 +119,7 @@ class Makefile:
 
     def __str__(self):
         return '\n'.join([self.header(), self.target(), self.clean(), self.install()])
+
 
 # 中序遍历目录树，创建目录
 def makedirs(dirTree, path = ''):

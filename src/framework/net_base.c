@@ -133,6 +133,32 @@ SOCKET tcp_client(char * hostAddr, unsigned short port)
     return sockfd;
 }
 
+short clean(SOCKET clinet_fd)
+{
+    shutdown(clinet_fd, SHUT_RDWR);        /*0 ReadOver; 1 WriteOver; 2 RW over*/
+    return closesocket(clinet_fd);
+}
+
+void killwaitcd(SOCKET cd, char *msg, unsigned long len)
+{
+    if(0 == len)
+        len = strlen(msg);
+    send(cd, msg, len, 0);
+    shutdown(cd, 2);
+    closesocket(cd);
+    puts("\a\a\a");
+    /*thread wair*/
+    return;
+}
+
+unsigned short get_ip4_addr(char *readdr, struct sockaddr addr)
+{
+    unsigned char *p = (unsigned char *)&addr;
+    unsigned short port = ((unsigned short*)&addr)[1];
+    sprintf(readdr, "%d.%d.%d.%d", p[4], p[5], p[6], p[7]);
+    return port;
+}
+
 int acceptor(SOCKET sockfd, int max, connect_callback on_conn, void* context)
 {
     SOCKET clientFd;
@@ -160,32 +186,6 @@ int acceptor(SOCKET sockfd, int max, connect_callback on_conn, void* context)
         on_conn(context, clientFd, &addr);
     }
     return 0;
-}
-
-short clean(SOCKET clinet_fd)
-{
-    shutdown(clinet_fd, SHUT_RDWR);        /*0 ReadOver; 1 WriteOver; 2 RW over*/
-    return closesocket(clinet_fd);
-}
-
-void killwaitcd(SOCKET cd, char *msg, unsigned long len)
-{
-    if(0 == len)
-        len = strlen(msg);
-    send(cd, msg, len, 0);
-    shutdown(cd, 2);
-    closesocket(cd);
-    puts("\a\a\a");
-    /*thread wair*/
-    return;
-}
-
-unsigned short get_ip4_addr(char *readdr, struct sockaddr addr)
-{
-    unsigned char *p = (unsigned char *)&addr;
-    unsigned short port = ((unsigned short*)&addr)[1];
-    sprintf(readdr, "%d.%d.%d.%d", p[4], p[5], p[6], p[7]);
-    return port;
 }
 
 int tcp_service(const unsigned short port, int limit, connect_callback on_conn, void* context)
