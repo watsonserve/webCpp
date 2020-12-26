@@ -64,19 +64,19 @@ void G::EventListener::listen()
     }
 }
 
-void listen_event(event_listener_t listener)
+void listen_event(struct event_listener_t *listener)
 {
     G::EventListener* l = (G::EventListener *)listener;
     l->listen();
 }
 
-event_listener_t event_listener_init(void* tpool, int max)
+struct event_listener_t * event_listener_init(void* tpool, int max)
 {
     G::EventListener &retval = G::EventListener::getInstance((G::ThreadPool *)tpool, max);
-    return &retval;
+    return (struct event_listener_t *)&retval;
 }
 
-int emit_event(event_listener_t listener, event_opt_t opt, struct event_t *eventData)
+int emit_event(struct event_listener_t *listener, event_opt_t opt, struct event_t *eventData)
 {
     G::EventListener* l = (G::EventListener *)listener;
     return l->emit(opt, (struct event_t *)eventData);

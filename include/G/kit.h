@@ -3,16 +3,16 @@
 
 #include "G/event/event.h"
 
-typedef void* thread_pool_t;
+struct event_listener_t {};
 
-typedef void* event_listener_t;
+struct thread_pool_t {};
 
-thread_pool_t thread_pool_create(int);
+struct thread_pool_t * thread_pool_create(int);
 
-event_listener_t event_listener_init(thread_pool_t, int);
+struct event_listener_t * event_listener_init(struct thread_pool_t *, int);
 
-void listen_event(event_listener_t);
+void listen_event(struct event_listener_t *);
 
-int emit_event(event_listener_t, event_opt_t, struct event_t *);
+int emit_event(struct event_listener_t *, event_opt_t, struct event_t *);
 
 #endif

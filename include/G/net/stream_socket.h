@@ -11,8 +11,8 @@ struct stream_socket_t
     event_callback onData;
 };
 
-void stream_socket_set_listener(event_listener_t *);
-void stream_socket_listen(struct stream_socket_t *);
+void stream_socket_set_listener(struct event_listener_t *);
+void stream_socket_listen(struct event_t *);
 const ssize_t stream_socket_read(struct stream_socket_t *, char *, const size_t);
 const ssize_t stream_socket_send(struct stream_socket_t *, const char *, const int);
 void stream_socket_shutdown(struct stream_socket_t *, int);

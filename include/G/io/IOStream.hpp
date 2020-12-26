@@ -8,7 +8,6 @@ extern "C"
     #include "G/io/io.h"
 }
 
-#include "G/event/Event.hpp"
 #include "G/event/EventListener.hpp"
 #include "G/io/IOHandler.hpp"
 #include "G/io/StreamCache.hpp"

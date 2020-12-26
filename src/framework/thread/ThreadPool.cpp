@@ -81,12 +81,12 @@ int ThreadPool::call(const struct event_t &msg)
     return this->mq.push(msg);
 }
 
-thread_pool_t thread_pool_create(int max)
+struct thread_pool_t * thread_pool_create(int max)
 {
     ThreadPool *tpool = new ThreadPool();
     if (!ThreadPool::init(*tpool, max))
     {
-        return tpool;
+        return (struct thread_pool_t *)tpool;
     }
     delete tpool;
     return nullptr;

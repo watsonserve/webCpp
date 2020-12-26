@@ -13,7 +13,7 @@ typedef struct sock_addr
     socklen_t len;
 } sock_addr_t;
 
-typedef void (*connect_callback)(void *, SOCKET, sock_addr_t *);
+typedef void (*connect_callback)(void *, SOCKET, struct sock_addr *);
 
 #define closesocket(fd) close(fd)
 
