@@ -20,7 +20,6 @@ namespace G
         void set(const char *, const long long int);
         std::string* get(const std::string &);    /* left */
         std::string* get(const char *);
-        std::string& toString(std::string *dst);
     };
 
 }

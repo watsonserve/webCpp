@@ -1,14 +1,14 @@
 CXX = gcc
-OBJ = ../../dist/objs
+OBJ = ./objs
 LIB = ../../dist/lib
 INC = ../../include
 CXXFLAGS = -c -O3 -Wall --std=c++17 -g
 
-a.out: main.o MsgServer.o $(LIB)/libFramework.a
-	g++ -o $@ $^ -lc -lpthread -lstdc++
+a.out: $(OBJ)/main.o $(OBJ)/MsgServer.o
+	g++ -o $@ $^ -L $(LIB) -l Framework -lc -lpthread -lstdc++
 
-main.o: main.cpp
+$(OBJ)/main.o: main.cpp
 	$(CXX) $(CXXFLAGS) $^ -o $@ -I $(INC)
 
-MsgServer.o: MsgServer.cpp
+$(OBJ)/MsgServer.o: MsgServer.cpp
 	$(CXX) $(CXXFLAGS) $^ -o $@ -I $(INC)

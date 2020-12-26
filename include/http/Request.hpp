@@ -3,25 +3,23 @@
 
 #include <string>
 #include <map>
-#include "G/net/http/Gram.hpp"
-#include "G/StreamIO.hpp"
+#include "http/Gram.hpp"
+#include "G/io/IOStream.hpp"
 
 namespace G
 {
 
     class HTTPRequest : virtual public HTTPGram
     {
-        IOHandle *fh;
+        IOHandler *fh;
         void* session;
         std::map<std::string, std::string> cookies;
     public:
-        HTTPGram _GET;
-        HTTPGram _POST;
 
-        static int init(HTTPRequest *request, StreamIO *fh);
+        static int init(HTTPRequest *request, IOStream *fh);
         HTTPRequest();
         virtual ~HTTPRequest();
-        virtual IOHandle* getSock();
+        virtual IOStream* getSock();
         virtual void setSession(void *);
         virtual void* getSession();
         void setCookies(std::map<std::string, std::string>);

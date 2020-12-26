@@ -3,12 +3,10 @@
 
 extern "C"
 {
-    #include "G/net/Gnet.h"
+    #include "G/net/net_base.h"
     #include "G/kit.h"
 }
 
-#include "G/ThreadPool.hpp"
-#include "G/event/EventListener.hpp"
 #include "G/io/IOStream.hpp"
 #include "G/io/IOHandler.hpp"
 

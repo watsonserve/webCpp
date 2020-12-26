@@ -50,12 +50,3 @@ std::string* HTTPGram::get(const char *key)
     std::string k = key;
     return get(k);
 }
-
-std::string& HTTPGram::toString(std::string *dst)
-{
-    for (auto& x: data)
-    {
-        *dst += x.first + ": " + x.second + "\r\n";
-    }
-    return *dst;
-}
