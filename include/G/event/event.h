@@ -54,17 +54,22 @@ typedef enum
 
 #endif
 
+#ifndef _EVENT_FIELDS_
+#define _EVENT_FIELDS_ \
+    int64_t ident; \
+    void *context; \
+    event_callback function; \
+    event_type_t event_type; \
+    int magic;
+#endif
+
 struct event_t;
 
 typedef void (*event_callback)(struct event_t);
 
 struct event_t
 {
-    int64_t ident;
-    void *context;
-    event_callback function;
-    event_type_t event_type;
-    int magic;
+    _EVENT_FIELDS_
 };
 
 #endif

@@ -20,7 +20,7 @@
 #include "G/event/EventListener.hpp"
 #ifdef __BSD__
 
-int EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
+int G::EventListener::_init(EventListener &self, ThreadPool * tpool, int max)
 {
     if (nullptr == tpool) {
         perror("Can't no thread pool");
