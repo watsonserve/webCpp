@@ -30,11 +30,11 @@ void* ThreadPool::thFunction(void* that)
     {
         // 读消息队列
         struct event_t event = mq.front();
-        if(nullptr == event.function) {
+        if(nullptr == event.on_event) {
             continue;
         }
         // 调用业务函数
-        event.function(event);
+        event.on_event(event);
     }
 
     return nullptr;

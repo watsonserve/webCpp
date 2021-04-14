@@ -57,8 +57,8 @@ typedef enum
 #ifndef _EVENT_FIELDS_
 #define _EVENT_FIELDS_ \
     int64_t ident; \
-    void *context; \
-    event_callback function; \
+    void *self; \
+    event_callback on_event; \
     event_type_t event_type; \
     int magic;
 #endif
