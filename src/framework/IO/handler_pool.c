@@ -33,12 +33,16 @@ void* get_stream_socket(handler_pool_t *self, SOCKET fd)
 
 void handler_pool_recv(handler_pool_t *self, SOCKET fd, callback_func on_data, struct buffer_t buf)
 {
-    struct http_handler * sock = (struct http_handler *)get_stream_socket(self, fd);
+    struct stream_socket_t *sock;
+
+    sock = (struct stream_socket_t *)get_stream_socket(self, fd);
     stream_socket_read(sock, on_data, buf, self->event_listener);
 }
 
 const ssize_t handler_pool_send(handler_pool_t *self, SOCKET fd, const char *buf, const size_t len)
 {
-    struct http_handler * sock = (struct http_handler *)get_stream_socket(self, fd);
+    struct stream_socket_t * sock;
+
+    sock = (struct stream_socket_t *)get_stream_socket(self, fd);
     return stream_socket_send(sock, buf, len, self->event_listener);
 }

@@ -18,7 +18,7 @@ void _on_stream_data(struct event_t ev)
 void stream_socket_handle(struct stream_socket_t *self, struct event_listener_t *listener, event_type_t event_type)
 {
     self->event_type = event_type;
-    emit_event(listener, OPT_ADD, self);
+    emit_event(listener, OPT_ADD, (struct event_t *)self);
 }
 
 struct stream_socket_t * new_stream_socket(struct stream_socket_t *sock, SOCKET fd, struct sock_addr *addr, void* ctx)
@@ -35,7 +35,7 @@ struct stream_socket_t * new_stream_socket(struct stream_socket_t *sock, SOCKET 
     return sock;
 }
 
-void stream_socket_read(struct stream_socket_t *self, event_callback on_data, struct buffer_t buf, struct event_listener_t *listener)
+void stream_socket_read(struct stream_socket_t *self, callback_func on_data, struct buffer_t buf, struct event_listener_t *listener)
 {
     memcpy(&(self->buf), &buf, sizeof(struct buffer_t));
     self->parent_callback = on_data;

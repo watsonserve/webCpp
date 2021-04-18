@@ -56,11 +56,11 @@ struct stream_socket_t * new_stream_socket(struct stream_socket_t *, SOCKET, str
 /**
  * 异步recv
  * @param sock struct stream_socket_t *
- * @param on_data event_callback
+ * @param on_data callback_func
  * @param buf struct buffer_t
  * @param event_listener struct event_listener_t *
  */
-void stream_socket_read(struct stream_socket_t *, event_callback, struct buffer_t, struct event_listener_t *);
+void stream_socket_read(struct stream_socket_t *, callback_func, struct buffer_t, struct event_listener_t *);
 
 const ssize_t stream_socket_send(struct stream_socket_t *, const char *, const size_t, struct event_listener_t *);
 
