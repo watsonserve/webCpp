@@ -1,8 +1,8 @@
-#include "G/log.h"
+#include "G/assert.h"
 
 int main()
 {
     log_print(2, "foobar %d", 6);
-    log_error("exception %d", 7);
+    null_assert(0);
     return 0;
 }
