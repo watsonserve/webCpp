@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "G/assert.h"
 #include "G/net/net_base.h"
 #include "G/kit.h"
 
@@ -67,4 +68,5 @@ const ssize_t stream_socket_send(struct stream_socket_t *, const char *, const s
 void stream_socket_shutdown(struct stream_socket_t *, int);
 
 void stream_socket_close(struct stream_socket_t *);
+
 #endif

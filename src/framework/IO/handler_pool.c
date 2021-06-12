@@ -44,5 +44,6 @@ const ssize_t handler_pool_send(handler_pool_t *self, SOCKET fd, const char *buf
     struct stream_socket_t * sock;
 
     sock = (struct stream_socket_t *)get_stream_socket(self, fd);
+    if (!sock) return -1;
     return stream_socket_send(sock, buf, len, self->event_listener);
 }
