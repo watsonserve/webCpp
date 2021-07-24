@@ -69,7 +69,42 @@ so
       ├─MiddleWare
       |
       └─Var
-      
+
+### 逻辑路线
+```
+// 通过tcp_setup或unix_setup创建套接字
+sockfd = unix_setup()
+
+// 创建好线程池和事件监听器
+tpool = new thread_pool()
+event_listener = new event_listener(tpool)
+
+// 初始化一个http_server
+srv = new http_server(sockfd, event_listener)
+// http_server内初始化一个stream_socket_pool
+// 发生connect时，调用stream_socket_pool分配资源
+
+on_connect(sockfd) {
+    socket = sock_pool.handle(sockfd);
+    event_listener.listen(socket) {
+        sys_event = new system_event();
+        sys_event.data_ptr = socket;
+    }
+}
+
+sys_event_listener.on_data() {
+    thread_pool.queue.push(socket) {
+        // socket是event_t的子类
+        // 只会复制socket中关于事件的部分
+        copy(socket as event_t);
+    }
+}
+
+thread_function() {
+    event = queue.pop();
+    event.function(event);
+}
+```
 
 ### 使用方法
 参看main.cpp

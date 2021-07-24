@@ -187,21 +187,3 @@ int acceptor(SOCKET sockfd, int max, connect_callback on_conn, void* context)
     }
     return 0;
 }
-
-int tcp_service(const unsigned short port, int limit, connect_callback on_conn, void* context)
-{
-    SOCKET sockfd = tcp_setup(port);
-    if (-1 == sockfd) {
-        return errno;
-    }
-    return acceptor(sockfd, limit, on_conn, context);
-}
-
-int unix_service(const char *path, int limit, connect_callback on_conn, void* context)
-{
-    SOCKET sockfd = unix_setup(path);
-    if (-1 == sockfd) {
-        return errno;
-    }
-    return acceptor(sockfd, limit, on_conn, context);
-}

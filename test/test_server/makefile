@@ -12,3 +12,8 @@ main.o: main.cpp
 
 MsgServer.o: MsgServer.cpp
 	$(CXX) $(CXXFLAGS) $^ -o $@ -I $(INC)
+
+
+clear:
+	rm a.out
+	rm *.o

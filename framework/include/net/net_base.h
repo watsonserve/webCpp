@@ -26,13 +26,11 @@ SOCKET udp_setup(const unsigned short);
 
 SOCKET tcp_client(char *, unsigned short);
 
+SOCKET tcp_setup(const unsigned short);
+
 SOCKET unix_setup(const char *path);
 
 int acceptor(SOCKET, int, connect_callback, void*);
-
-int tcp_service(const unsigned short, int, connect_callback, void*);
-
-int unix_service(const char *, int, connect_callback, void*);
 
 short clean(SOCKET);
 
